@@ -17,7 +17,7 @@
   </developers>
 
   <modules>
-
+    <module>hw01-testing</module>
   </modules>
 
   <parent>
