@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <bean id="csvReader" class="ru.otus.hw01.core.reader.CsvReader">
+    <constructor-arg value="questions.csv"/>
+  </bean>
+
+  <bean id="interfaceConsole" class="ru.otus.hw01.core.gui.InteractiveInterfaceConsole">
+    <constructor-arg ref="csvReader"/>
+  </bean>
+
+  <bean id="testValidator" class="ru.otus.hw01.core.test.TestValidatorImpl"/>
+
+  <bean id="testingService" class="ru.otus.hw01.core.service.TestingServiceImpl">
+    <constructor-arg index="0" ref="testValidator"/>
+    <constructor-arg index="1" ref="interfaceConsole"/>
+  </bean>
+
+</beans>
