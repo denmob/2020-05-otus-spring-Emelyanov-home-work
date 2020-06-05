@@ -31,7 +31,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>ru.otus.hw01.TestingDemo</mainClass>
+              <mainClass>ru.otus.hw02.TestingDemo</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>
