@@ -5,5 +5,6 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan
 public class TestingDemo {
   public static void main(String[] args) {
+    // disable context
   }
 }

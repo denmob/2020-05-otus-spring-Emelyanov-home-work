@@ -19,6 +19,6 @@ public class TestingDemo {
     AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(TestingDemo.class);
     TestingService testingService = applicationContext.getBean(TestingService.class);
     testingService.startTest();
-    logger.info("Test finish with grade:{}", testingService.getGradeForTest());
+    logger.info("{} test finish with grade:{}", testingService.getName(), testingService.getGradeForTest());
   }
 }

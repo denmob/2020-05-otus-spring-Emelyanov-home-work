@@ -35,26 +35,23 @@ class InteractiveInterfaceConsoleTest {
   @Test
   @DisplayName("create with all null argument")
   void interactiveInterfaceCreateWithNullArgument() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      new InteractiveInterfaceConsole(null, null, null);
-    });
+    assertThrows(IllegalArgumentException.class, () ->
+        new InteractiveInterfaceConsole(null, null, null));
   }
 
   @Test
   @DisplayName("create with null streams")
   void interactiveInterfaceCreateWithNullStreams() {
-    String message = assertThrows(IllegalArgumentException.class, () -> {
-      new InteractiveInterfaceConsole(csvReaderQuestion, null, null);
-    }).getMessage();
+    String message = assertThrows(IllegalArgumentException.class, () ->
+        new InteractiveInterfaceConsole(csvReaderQuestion, null, null)).getMessage();
     assertEquals("Argument interfaceInputStream is null", message);
   }
 
   @Test
   @DisplayName("create with null outputStream")
   void interactiveInterfaceCreateWithNullOutputStream() {
-    String message = assertThrows(IllegalArgumentException.class, () -> {
-      new InteractiveInterfaceConsole(csvReaderQuestion, new ByteArrayInputStream("expected".getBytes()), null);
-    }).getMessage();
+    String message = assertThrows(IllegalArgumentException.class, () ->
+        new InteractiveInterfaceConsole(csvReaderQuestion, new ByteArrayInputStream("expected".getBytes()), null)).getMessage();
     assertEquals("Argument interfaceOutputStream is null", message);
   }
 
@@ -77,9 +74,7 @@ class InteractiveInterfaceConsoleTest {
   void welcomeEmpty() {
     interfaceInputStream = new ByteArrayInputStream("".getBytes());
     interactiveInterface = new InteractiveInterfaceConsole(csvReaderQuestion, interfaceInputStream, interfaceOutputStream);
-    assertThrows(InteractiveInterfaceException.class, () -> {
-      interactiveInterface.welcome();
-    });
+    assertThrows(InteractiveInterfaceException.class, () -> interactiveInterface.welcome());
   }
 
   @Test
@@ -107,9 +102,8 @@ class InteractiveInterfaceConsoleTest {
   void processingOneQuestionWithEmptyQuestion() {
     interfaceInputStream = new ByteArrayInputStream("answer".getBytes());
     interactiveInterface = new InteractiveInterfaceConsole(csvReaderQuestion, interfaceInputStream, interfaceOutputStream);
-    String message = assertThrows(IllegalArgumentException.class, () -> {
-      interactiveInterface.processingOneQuestion("", new ArrayList<>());
-    }).getMessage();
+    String message = assertThrows(IllegalArgumentException.class, () ->
+        interactiveInterface.processingOneQuestion("", new ArrayList<>())).getMessage();
     assertEquals("Argument questions is null or empty", message);
   }
 
@@ -118,9 +112,8 @@ class InteractiveInterfaceConsoleTest {
   void processingOneQuestionWithEmptyAnswers() {
     interfaceInputStream = new ByteArrayInputStream("answer".getBytes());
     interactiveInterface = new InteractiveInterfaceConsole(csvReaderQuestion, interfaceInputStream, interfaceOutputStream);
-    String message = assertThrows(IllegalArgumentException.class, () -> {
-      interactiveInterface.processingOneQuestion("question", new ArrayList<>());
-    }).getMessage();
+    String message = assertThrows(IllegalArgumentException.class, () ->
+        interactiveInterface.processingOneQuestion("question", new ArrayList<>())).getMessage();
     assertEquals("Argument answers is null or empty", message);
   }
 

@@ -5,7 +5,6 @@ import ru.otus.hw02.api.test.TestProcess;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class TestProcessImpl implements TestProcess {
 
   private final Map<String, Integer> answers = new HashMap<>();

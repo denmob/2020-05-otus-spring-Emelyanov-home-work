@@ -27,25 +27,19 @@ class TestProcessImplTest {
   @Test
   @DisplayName("put null")
   void putAnswerNull() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      testProcess.putAnswer(null, 0);
-    });
+    assertThrows(IllegalArgumentException.class, () -> testProcess.putAnswer(null, 0));
   }
 
   @Test
   @DisplayName("put empty")
   void putAnswerEmpty() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      testProcess.putAnswer(new String(), 0);
-    });
+    assertThrows(IllegalArgumentException.class, () -> testProcess.putAnswer("", 0));
   }
 
   @Test
   @DisplayName("put incorrect value")
   void putAnswerIncorrect() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      testProcess.putAnswer("putAnswerRandom", -1);
-    });
+    assertThrows(IllegalArgumentException.class, () -> testProcess.putAnswer("putAnswerRandom", -1));
   }
 
   @Test

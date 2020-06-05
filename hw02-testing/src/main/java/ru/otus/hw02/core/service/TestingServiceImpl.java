@@ -38,4 +38,9 @@ public class TestingServiceImpl implements TestingService {
   public int getGradeForTest() {
     return testValidator.getGradeForTest(testProcess.getTestResult());
   }
+
+  @Override
+  public String getName() {
+    return interactiveInterface.getName();
+  }
 }

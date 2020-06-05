@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class TestValidatorImplTest {
 
   private TestValidator testValidator;
-  private DataReader reader = new CsvReader("answer.csv",",");
+  private DataReader reader = new CsvReader("answer.csv", ",");
 
   @BeforeEach
   void before() {
@@ -37,16 +37,12 @@ class TestValidatorImplTest {
   @Test
   @DisplayName("null argument")
   void getGradeForTestNull() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      testValidator.getGradeForTest(null);
-    });
+    assertThrows(IllegalArgumentException.class, () -> testValidator.getGradeForTest(null));
   }
 
   @Test
   @DisplayName("empty argument")
   void getGradeForTestEmpty() {
     assertThat(testValidator.getGradeForTest(new HashMap<>())).isEqualTo(0);
-    ;
   }
-
 }

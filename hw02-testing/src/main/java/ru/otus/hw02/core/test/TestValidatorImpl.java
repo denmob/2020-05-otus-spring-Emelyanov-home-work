@@ -31,7 +31,6 @@ public class TestValidatorImpl implements TestValidator {
     return grade;
   }
 
-
   private boolean checkAnswer(String questionName, Integer variant) {
     Integer value = validAnswers.get(questionName);
     if (value != null) {

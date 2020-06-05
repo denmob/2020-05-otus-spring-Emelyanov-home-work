@@ -11,6 +11,7 @@ import ru.otus.hw02.core.gui.InteractiveInterfaceConsole;
 import ru.otus.hw02.core.reader.CsvReader;
 import ru.otus.hw02.core.service.TestingServiceImpl;
 import ru.otus.hw02.core.test.TestValidatorImpl;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,26 +23,26 @@ class TestingServiceImplTest {
 
   private TestingService testingService;
   private InteractiveInterface interactiveInterface;
-  private DataReader reader = new CsvReader("answer.csv",",");
+  private DataReader reader = new CsvReader("answer.csv", ",");
 
   @BeforeEach
-  void before(){
+  void before() {
     interactiveInterface = mock(InteractiveInterfaceConsole.class);
-    testingService = new TestingServiceImpl(new TestValidatorImpl(reader),interactiveInterface);
+    testingService = new TestingServiceImpl(new TestValidatorImpl(reader), interactiveInterface);
   }
 
   @Test
   @DisplayName("mock test with result 0")
-  void startTestEmpty(){
+  void startTestEmpty() {
     testingService.startTest();
     assertThat(testingService.getGradeForTest()).isEqualTo(0);
   }
 
   @Test
   @DisplayName("mock test with one valid answer")
-  void startTestWithOneAnswerValid(){
-    Map<String,Integer> answer = new HashMap<>();
-    answer.put("869 reads correctly",5);
+  void startTestWithOneAnswerValid() {
+    Map<String, Integer> answer = new HashMap<>();
+    answer.put("869 reads correctly", 5);
     given(interactiveInterface.getResult()).willReturn(answer);
     testingService.startTest();
     assertThat(testingService.getGradeForTest()).isEqualTo(1);
@@ -49,9 +50,9 @@ class TestingServiceImplTest {
 
   @Test
   @DisplayName("mock test with one valid answer")
-  void startTestWithOneAnswerInvalid(){
-    Map<String,Integer> answer = new HashMap<>();
-    answer.put("869 reads correctly",1);
+  void startTestWithOneAnswerInvalid() {
+    Map<String, Integer> answer = new HashMap<>();
+    answer.put("869 reads correctly", 1);
     given(interactiveInterface.getResult()).willReturn(answer);
     testingService.startTest();
     assertThat(testingService.getGradeForTest()).isEqualTo(0);
@@ -60,11 +61,11 @@ class TestingServiceImplTest {
 
   @Test
   @DisplayName("mock test with one valid answer and another random answer")
-  void startTestWithOneAnswerValidAndRandom(){
-    Map<String,Integer> answer = new HashMap<>();
-    answer.put("869 reads correctly",5);
-    answer.put("startTestWithOneAnswerAndRandom",99);
-    answer.put("hello",66);
+  void startTestWithOneAnswerValidAndRandom() {
+    Map<String, Integer> answer = new HashMap<>();
+    answer.put("869 reads correctly", 5);
+    answer.put("startTestWithOneAnswerAndRandom", 99);
+    answer.put("hello", 66);
     given(interactiveInterface.getResult()).willReturn(answer);
     testingService.startTest();
     assertThat(testingService.getGradeForTest()).isEqualTo(1);
@@ -72,12 +73,12 @@ class TestingServiceImplTest {
 
   @Test
   @DisplayName("mock test with two valid answer and another random answer")
-  void startTestWithTwoAnswerValidAndRandom(){
-    Map<String,Integer> answer = new HashMap<>();
-    answer.put("869 reads correctly",5);
-    answer.put("startTestWithOneAnswerAndRandom",99);
-    answer.put("hello",66);
-    answer.put("The word is spelled correctly",5);
+  void startTestWithTwoAnswerValidAndRandom() {
+    Map<String, Integer> answer = new HashMap<>();
+    answer.put("869 reads correctly", 5);
+    answer.put("startTestWithOneAnswerAndRandom", 99);
+    answer.put("hello", 66);
+    answer.put("The word is spelled correctly", 5);
     given(interactiveInterface.getResult()).willReturn(answer);
     testingService.startTest();
     assertThat(testingService.getGradeForTest()).isEqualTo(2);
