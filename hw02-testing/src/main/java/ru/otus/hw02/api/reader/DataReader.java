@@ -5,4 +5,8 @@ import java.util.Map;
 
 public interface DataReader {
   Map<String, List<String>> getData();
+
+  void setFile(String csvFile);
+
+  void close();
 }

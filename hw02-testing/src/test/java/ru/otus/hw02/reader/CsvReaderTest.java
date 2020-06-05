@@ -13,6 +13,8 @@ class CsvReaderTest {
 
   private DataReader dataReader;
 
+  private static final String CVS_SPLIT_BY = ",";
+
   @BeforeEach
   void before() {
     dataReader = null;
@@ -21,7 +23,7 @@ class CsvReaderTest {
   @Test
   @DisplayName("create with questionsEmpty.csv")
   void createCsvReaderValid() {
-    dataReader = new CsvReader("questions.csv");
+    dataReader = new CsvReader("questions.csv",CVS_SPLIT_BY);
     assertThat(dataReader).isNotNull();
     assertThat(dataReader.getData()).isNotNull();
   }
@@ -30,7 +32,7 @@ class CsvReaderTest {
   @DisplayName("create with null")
   void createCsvReaderNull() {
     assertThrows(IllegalArgumentException.class, () -> {
-      dataReader = new CsvReader(null);
+      dataReader = new CsvReader(null,CVS_SPLIT_BY);
     });
   }
 
@@ -38,29 +40,30 @@ class CsvReaderTest {
   @DisplayName("create with empty")
   void createCsvReaderEmpty() {
     assertThrows(IllegalArgumentException.class, () -> {
-      dataReader = new CsvReader("");
+      dataReader = new CsvReader("",CVS_SPLIT_BY);
     });
   }
 
   @Test
   @DisplayName("create with random")
   void createCsvReaderRandom() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      dataReader = new CsvReader("tytry");
+    assertThrows(IllegalStateException.class, () -> {
+      dataReader = new CsvReader("tytry",CVS_SPLIT_BY);
+      dataReader.getData();
     });
   }
 
   @Test
   @DisplayName("getData with empty csv")
   void getDataEmpty() {
-    dataReader = new CsvReader("questionsEmpty.csv");
+    dataReader = new CsvReader("questionsEmpty.csv",CVS_SPLIT_BY);
     assertThat(dataReader.getData()).isEmpty();
   }
 
   @Test
   @DisplayName("getData with 5 lines csv")
   void getDataCorrect() {
-    dataReader = new CsvReader("questions.csv");
+    dataReader = new CsvReader("questions.csv",CVS_SPLIT_BY);
     assertThat(dataReader.getData()).isNotEmpty();
     assertThat(dataReader.getData()).hasSize(5);
   }

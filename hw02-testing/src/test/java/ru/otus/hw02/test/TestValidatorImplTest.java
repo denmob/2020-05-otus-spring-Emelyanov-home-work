@@ -3,7 +3,9 @@ package ru.otus.hw02.test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import ru.otus.hw02.api.reader.DataReader;
 import ru.otus.hw02.api.test.TestValidator;
+import ru.otus.hw02.core.reader.CsvReader;
 import ru.otus.hw02.core.test.TestValidatorImpl;
 
 import java.util.HashMap;
@@ -15,10 +17,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class TestValidatorImplTest {
 
   private TestValidator testValidator;
+  private DataReader reader = new CsvReader("answer.csv",",");
 
   @BeforeEach
   void before() {
-    testValidator = new TestValidatorImpl();
+    testValidator = new TestValidatorImpl(reader);
   }
 
   @Test

@@ -1,39 +1,26 @@
 package ru.otus.hw02.core.test;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import ru.otus.hw02.api.reader.DataReader;
 import ru.otus.hw02.api.test.TestValidator;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
 public class TestValidatorImpl implements TestValidator {
 
-  private final Map<String, Integer> validAnswers = new HashMap<>();
+  private final Map<String, Integer> validAnswers;
 
-  public TestValidatorImpl() {
-    createValidMap();
-  }
-
-  private void createValidMap() {
-    validAnswers.put("The word is spelled correctly",5);
-    validAnswers.put("Find a synonym for the word <To worry>",4);
-    validAnswers.put("Find a common word for a given group of words",2);
-    validAnswers.put("Mark the form of the verb in front of which you can put <to>",3);
-    validAnswers.put("869 reads correctly",5);
-  }
-
-  private boolean checkAnswer(String questionName, Integer variant) {
-    Integer value = validAnswers.get(questionName);
-    if (value != null) {
-      return value.equals(variant);
-    }
-    return false;
+  public TestValidatorImpl(@Qualifier("csvReaderAnswer") DataReader csvReaderAnswer) {
+    validAnswers = convertMap(csvReaderAnswer.getData());
   }
 
   @Override
   public int getGradeForTest(Map<String, Integer> answers) {
-    if (answers == null) throw new IllegalArgumentException("Incoming parameters is null");
+    if (answers == null) throw new IllegalArgumentException("Argument answers is null");
 
     int grade = 0;
     for (Map.Entry<String, Integer> entry : answers.entrySet()) {
@@ -43,4 +30,22 @@ public class TestValidatorImpl implements TestValidator {
     }
     return grade;
   }
+
+
+  private boolean checkAnswer(String questionName, Integer variant) {
+    Integer value = validAnswers.get(questionName);
+    if (value != null) {
+      return value.equals(variant);
+    }
+    return false;
+  }
+
+  private Map<String, Integer> convertMap(Map<String, List<String>> oldMap) {
+    Map<String, Integer> newMap = new HashMap<>();
+    for (Map.Entry<String, List<String>> entry : oldMap.entrySet()) {
+      newMap.put(entry.getKey(), Integer.valueOf(entry.getValue().get(0)));
+    }
+    return newMap;
+  }
+
 }

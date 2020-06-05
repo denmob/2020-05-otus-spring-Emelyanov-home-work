@@ -2,8 +2,6 @@ package ru.otus.hw02.core.reader;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import ru.otus.hw02.api.reader.DataReader;
 import ru.otus.hw02.api.reader.DataReaderException;
 
@@ -11,31 +9,58 @@ import ru.otus.hw02.api.reader.DataReaderException;
 import java.io.*;
 import java.util.*;
 
-@Component
 public class CsvReader implements DataReader {
 
   private static final Logger logger = LoggerFactory.getLogger(CsvReader.class);
 
   private Map<String, List<String>> dataQuestions = new HashMap<>();
 
-  private static final int MIN_VARIANT_FOR_ANSWER = 3;
-  private static final String CVS_SPLIT_BY = ",";
+  private String cvsSplitBy;
+  private InputStream csvInputStream;
+  private String csvFile;
 
-  public CsvReader(@Value("${test.questions}") String csvFile) {
-    if (csvFile== null || csvFile.isEmpty()) throw new IllegalArgumentException("CsvFile is null or empty!");
-    splitLineToDataObject(readFile(readResourceFile(csvFile)));
+  public CsvReader(String csvFile, String cvsSplitBy) {
+    if (csvFile == null || csvFile.isEmpty()) throw new IllegalArgumentException("CsvFile is null or empty!");
+    if (cvsSplitBy == null || cvsSplitBy.isEmpty()) throw new IllegalArgumentException("cvsSplitBy is null or empty!");
+
+    this.cvsSplitBy = cvsSplitBy;
+    this.csvFile = csvFile;
+    this.csvInputStream = createInputStreamFromResourceFile(this.csvFile);
   }
 
-  private List<String> readFile(InputStream csvFile) {
-    if (csvFile== null) throw new IllegalArgumentException("Name csvFile incorrect!");
-    String line = "";
-    List<String> stringList = new ArrayList<>();
+  @Override
+  public Map<String, List<String>> getData() {
+    splitLineToDataObject(readInputStreamToList(this.csvInputStream));
+    return dataQuestions;
+  }
 
+  @Override
+  public void setFile(String csvFile) {
+    if (csvFile == null || csvFile.isEmpty()) throw new IllegalArgumentException("CsvFile is null or empty!");
+    this.csvFile = csvFile;
+    this.csvInputStream = createInputStreamFromResourceFile(this.csvFile);
+  }
+
+  @Override
+  public void close() {
     try {
-      try (BufferedReader br = new BufferedReader(new InputStreamReader(csvFile))) {
-        while ((line = br.readLine()) != null) {
-          stringList.add(line);
-        }
+      if (csvInputStream != null) {
+        csvInputStream.close();
+      }
+    } catch (IOException e) {
+      logger.error(e.getMessage(), e);
+      throw new DataReaderException(e);
+    }
+  }
+
+  private List<String> readInputStreamToList(InputStream csvInputStream) {
+    if (csvInputStream == null) throw new IllegalStateException("csvInputStream is null!");
+    String line;
+    List<String> stringList = new ArrayList<>();
+    try {
+      BufferedReader br = new BufferedReader(new InputStreamReader(csvInputStream));
+      while ((line = br.readLine()) != null) {
+        stringList.add(line);
       }
     } catch (IOException e) {
       logger.error(e.getMessage(), e);
@@ -44,7 +69,7 @@ public class CsvReader implements DataReader {
     return stringList;
   }
 
-  private InputStream readResourceFile(String sNameFile) {
+  private InputStream createInputStreamFromResourceFile(String sNameFile) {
     InputStream input = this.getClass().getResourceAsStream("/resource/" + sNameFile);
     if (input == null) {
       input = this.getClass().getClassLoader().getResourceAsStream(sNameFile);
@@ -52,20 +77,15 @@ public class CsvReader implements DataReader {
     return input;
   }
 
-  private void splitLineToDataObject(List<String> stringList){
-    for (String line: stringList) {
-      String[] questionNameWithVariants = line.split(CVS_SPLIT_BY);
-      if (questionNameWithVariants.length> MIN_VARIANT_FOR_ANSWER) {
+  private void splitLineToDataObject(List<String> stringList) {
+    for (String line : stringList) {
+      String[] questionNameWithVariants = line.split(cvsSplitBy);
+      if (questionNameWithVariants.length > 1) {
         List<String> answers = new ArrayList<>(questionNameWithVariants.length);
         answers.addAll(Arrays.asList(questionNameWithVariants).subList(1, questionNameWithVariants.length));
-        dataQuestions.put(questionNameWithVariants[0].trim(),answers);
+        dataQuestions.put(questionNameWithVariants[0].trim(), answers);
       }
     }
   }
 
-
-  @Override
-  public Map<String, List<String>> getData() {
-    return dataQuestions;
-  }
 }

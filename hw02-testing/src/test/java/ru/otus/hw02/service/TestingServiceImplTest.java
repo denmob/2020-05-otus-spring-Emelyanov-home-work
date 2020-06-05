@@ -5,8 +5,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.otus.hw02.api.gui.InteractiveInterface;
+import ru.otus.hw02.api.reader.DataReader;
 import ru.otus.hw02.api.service.TestingService;
 import ru.otus.hw02.core.gui.InteractiveInterfaceConsole;
+import ru.otus.hw02.core.reader.CsvReader;
 import ru.otus.hw02.core.service.TestingServiceImpl;
 import ru.otus.hw02.core.test.TestValidatorImpl;
 import java.util.HashMap;
@@ -20,11 +22,12 @@ class TestingServiceImplTest {
 
   private TestingService testingService;
   private InteractiveInterface interactiveInterface;
+  private DataReader reader = new CsvReader("answer.csv",",");
 
   @BeforeEach
   void before(){
     interactiveInterface = mock(InteractiveInterfaceConsole.class);
-    testingService = new TestingServiceImpl(new TestValidatorImpl(),interactiveInterface);
+    testingService = new TestingServiceImpl(new TestValidatorImpl(reader),interactiveInterface);
   }
 
   @Test
