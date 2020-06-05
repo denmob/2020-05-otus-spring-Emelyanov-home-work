@@ -2,7 +2,6 @@ package ru.otus.hw02.core.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.otus.hw02.api.service.TestingService;
 import ru.otus.hw02.api.gui.InteractiveInterface;
@@ -28,6 +27,7 @@ public class TestingServiceImpl implements TestingService {
 
   @Override
   public void startTest() {
+    interactiveInterface.welcome();
     interactiveInterface.startTest();
     for (Map.Entry<String, Integer> entry : interactiveInterface.getResult().entrySet()) {
       testProcess.putAnswer(entry.getKey(), entry.getValue());

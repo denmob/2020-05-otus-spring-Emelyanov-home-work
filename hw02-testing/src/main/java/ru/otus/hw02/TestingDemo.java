@@ -15,10 +15,10 @@ import ru.otus.hw02.core.config.AppConfig;
 public class TestingDemo {
   private static final Logger logger = LoggerFactory.getLogger(TestingDemo.class);
 
-    public static void main(String[] args) {
-      AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(TestingDemo.class);
-      TestingService testingService = applicationContext.getBean(TestingService.class);
-      testingService.startTest();
-      logger.info("Test finish with grade:{}",testingService.getGradeForTest());
-    }
+  public static void main(String[] args) {
+    AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(TestingDemo.class);
+    TestingService testingService = applicationContext.getBean(TestingService.class);
+    testingService.startTest();
+    logger.info("Test finish with grade:{}", testingService.getGradeForTest());
+  }
 }

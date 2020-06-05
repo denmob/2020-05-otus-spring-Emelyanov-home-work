@@ -3,6 +3,7 @@ package ru.otus.hw02.core.gui;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.otus.hw02.api.gui.InteractiveInterface;
+import ru.otus.hw02.api.gui.InteractiveInterfaceException;
 import ru.otus.hw02.api.reader.DataReader;
 
 
@@ -21,6 +22,10 @@ public class InteractiveInterfaceConsole implements InteractiveInterface {
   private final DataReader dataReader;
 
   public InteractiveInterfaceConsole(DataReader dataReader, InputStream interfaceInputStream, OutputStream interfaceOutputStream) {
+    if (dataReader == null) throw new IllegalArgumentException("Argument dataReader is null");
+    if (interfaceInputStream == null) throw new IllegalArgumentException("Argument interfaceInputStream is null");
+    if (interfaceOutputStream == null) throw new IllegalArgumentException("Argument interfaceOutputStream is null");
+
     this.dataReader = dataReader;
     this.standardInput = new BufferedReader(new InputStreamReader(interfaceInputStream));
     this.standardOutput = new PrintStream(interfaceOutputStream);
@@ -28,9 +33,9 @@ public class InteractiveInterfaceConsole implements InteractiveInterface {
 
   @Override
   public void startTest() {
-    welcome();
     for (Map.Entry<String, List<String>> entry : dataReader.getData().entrySet()) {
-      processingOneQuestion(entry.getKey(), entry.getValue());
+      Map.Entry<String, Integer> stringIntegerEntry = processingOneQuestion(entry.getKey(), entry.getValue());
+      results.put(stringIntegerEntry.getKey(), stringIntegerEntry.getValue());
     }
   }
 
@@ -44,22 +49,26 @@ public class InteractiveInterfaceConsole implements InteractiveInterface {
     return name;
   }
 
-  private void welcome() {
+  @Override
+  public void welcome() {
     standardOutput.print("Enter your name: ");
-    if (name == null) {
-      do {
-        try {
-          name = standardInput.readLine();
-        } catch (IOException e) {
-          logger.error(e.getMessage(), e);
-          standardOutput.print("Please try again enter your name");
-        }
-      } while (name == null);
+    try {
+      name = standardInput.readLine();
+      if (name == null || name.isEmpty()) {
+        throw new InteractiveInterfaceException("Name is null or empty!");
+      }
+    } catch (IOException e) {
+      logger.error(e.getMessage(), e);
+      standardOutput.print("Please try again enter your name");
     }
     standardOutput.println("Hello " + name);
   }
 
-  private void processingOneQuestion(String questions, List<String> answers) {
+  @Override
+  public Map.Entry<String, Integer> processingOneQuestion(String questions, List<String> answers) {
+    if (questions == null || questions.isEmpty()) throw new IllegalArgumentException("Argument questions is null or empty");
+    if (answers == null || answers.isEmpty()) throw new IllegalArgumentException("Argument answers is null or empty");
+
     standardOutput.println(questions + ":");
 
     int rowNumber = 1;
@@ -72,7 +81,7 @@ public class InteractiveInterfaceConsole implements InteractiveInterface {
     do {
       try {
         result = Integer.parseInt(standardInput.readLine());
-        if (!between(result, rowNumber)) {
+        if (!between(result, rowNumber - 1)) {
           standardOutput.println("Please choose row number with valid answer!");
           result = 0;
         }
@@ -81,7 +90,7 @@ public class InteractiveInterfaceConsole implements InteractiveInterface {
         standardOutput.println("Please choose row number with valid answer!");
       }
     } while (result == 0);
-    results.put(questions, result);
+    return Map.entry(questions, result);
   }
 
   private boolean between(int i, int maxValueInclusive) {

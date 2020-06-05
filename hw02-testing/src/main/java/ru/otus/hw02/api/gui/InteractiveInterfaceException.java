@@ -6,4 +6,7 @@ public class InteractiveInterfaceException extends MyHw02Exception {
   public InteractiveInterfaceException(Exception ex) {
     super(ex);
   }
+  public InteractiveInterfaceException(String cause) {
+    super(cause);
+  }
 }
