@@ -23,12 +23,12 @@ class TestingServiceImplTest {
 
   private TestingService testingService;
   private InteractiveInterface interactiveInterface;
-  private DataReader reader = new CsvReader("answer.csv", ",");
+  private DataReader reader = new CsvReader(",");
 
   @BeforeEach
   void before() {
     interactiveInterface = mock(InteractiveInterfaceConsole.class);
-    testingService = new TestingServiceImpl(new TestValidatorImpl(reader), interactiveInterface);
+    testingService = new TestingServiceImpl(new TestValidatorImpl("answers.csv", reader), interactiveInterface);
   }
 
   @Test
@@ -83,6 +83,4 @@ class TestingServiceImplTest {
     testingService.startTest();
     assertThat(testingService.getGradeForTest()).isEqualTo(2);
   }
-
-
 }

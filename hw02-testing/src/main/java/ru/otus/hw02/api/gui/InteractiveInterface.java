@@ -14,4 +14,6 @@ public interface InteractiveInterface {
   Map<String, Integer> getResult();
 
   String getName();
+
+  void printResultToTest(int grade);
 }

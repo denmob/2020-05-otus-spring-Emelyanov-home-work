@@ -2,9 +2,11 @@ package ru.otus.hw02.core.gui;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import ru.otus.hw02.api.gui.InteractiveInterface;
 import ru.otus.hw02.api.gui.InteractiveInterfaceException;
-import ru.otus.hw02.api.reader.DataReader;
+import ru.otus.hw02.api.question.Question;
+import ru.otus.hw02.api.service.QuestionsService;
 
 
 import java.io.*;
@@ -12,29 +14,32 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class InteractiveInterfaceConsole implements InteractiveInterface {
   private static final Logger logger = LoggerFactory.getLogger(InteractiveInterfaceConsole.class);
+
   private final BufferedReader standardInput;
   private final PrintStream standardOutput;
+  private final QuestionsService questionsService;
 
   private final Map<String, Integer> results = new HashMap<>();
   private String name = null;
-  private final DataReader dataReader;
 
-  public InteractiveInterfaceConsole(DataReader dataReader, InputStream interfaceInputStream, OutputStream interfaceOutputStream) {
-    if (dataReader == null) throw new IllegalArgumentException("Argument dataReader is null");
+
+  public InteractiveInterfaceConsole(QuestionsService questionsService, InputStream interfaceInputStream, OutputStream interfaceOutputStream) {
+    if (questionsService == null) throw new IllegalArgumentException("Argument questionsService is null");
     if (interfaceInputStream == null) throw new IllegalArgumentException("Argument interfaceInputStream is null");
     if (interfaceOutputStream == null) throw new IllegalArgumentException("Argument interfaceOutputStream is null");
 
-    this.dataReader = dataReader;
+    this.questionsService = questionsService;
     this.standardInput = new BufferedReader(new InputStreamReader(interfaceInputStream));
     this.standardOutput = new PrintStream(interfaceOutputStream);
   }
 
   @Override
   public void startTest() {
-    for (Map.Entry<String, List<String>> entry : dataReader.getData().entrySet()) {
-      Map.Entry<String, Integer> stringIntegerEntry = processingOneQuestion(entry.getKey(), entry.getValue());
+    for (Question question : questionsService.getQuestions()) {
+      Map.Entry<String, Integer> stringIntegerEntry = processingOneQuestion(question.getQuestion(), question.getVariantsToAnswer());
       results.put(stringIntegerEntry.getKey(), stringIntegerEntry.getValue());
     }
   }
@@ -62,6 +67,11 @@ public class InteractiveInterfaceConsole implements InteractiveInterface {
       standardOutput.print("Please try again enter your name");
     }
     standardOutput.println("Hello " + name);
+  }
+
+  @Override
+  public void printResultToTest(int grade) {
+    standardOutput.println(String.format("%s test finish with grade:%s", getName(), grade));
   }
 
   @Override
@@ -96,5 +106,6 @@ public class InteractiveInterfaceConsole implements InteractiveInterface {
   private boolean between(int i, int maxValueInclusive) {
     return i >= 1 && i <= maxValueInclusive;
   }
+
 
 }

@@ -1,13 +1,10 @@
 package ru.otus.hw02.api.reader;
 
-import java.io.Closeable;
 import java.util.List;
 import java.util.Map;
 
-public interface DataReader extends Closeable {
-  Map<String, List<String>> getData();
+public interface DataReader {
 
-  void setFile(String csvFile);
+  Map<String,List<String>> getData(String csvFile);
 
-  void close();
 }

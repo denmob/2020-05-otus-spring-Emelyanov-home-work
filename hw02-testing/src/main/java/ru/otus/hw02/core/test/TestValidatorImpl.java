@@ -1,7 +1,8 @@
 package ru.otus.hw02.core.test;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import ru.otus.hw02.api.reader.DataReader;
 import ru.otus.hw02.api.test.TestValidator;
 
@@ -9,13 +10,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
+@Service
 public class TestValidatorImpl implements TestValidator {
 
   private final Map<String, Integer> validAnswers;
 
-  public TestValidatorImpl(@Qualifier("csvReaderAnswer") DataReader csvReaderAnswer) {
-    validAnswers = convertMap(csvReaderAnswer.getData());
+  public TestValidatorImpl(@Value("${test.answers}") String questionsFile, DataReader csvReaderAnswer) {
+    validAnswers = convertMap(csvReaderAnswer.getData(questionsFile));
   }
 
   @Override

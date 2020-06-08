@@ -7,28 +7,32 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.otus.hw02.api.gui.InteractiveInterface;
 import ru.otus.hw02.api.gui.InteractiveInterfaceException;
-import ru.otus.hw02.api.reader.DataReader;
+import ru.otus.hw02.api.question.Question;
+import ru.otus.hw02.api.service.QuestionsService;
 import ru.otus.hw02.core.gui.InteractiveInterfaceConsole;
-import ru.otus.hw02.core.reader.CsvReader;
+import ru.otus.hw02.core.question.QuestionImpl;
+import ru.otus.hw02.core.service.QuestionsServiceImpl;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 class InteractiveInterfaceConsoleTest {
 
   private static final Logger logger = LoggerFactory.getLogger(InteractiveInterfaceConsoleTest.class);
 
   private InteractiveInterface interactiveInterface;
-  private final DataReader csvReaderQuestion = new CsvReader("question.csv", ",");
+
   private InputStream interfaceInputStream;
   private OutputStream interfaceOutputStream;
 
+  private QuestionsService questionsService;
+
   @BeforeEach
   void beforeEach() {
+    questionsService = mock(QuestionsServiceImpl.class);
     interfaceOutputStream = new ByteArrayOutputStream(1024);
   }
 
@@ -43,7 +47,7 @@ class InteractiveInterfaceConsoleTest {
   @DisplayName("create with null streams")
   void interactiveInterfaceCreateWithNullStreams() {
     String message = assertThrows(IllegalArgumentException.class, () ->
-        new InteractiveInterfaceConsole(csvReaderQuestion, null, null)).getMessage();
+        new InteractiveInterfaceConsole(questionsService, null, null)).getMessage();
     assertEquals("Argument interfaceInputStream is null", message);
   }
 
@@ -51,7 +55,7 @@ class InteractiveInterfaceConsoleTest {
   @DisplayName("create with null outputStream")
   void interactiveInterfaceCreateWithNullOutputStream() {
     String message = assertThrows(IllegalArgumentException.class, () ->
-        new InteractiveInterfaceConsole(csvReaderQuestion, new ByteArrayInputStream("expected".getBytes()), null)).getMessage();
+        new InteractiveInterfaceConsole(questionsService, new ByteArrayInputStream("expected".getBytes()), null)).getMessage();
     assertEquals("Argument interfaceOutputStream is null", message);
   }
 
@@ -60,7 +64,7 @@ class InteractiveInterfaceConsoleTest {
   void welcomeValid() {
     String expected = "Den";
     interfaceInputStream = new ByteArrayInputStream(expected.getBytes());
-    interactiveInterface = new InteractiveInterfaceConsole(csvReaderQuestion, interfaceInputStream, interfaceOutputStream);
+    interactiveInterface = new InteractiveInterfaceConsole(questionsService, interfaceInputStream, interfaceOutputStream);
 
     interactiveInterface.welcome();
 
@@ -73,7 +77,7 @@ class InteractiveInterfaceConsoleTest {
   @DisplayName("test with empty input")
   void welcomeEmpty() {
     interfaceInputStream = new ByteArrayInputStream("".getBytes());
-    interactiveInterface = new InteractiveInterfaceConsole(csvReaderQuestion, interfaceInputStream, interfaceOutputStream);
+    interactiveInterface = new InteractiveInterfaceConsole(questionsService, interfaceInputStream, interfaceOutputStream);
     assertThrows(InteractiveInterfaceException.class, () -> interactiveInterface.welcome());
   }
 
@@ -90,7 +94,7 @@ class InteractiveInterfaceConsoleTest {
 
     String answer = "5";
     interfaceInputStream = new ByteArrayInputStream(answer.getBytes());
-    interactiveInterface = new InteractiveInterfaceConsole(csvReaderQuestion, interfaceInputStream, interfaceOutputStream);
+    interactiveInterface = new InteractiveInterfaceConsole(questionsService, interfaceInputStream, interfaceOutputStream);
 
     Map.Entry<String, Integer> result = interactiveInterface.processingOneQuestion(question, answers);
     assertEquals(question, result.getKey());
@@ -101,7 +105,7 @@ class InteractiveInterfaceConsoleTest {
   @DisplayName("processing one empty question")
   void processingOneQuestionWithEmptyQuestion() {
     interfaceInputStream = new ByteArrayInputStream("answer".getBytes());
-    interactiveInterface = new InteractiveInterfaceConsole(csvReaderQuestion, interfaceInputStream, interfaceOutputStream);
+    interactiveInterface = new InteractiveInterfaceConsole(questionsService, interfaceInputStream, interfaceOutputStream);
     String message = assertThrows(IllegalArgumentException.class, () ->
         interactiveInterface.processingOneQuestion("", new ArrayList<>())).getMessage();
     assertEquals("Argument questions is null or empty", message);
@@ -111,7 +115,7 @@ class InteractiveInterfaceConsoleTest {
   @DisplayName("processing one empty question")
   void processingOneQuestionWithEmptyAnswers() {
     interfaceInputStream = new ByteArrayInputStream("answer".getBytes());
-    interactiveInterface = new InteractiveInterfaceConsole(csvReaderQuestion, interfaceInputStream, interfaceOutputStream);
+    interactiveInterface = new InteractiveInterfaceConsole(questionsService, interfaceInputStream, interfaceOutputStream);
     String message = assertThrows(IllegalArgumentException.class, () ->
         interactiveInterface.processingOneQuestion("question", new ArrayList<>())).getMessage();
     assertEquals("Argument answers is null or empty", message);

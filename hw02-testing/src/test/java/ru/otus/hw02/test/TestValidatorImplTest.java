@@ -17,11 +17,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class TestValidatorImplTest {
 
   private TestValidator testValidator;
-  private DataReader reader = new CsvReader("answer.csv", ",");
+  private DataReader reader = new CsvReader(",");
 
   @BeforeEach
   void before() {
-    testValidator = new TestValidatorImpl(reader);
+    testValidator = new TestValidatorImpl("answers.csv",reader);
   }
 
   @Test

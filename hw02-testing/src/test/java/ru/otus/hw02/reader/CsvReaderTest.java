@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 import ru.otus.hw02.api.reader.DataReader;
 import ru.otus.hw02.core.reader.CsvReader;
 
+import java.util.List;
+import java.util.Map;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -23,44 +26,43 @@ class CsvReaderTest {
   @Test
   @DisplayName("create with questionsEmpty.csv")
   void createCsvReaderValid() {
-    dataReader = new CsvReader("questions.csv", CVS_SPLIT_BY);
+    dataReader = new CsvReader(CVS_SPLIT_BY);
     assertThat(dataReader).isNotNull();
-    assertThat(dataReader.getData()).isNotNull();
+    assertThat(dataReader.getData("questions.csv")).isNotNull();
   }
 
   @Test
-  @DisplayName("create with null")
-  void createCsvReaderNull() {
-    assertThrows(IllegalArgumentException.class, () -> dataReader = new CsvReader(null, CVS_SPLIT_BY));
+  @DisplayName("getData with null filename")
+  void createCsvReaderGetNull() {
+    assertThrows(IllegalArgumentException.class, () -> new CsvReader(CVS_SPLIT_BY).getData(null));
   }
 
   @Test
-  @DisplayName("create with empty")
+  @DisplayName("getData with empty filename")
   void createCsvReaderEmpty() {
-    assertThrows(IllegalArgumentException.class, () -> dataReader = new CsvReader("", CVS_SPLIT_BY));
+    assertThrows(IllegalArgumentException.class, () -> new CsvReader(CVS_SPLIT_BY).getData(""));
   }
 
   @Test
-  @DisplayName("create with random")
-  void createCsvReaderRandom() {
+  @DisplayName("getData with random fileName")
+  void getDataRandomFileName() {
     assertThrows(IllegalStateException.class, () -> {
-      dataReader = new CsvReader("tytry", CVS_SPLIT_BY);
-      dataReader.getData();
+      new CsvReader(CVS_SPLIT_BY).getData("tytytry");
     });
   }
 
   @Test
   @DisplayName("getData with empty csv")
   void getDataEmpty() {
-    dataReader = new CsvReader("questionsEmpty.csv", CVS_SPLIT_BY);
-    assertThat(dataReader.getData()).isEmpty();
+    dataReader = new CsvReader(CVS_SPLIT_BY);
+    assertThat(dataReader.getData("questionsEmpty.csv")).isEmpty();
   }
 
   @Test
   @DisplayName("getData with 5 lines csv")
   void getDataCorrect() {
-    dataReader = new CsvReader("questions.csv", CVS_SPLIT_BY);
-    assertThat(dataReader.getData()).isNotEmpty();
-    assertThat(dataReader.getData()).hasSize(5);
+    Map<String, List<String>> data = new CsvReader(CVS_SPLIT_BY).getData("questions.csv");
+    assertThat(data).isNotEmpty();
+    assertThat(data).hasSize(5);
   }
 }
