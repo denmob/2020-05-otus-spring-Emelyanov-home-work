@@ -18,6 +18,7 @@
 
   <modules>
     <module>hw01-testing</module>
+    <module>hw02-testing</module>
   </modules>
 
   <parent>

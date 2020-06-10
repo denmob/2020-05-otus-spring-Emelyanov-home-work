@@ -5,5 +5,6 @@
 > #java-spring-2020-05
 >
 >* hw01-testing/
+>* hw02-testing/
 
 
