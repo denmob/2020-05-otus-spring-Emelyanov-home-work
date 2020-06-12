@@ -1,0 +1,5 @@
+application:
+  questionsFile: questions.csv
+  answersFile: answers.csv
+  split: ','
+  locale: eu
