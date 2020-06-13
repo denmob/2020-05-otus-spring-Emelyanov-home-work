@@ -1,6 +1,5 @@
 package ru.otus.hw03.impl.service;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.hw03.core.domain.Question;
 import ru.otus.hw03.core.service.FileReaderService;

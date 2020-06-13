@@ -2,13 +2,11 @@ package ru.otus.hw03.impl.service;
 
 import org.springframework.stereotype.Service;
 import ru.otus.hw03.core.domain.Answer;
-import ru.otus.hw03.core.domain.Question;
 import ru.otus.hw03.core.service.FileReaderService;
 import ru.otus.hw03.core.service.TestValidatorService;
 import ru.otus.hw03.impl.configs.YamlProps;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service

@@ -10,8 +10,8 @@ import ru.otus.hw03.impl.configs.YamlProps;
 @EnableConfigurationProperties(YamlProps.class)
 public class Hw03Application {
 
-    public static void main(String[] args) {
-        SpringApplication.run(Hw03Application.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(Hw03Application.class, args);
+  }
 
 }

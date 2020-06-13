@@ -2,6 +2,7 @@ package ru.otus.hw03.impl.service;
 
 import org.springframework.stereotype.Service;
 import ru.otus.hw03.core.service.InputReaderService;
+
 import java.util.Scanner;
 
 
@@ -12,6 +13,6 @@ public class InputReaderServiceImpl implements InputReaderService {
 
   @Override
   public int readAnswer() {
-      return scanner.nextInt();
+    return scanner.nextInt();
   }
 }

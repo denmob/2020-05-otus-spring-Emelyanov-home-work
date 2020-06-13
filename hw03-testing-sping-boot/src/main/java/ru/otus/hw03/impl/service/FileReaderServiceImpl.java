@@ -1,9 +1,7 @@
 package ru.otus.hw03.impl.service;
 
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.otus.hw03.core.service.FileReaderService;
 
@@ -13,9 +11,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
 public class FileReaderServiceImpl implements FileReaderService {
 
   @SneakyThrows
