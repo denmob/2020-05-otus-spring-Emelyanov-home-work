@@ -4,7 +4,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.otus.hw03.core.service.FileReaderService;
 
@@ -21,21 +20,21 @@ public class FileReaderServiceImpl implements FileReaderService {
 
   @SneakyThrows
   @Override
-  public List<String> getData(@NonNull String csvFile) {
-    return readCsvFile(getInputStreamFromResourceFile(csvFile));
+  public List<String> getData(@NonNull String file) {
+    return readInputStream(getInputStream(file));
   }
 
-  private InputStream getInputStreamFromResourceFile(@NonNull String csvFile) {
-    InputStream input = this.getClass().getResourceAsStream("/resource/" + csvFile);
+  private InputStream getInputStream(@NonNull String file) {
+    InputStream input = this.getClass().getResourceAsStream("/resource/" + file);
     if (input == null) {
-      input = this.getClass().getClassLoader().getResourceAsStream(csvFile);
+      input = this.getClass().getClassLoader().getResourceAsStream(file);
     }
     return input;
   }
 
-  private List<String> readCsvFile(InputStream csvInputStream) throws IOException {
+  private List<String> readInputStream(InputStream inputStream) throws IOException {
     List<String> stringList = new ArrayList<>();
-    try (BufferedReader br = new BufferedReader(new InputStreamReader(csvInputStream))) {
+    try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
       String line;
       while ((line = br.readLine()) != null) {
         stringList.add(line);

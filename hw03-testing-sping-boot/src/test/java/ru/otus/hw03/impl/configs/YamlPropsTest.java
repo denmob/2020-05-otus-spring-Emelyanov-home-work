@@ -26,7 +26,7 @@ class YamlPropsTest {
 
   @Test
   void getSplit() {
-    assertEquals(",",yamlProps.getSplit());
+    assertEquals(",",yamlProps.getCsvSplit());
   }
 
   @Test

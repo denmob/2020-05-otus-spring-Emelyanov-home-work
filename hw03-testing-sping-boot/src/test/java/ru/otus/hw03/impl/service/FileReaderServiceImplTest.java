@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class FileReaderServiceImplTest {
 
   @Autowired
-  private FileReaderService fileReaderService;
+  private FileReaderServiceImpl fileReaderService;
 
   @Autowired
   private YamlProps yamlProps;

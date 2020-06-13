@@ -1,5 +1,5 @@
 application:
   questionsFile: questions.csv
   answersFile: answers.csv
-  split: ','
+  csvSplit: ','
   locale: ru_RU

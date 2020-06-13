@@ -17,7 +17,7 @@ public class YamlProps {
 
   private String questionsFile;
   private String answersFile;
-  private String split;
+  private String csvSplit;
   private Locale locale;
 
 }

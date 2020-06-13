@@ -3,7 +3,7 @@ package ru.otus.hw03.core.service;
 import ru.otus.hw03.core.domain.Question;
 import ru.otus.hw03.core.domain.Answer;
 
-public interface InteractiveInterface {
+public interface InteractiveInterfaceService {
 
   String getNameStudent();
 
