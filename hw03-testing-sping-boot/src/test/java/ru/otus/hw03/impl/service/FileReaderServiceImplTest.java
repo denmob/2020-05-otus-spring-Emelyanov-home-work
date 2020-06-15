@@ -30,5 +30,4 @@ class FileReaderServiceImplTest {
   void getDataThrow() {
     assertThrows(NullPointerException.class, () -> fileReaderService.getData(null));
   }
-
 }

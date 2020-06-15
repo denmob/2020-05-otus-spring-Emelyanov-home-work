@@ -16,22 +16,22 @@ class YamlPropsTest {
 
   @Test
   void getQuestionsFile() {
-    assertEquals("question_en.csv",yamlProps.getQuestionsFile());
+    assertEquals("question_en.csv", yamlProps.getQuestionsFile());
   }
 
   @Test
   void getAnswersFile() {
-    assertEquals("answer_en.csv",yamlProps.getAnswersFile());
+    assertEquals("answer_en.csv", yamlProps.getAnswersFile());
   }
 
   @Test
   void getSplit() {
-    assertEquals(",",yamlProps.getCsvSplit());
+    assertEquals(",", yamlProps.getCsvSplit());
   }
 
   @Test
   void getLocale() {
-    assertEquals(Locale.forLanguageTag("en"),yamlProps.getLocale());
+    assertEquals(Locale.forLanguageTag("en"), yamlProps.getLocale());
   }
 
 }

@@ -16,5 +16,4 @@ public class Hw03Application {
     ApplicationContext applicationContext = SpringApplication.run(Hw03Application.class, args);
     applicationContext.getBean(TestingServiceImpl.class).startTesting();
   }
-
 }

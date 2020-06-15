@@ -38,5 +38,4 @@ public class FileReaderServiceImpl implements FileReaderService {
       return stringList;
     }
   }
-
 }

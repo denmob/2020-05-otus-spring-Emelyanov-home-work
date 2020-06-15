@@ -27,23 +27,55 @@ public class InteractiveInterfaceServiceImpl implements InteractiveInterfaceServ
 
   @Override
   public String getNameStudent() {
-    var message = messageSource.getMessage("welcome.message", new String[]{}, yamlProps.getLocale());
-    outputPrinterService.printlnMessage(message);
+    outputPrinterService.printlnMessage(createWelcomeMessage());
     return inputReaderService.readName();
   }
 
   @Override
   public Answer processTest(Question question) {
     outputPrinterService.printlnMessage(question.getTitleQuestion());
-    for (String optional : question.getAnswerOptions()) {
-      outputPrinterService.printlnMessage(optional);
+    int rowNumber = 1;
+    for (String option : question.getAnswerOptions()) {
+      outputPrinterService.printlnMessage(rowNumber + ". " + option);
+      rowNumber++;
     }
-    return new Answer(question.getTitleQuestion(), inputReaderService.readAnswer());
+    int answerNum = 0;
+    int tryInput = 0;
+    do {
+      try {
+        answerNum = Integer.parseInt(inputReaderService.readAnswer());
+        if (!checkOptions(answerNum, question.getAnswerOptions().size())) {
+          outputPrinterService.printlnMessage(createErrorMessage());
+          answerNum = 0;
+          tryInput++;
+        }
+      } catch (Exception e) {
+        answerNum = 0;
+        tryInput++;
+        outputPrinterService.printlnMessage(createErrorMessage());
+      }
+    } while ((answerNum == 0) && (tryInput < yamlProps.getTryInputAnswer()));
+    return new Answer(question.getTitleQuestion(), answerNum);
   }
 
   @Override
   public void printResult(Student student) {
-    var message = messageSource.getMessage("print.result.testing", new String[]{student.getName(), String.valueOf(student.getMark())}, yamlProps.getLocale());
-    outputPrinterService.printlnMessage(message);
+    outputPrinterService.printlnMessage(createResultMessage(student));
+  }
+
+  private boolean checkOptions(int answer, int sizeAnswerOptions) {
+    return answer >= 1 && answer <= sizeAnswerOptions;
+  }
+
+  private String createErrorMessage() {
+    return messageSource.getMessage("input.answer.error", new String[]{}, yamlProps.getLocale());
+  }
+
+  private String createWelcomeMessage() {
+    return messageSource.getMessage("welcome.message", new String[]{}, yamlProps.getLocale());
+  }
+
+  private String createResultMessage(Student student) {
+    return messageSource.getMessage("print.result.testing", new String[]{student.getName(), String.valueOf(student.getMark())}, yamlProps.getLocale());
   }
 }

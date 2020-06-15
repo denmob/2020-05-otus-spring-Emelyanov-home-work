@@ -46,20 +46,46 @@ class InteractiveInterfaceServiceImplTest {
 
     String actual = inputReadInteractiveInterfaceService.getNameStudent();
 
-    Assertions.assertEquals(expected,actual);
+    Assertions.assertEquals(expected, actual);
   }
 
   @Test
-  @DisplayName("check processTest with question_en.csv and answer option 5")
-  void processTest() {
+  @DisplayName("check processTest answer option 5")
+  void processTestValidOption() {
     Question question = questionsService.getQuestions().get(0);
-    Mockito.when(inputReaderService.readAnswer()).thenReturn(5);
+    Mockito.when(inputReaderService.readAnswer()).thenReturn("5");
 
     Answer answer = inputReadInteractiveInterfaceService.processTest(question);
 
     verify(outputPrinterService, times(6)).printlnMessage(anyString());
-    Assertions.assertEquals(question.getTitleQuestion(),answer.getTitleQuestion());
-    Assertions.assertEquals(5,answer.getAnswerOption());
+    Assertions.assertEquals(question.getTitleQuestion(), answer.getTitleQuestion());
+    Assertions.assertEquals(5, answer.getAnswerOption());
+  }
+
+  @Test
+  @DisplayName("check processTest answer option 6 (no valid)")
+  void processTestIncorrectOption() {
+    Question question = questionsService.getQuestions().get(0);
+    Mockito.when(inputReaderService.readAnswer()).thenReturn("6");
+
+    Answer answer = inputReadInteractiveInterfaceService.processTest(question);
+
+    verify(outputPrinterService, times(9)).printlnMessage(anyString());
+    Assertions.assertEquals(question.getTitleQuestion(), answer.getTitleQuestion());
+    Assertions.assertEquals(0, answer.getAnswerOption());
+  }
+
+  @Test
+  @DisplayName("check processTest answer invalid option char")
+  void processTestIncorrectOptionWithThrow() {
+    Question question = questionsService.getQuestions().get(0);
+    Mockito.when(inputReaderService.readAnswer()).thenReturn("tt");
+
+    Answer answer = inputReadInteractiveInterfaceService.processTest(question);
+
+    verify(outputPrinterService, times(9)).printlnMessage(anyString());
+    Assertions.assertEquals(question.getTitleQuestion(), answer.getTitleQuestion());
+    Assertions.assertEquals(0, answer.getAnswerOption());
   }
 
   @Test

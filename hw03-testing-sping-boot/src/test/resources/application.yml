@@ -3,3 +3,4 @@ application:
   answersFile: answer_{}.csv
   csvSplit: ','
   locale: en
+  tryInputAnswer: 3

@@ -58,5 +58,4 @@ class TestValidatorServiceImplTest {
     answers.add(answer);
     assertEquals(0, testValidatorService.getMarkForQuestion(answers));
   }
-
 }

@@ -12,13 +12,12 @@ public class InputReaderServiceImpl implements InputReaderService {
   private final Scanner scanner = new Scanner(System.in);
 
   @Override
-  public int readAnswer() {
-    return scanner.nextInt();
+  public String readAnswer() {
+    return scanner.next();
   }
 
   @Override
   public String readName() {
     return scanner.nextLine();
   }
-
 }

@@ -18,16 +18,7 @@ class InputReaderServiceImplTest {
     System.setIn(new ByteArrayInputStream("1".getBytes()));
     inputReaderServiceImpl = new InputReaderServiceImpl();
 
-    Assertions.assertEquals(1, inputReaderServiceImpl.readAnswer());
-  }
-
-  @Test
-  @DisplayName("readAnswer return mock scanner with t")
-  void readAnswerInputChar() {
-    System.setIn(new ByteArrayInputStream("t".getBytes()));
-    inputReaderServiceImpl = new InputReaderServiceImpl();
-
-    assertThrows(InputMismatchException.class, () -> inputReaderServiceImpl.readAnswer());
+    Assertions.assertEquals("1", inputReaderServiceImpl.readAnswer());
   }
 
   @Test
@@ -39,5 +30,4 @@ class InputReaderServiceImplTest {
 
     Assertions.assertEquals(expected, inputReaderServiceImpl.readName());
   }
-
 }
