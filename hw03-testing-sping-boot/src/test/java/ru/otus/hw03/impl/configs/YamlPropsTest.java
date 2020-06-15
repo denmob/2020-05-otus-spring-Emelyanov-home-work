@@ -16,12 +16,12 @@ class YamlPropsTest {
 
   @Test
   void getQuestionsFile() {
-    assertEquals("questions.csv",yamlProps.getQuestionsFile());
+    assertEquals("question_en.csv",yamlProps.getQuestionsFile());
   }
 
   @Test
   void getAnswersFile() {
-    assertEquals("answers.csv",yamlProps.getAnswersFile());
+    assertEquals("answer_en.csv",yamlProps.getAnswersFile());
   }
 
   @Test
@@ -31,7 +31,7 @@ class YamlPropsTest {
 
   @Test
   void getLocale() {
-    assertEquals(Locale.forLanguageTag("eu"),yamlProps.getLocale());
+    assertEquals(Locale.forLanguageTag("en"),yamlProps.getLocale());
   }
 
 }

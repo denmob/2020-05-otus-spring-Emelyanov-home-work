@@ -26,7 +26,18 @@ class InputReaderServiceImplTest {
   void readAnswerInputChar() {
     System.setIn(new ByteArrayInputStream("t".getBytes()));
     inputReaderServiceImpl = new InputReaderServiceImpl();
+
     assertThrows(InputMismatchException.class, () -> inputReaderServiceImpl.readAnswer());
+  }
+
+  @Test
+  @DisplayName("read input line with mock scanner")
+  void readName() {
+    String expected = "Den";
+    System.setIn(new ByteArrayInputStream(expected.getBytes()));
+    inputReaderServiceImpl = new InputReaderServiceImpl();
+
+    Assertions.assertEquals(expected, inputReaderServiceImpl.readName());
   }
 
 }

@@ -1,16 +1,12 @@
 package ru.otus.hw03.impl.configs;
 
 import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.Locale;
 
 @Getter
-@Setter
 @Component
 @ConfigurationProperties(prefix = "application")
 public class YamlProps {
@@ -20,4 +16,19 @@ public class YamlProps {
   private String csvSplit;
   private Locale locale;
 
+  public void setQuestionsFile(String questionsFile) {
+    this.questionsFile = questionsFile.replace("{}",locale.toString());
+  }
+
+  public void setAnswersFile(String answersFile) {
+    this.answersFile = answersFile.replace("{}",locale.toString());
+  }
+
+  public void setCsvSplit(String csvSplit) {
+    this.csvSplit = csvSplit;
+  }
+
+  public void setLocale(Locale locale) {
+    this.locale = locale;
+  }
 }

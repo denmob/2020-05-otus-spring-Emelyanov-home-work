@@ -2,12 +2,13 @@ package ru.otus.hw03.core.service;
 
 import ru.otus.hw03.core.domain.Question;
 import ru.otus.hw03.core.domain.Answer;
+import ru.otus.hw03.core.domain.Student;
 
 public interface InteractiveInterfaceService {
 
   String getNameStudent();
 
-  Integer processTest(Question question, Answer answer);
+  Answer processTest(Question question);
 
-  Integer getMark();
+  void printResult(Student student);
 }

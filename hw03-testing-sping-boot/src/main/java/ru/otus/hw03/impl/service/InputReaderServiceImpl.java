@@ -15,4 +15,10 @@ public class InputReaderServiceImpl implements InputReaderService {
   public int readAnswer() {
     return scanner.nextInt();
   }
+
+  @Override
+  public String readName() {
+    return scanner.nextLine();
+  }
+
 }

@@ -3,7 +3,6 @@ package ru.otus.hw03.impl.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.otus.hw03.core.service.FileReaderService;
 import ru.otus.hw03.impl.configs.YamlProps;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,6 +24,11 @@ class FileReaderServiceImplTest {
   @Test
   void getDataNotEmpty() {
     assertEquals(5, fileReaderService.getData(yamlProps.getAnswersFile()).size());
+  }
+
+  @Test
+  void getDataThrow() {
+    assertThrows(NullPointerException.class, () -> fileReaderService.getData(null));
   }
 
 }

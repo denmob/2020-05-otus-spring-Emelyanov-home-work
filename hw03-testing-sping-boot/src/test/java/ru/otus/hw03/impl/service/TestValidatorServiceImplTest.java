@@ -43,7 +43,6 @@ class TestValidatorServiceImplTest {
     assertEquals(4, testValidatorService.getMarkForQuestion(answers));
   }
 
-
   @Test
   @DisplayName("getMarkForQuestion with invalid title answer")
   void getMarkForQuestionInvalidTitleAnswer() {

@@ -4,7 +4,6 @@ import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.otus.hw03.core.service.FileReaderService;
 import ru.otus.hw03.core.service.QuestionsService;
 import ru.otus.hw03.impl.configs.YamlProps;
 
@@ -30,18 +29,19 @@ class QuestionsServiceImplTest {
   @Test
   @DisplayName("getQuestions is not empty")
   void getQuestionsNotEmpty() {
-    given(yamlProps.getQuestionsFile()).willReturn("question.csv");
+    given(yamlProps.getQuestionsFile()).willReturn("question_en.csv");
     given(yamlProps.getCsvSplit()).willReturn("/");
     questionsService = new QuestionsServiceImpl(yamlProps, fileReaderService);
     Assertions.assertFalse(questionsService.getQuestions().isEmpty());
   }
 
   @Test
-  @DisplayName("getQuestions return one question")
+  @DisplayName("getQuestions return one question and five options")
   void getQuestionsOneQuestion() {
-    given(yamlProps.getQuestionsFile()).willReturn("question.csv");
-    given(yamlProps.getCsvSplit()).willReturn("/");
+    given(yamlProps.getQuestionsFile()).willReturn("question_en.csv");
+    given(yamlProps.getCsvSplit()).willReturn(",");
     questionsService = new QuestionsServiceImpl(yamlProps, fileReaderService);
     Assertions.assertEquals(1, questionsService.getQuestions().size());
+    Assertions.assertEquals(5, questionsService.getQuestions().get(0).getAnswerOptions().size());
   }
 }
