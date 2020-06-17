@@ -23,16 +23,16 @@ public class QuestionsServiceImpl implements QuestionsService {
     createQuestions();
   }
 
+  @Override
+  public List<Question> getQuestions() {
+    return questions;
+  }
+
   private void createQuestions() {
     List<String> data = fileReaderService.getData(yamlProps.getQuestionsFile());
     for (String line : data) {
       String[] strings = line.split(yamlProps.getCsvSplit());
       questions.add(new Question(strings[0].trim(), Arrays.asList(strings).subList(1, strings.length)));
     }
-  }
-
-  @Override
-  public List<Question> getQuestions() {
-    return questions;
   }
 }

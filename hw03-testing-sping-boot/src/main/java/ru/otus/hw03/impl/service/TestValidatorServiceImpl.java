@@ -22,14 +22,6 @@ public class TestValidatorServiceImpl implements TestValidatorService {
     createValidAnswers();
   }
 
-  private void createValidAnswers() {
-    List<String> data = fileReaderService.getData(yamlProps.getAnswersFile());
-    for (String line : data) {
-      String[] strings = line.split(yamlProps.getCsvSplit());
-      answers.add(new Answer(strings[0].trim(), Integer.parseInt(strings[1].trim())));
-    }
-  }
-
   @Override
   public int getMarkForQuestion(List<Answer> answer) {
     int mark = 0;
@@ -39,5 +31,13 @@ public class TestValidatorServiceImpl implements TestValidatorService {
       }
     }
     return mark;
+  }
+
+  private void createValidAnswers() {
+    List<String> data = fileReaderService.getData(yamlProps.getAnswersFile());
+    for (String line : data) {
+      String[] strings = line.split(yamlProps.getCsvSplit());
+      answers.add(new Answer(strings[0].trim(), Integer.parseInt(strings[1].trim())));
+    }
   }
 }

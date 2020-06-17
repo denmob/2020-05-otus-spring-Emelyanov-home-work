@@ -4,9 +4,6 @@ import org.junit.jupiter.api.*;
 import ru.otus.hw03.core.service.InputReaderService;
 
 import java.io.ByteArrayInputStream;
-import java.util.InputMismatchException;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class InputReaderServiceImplTest {
 
