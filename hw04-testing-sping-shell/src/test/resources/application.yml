@@ -1,0 +1,11 @@
+application:
+  questionsFile: question_{}.csv
+  answersFile: answer_{}.csv
+  csvSplit: ','
+  locale: en
+  tryInputAnswer: 3
+
+spring:
+  shell:
+    interactive:
+      enabled: false
