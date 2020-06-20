@@ -11,6 +11,6 @@ public class Student {
 
   private final @NonNull String name;
   private List<Answer> answers = new ArrayList<>();
-  private Integer mark;
+  private int mark;
 
 }
