@@ -4,7 +4,7 @@ import ru.otus.hw04.core.domain.Student;
 
 public interface ReplyMessageService {
 
-  String getHelloMessage(String userName);
+  String getHelloMessage(String studentName);
 
   String getWelcomeMessage();
 

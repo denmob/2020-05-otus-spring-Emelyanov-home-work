@@ -17,7 +17,7 @@ public class YamlProps {
   private String answersFile;
   private String csvSplit;
   private Locale locale;
-  private Integer tryInputAnswer;
+  private int tryInputAnswer;
 
   public void setQuestionsFile(String questionsFile) {
     this.questionsFile = questionsFile.replace("{}", locale.toString());

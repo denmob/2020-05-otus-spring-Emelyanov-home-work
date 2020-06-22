@@ -3,14 +3,16 @@ package ru.otus.hw04.impl.service;
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.hw04.core.service.QuestionsService;
 import ru.otus.hw04.impl.configs.YamlProps;
 
 import static org.mockito.BDDMockito.given;
 
-
-@SpringBootTest
+@EnableConfigurationProperties(YamlProps.class)
+@SpringBootTest(classes = {FileReaderServiceImpl.class,YamlProps.class,QuestionsServiceImpl.class})
 class QuestionsServiceImplTest {
 
   @Autowired
@@ -19,7 +21,7 @@ class QuestionsServiceImplTest {
   @Mock
   public YamlProps yamlProps;
 
-  private QuestionsService questionsService;
+  private QuestionsServiceImpl questionsService;
 
   @BeforeEach
   void beforeEach() {
@@ -43,5 +45,13 @@ class QuestionsServiceImplTest {
     questionsService = new QuestionsServiceImpl(yamlProps, fileReaderService);
     Assertions.assertEquals(1, questionsService.getQuestions().size());
     Assertions.assertEquals(5, questionsService.getQuestions().get(0).getAnswerOptions().size());
+  }
+
+  @Test
+  void getQuestions() {
+    given(yamlProps.getQuestionsFile()).willReturn("question_en.csv");
+    given(yamlProps.getCsvSplit()).willReturn(",");
+    questionsService = new QuestionsServiceImpl(yamlProps, fileReaderService);
+    Assertions.assertEquals(1, questionsService.getQuestions().size());
   }
 }

@@ -7,16 +7,16 @@ import ru.otus.hw04.core.domain.Student;
 import ru.otus.hw04.core.service.ReplyMessageService;
 import ru.otus.hw04.impl.configs.YamlProps;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class ReplyMessageServiceImpl implements ReplyMessageService {
 
   private final YamlProps yamlProps;
   private final MessageSource messageSource;
 
   @Override
-  public String getHelloMessage(String userName) {
-    return messageSource.getMessage("shell.hello.message", new String[]{userName}, yamlProps.getLocale());
+  public String getHelloMessage(String studentName) {
+    return messageSource.getMessage("shell.hello.message", new String[]{studentName}, yamlProps.getLocale());
   }
 
   @Override

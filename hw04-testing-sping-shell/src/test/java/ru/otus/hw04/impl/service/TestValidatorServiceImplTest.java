@@ -4,15 +4,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.otus.hw04.core.domain.Answer;
+import ru.otus.hw04.core.service.FileReaderService;
+import ru.otus.hw04.impl.configs.YamlProps;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@EnableConfigurationProperties(YamlProps.class)
+@SpringBootTest(classes = {TestValidatorServiceImpl.class, YamlProps.class, FileReaderServiceImpl.class})
 class TestValidatorServiceImplTest {
 
   @Autowired

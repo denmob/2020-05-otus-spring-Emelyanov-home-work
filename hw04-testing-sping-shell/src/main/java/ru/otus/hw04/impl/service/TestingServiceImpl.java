@@ -1,64 +1,66 @@
 package ru.otus.hw04.impl.service;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.hw04.core.domain.Answer;
 import ru.otus.hw04.core.domain.Question;
 import ru.otus.hw04.core.domain.Student;
 import ru.otus.hw04.core.service.*;
-import ru.otus.hw04.impl.configs.YamlProps;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class TestingServiceImpl implements TestingService {
 
   private final QuestionsService questionsService;
   private final TestValidatorService testValidatorService;
-  private final ReplyMessageService replyMessageService;
-  private final OutputPrinterService outputPrinterService;
-  private final YamlProps yamlProps;
+  private final PrintService consolePrintService;
 
   private List<Question> questions;
-  private String studentName;
   private Student student;
   private int countProcessedQuestion = 0;
+  private Question actualQuestion;
 
-  @Override
-  public String getWelcomeMessage() {
-    return replyMessageService.getWelcomeMessage();
+  public TestingServiceImpl(QuestionsService questionsService, TestValidatorService testValidatorService, PrintService consolePrintService) {
+    this.questionsService = questionsService;
+    this.testValidatorService = testValidatorService;
+    this.consolePrintService = consolePrintService;
+    this.consolePrintService.printWelcomeMessage();
   }
 
   @Override
-  public String getHelloMessage(String studentName) {
-    this.studentName = studentName;
-    return replyMessageService.getHelloMessage(studentName);
+  public void createStudent(String studentName) {
+    this.student = new Student(studentName);
+    consolePrintService.printHelloMessage(student.getName());
   }
 
   @Override
   public void startTesting() {
-    this.student = new Student(studentName);
-    this.questions = questionsService.getQuestions();
-    nextQuestion();
-  }
-
-  @Override
-  public void setAnswer(String answerString) {
-    int answerOption = parseAndCheckAnswer(answerString);
-    if (answerOption > 0) {
-      Answer answer = new Answer(questions.get(countProcessedQuestion).getTitleQuestion(), answerOption);
-      student.getAnswers().add(answer);
-      countProcessedQuestion++;
+    if (this.student != null) {
+      this.questions = questionsService.getQuestions();
       nextQuestion();
-    } else {
-      outputPrinterService.printlnMessage(replyMessageService.getErrorMessage());
     }
   }
 
   @Override
-  public String printResult() {
-    return replyMessageService.getResultMessage(student);
+  public boolean setAnswer(String answerString) {
+    if (this.student != null) {
+      int answerOption = userInputValidation(answerString);
+      if (answerOption > 0) {
+        Answer answer = new Answer(actualQuestion.getTitleQuestion(), answerOption);
+        student.getAnswers().add(answer);
+        countProcessedQuestion++;
+        nextQuestion();
+        return true;
+      } else {
+        consolePrintService.printErrorMessage();
+      }
+    }
+    return false;
+  }
+
+  @Override
+  public void printResult() {
+    consolePrintService.printResult(student);
   }
 
   @Override
@@ -69,31 +71,38 @@ public class TestingServiceImpl implements TestingService {
 
   @Override
   public boolean isStartedTesting() {
-    return (student!=null);
+    return (student != null);
   }
 
   @Override
   public boolean isCanStartTesting() {
-    return (countProcessedQuestion == 0) && (studentName != null);
+    return (countProcessedQuestion == 0) && (student != null);
   }
 
-  private int parseAndCheckAnswer(String answer) {
-    int answerNum;
-    int tryInput = 0;
-    do {
-      try {
-        if (!checkOptions(Integer.parseInt(answer), questions.size())) {
-          answerNum = 0;
-          tryInput++;
-        } else {
-          answerNum = Integer.parseInt(answer);
-        }
-      } catch (Exception e) {
-        answerNum = 0;
-        tryInput++;
+  private void nextQuestion() {
+    if (!isFinishTesting()) {
+      actualQuestion = questions.get(countProcessedQuestion);
+      consolePrintService.printQuestion(actualQuestion);
+      consolePrintService.printBeforeAnswerMessage();
+    } else {
+      if (student.getMark() == 0) {
+        student.setMark(testValidatorService.getMarkForQuestion(student.getAnswers()));
       }
+      consolePrintService.printTestingFinishMessage();
     }
-    while ((answerNum == 0) && (tryInput < yamlProps.getTryInputAnswer()));
+  }
+
+  private int userInputValidation(String answer) {
+    int answerNum;
+    try {
+      if (!checkOptions(Integer.parseInt(answer), questions.size())) {
+        answerNum = 0;
+      } else {
+        answerNum = Integer.parseInt(answer);
+      }
+    } catch (Exception e) {
+      answerNum = 0;
+    }
     return answerNum;
   }
 
@@ -101,26 +110,5 @@ public class TestingServiceImpl implements TestingService {
     return answer >= 1 && answer <= sizeAnswerOptions;
   }
 
-  private void nextQuestion() {
-    if (!isFinishTesting()) {
-      Question question = questions.get(countProcessedQuestion);
-      printQuestion(question);
-      outputPrinterService.printlnMessage(replyMessageService.getBeforeAnswerMessage());
-    } else {
-      if (student.getMark() == 0) {
-        student.setMark(testValidatorService.getMarkForQuestion(student.getAnswers()));
-      }
-      outputPrinterService.printlnMessage(replyMessageService.getTestingFinishMessage());
-    }
-  }
-
-  private void printQuestion(Question question) {
-    outputPrinterService.printlnMessage(question.getTitleQuestion());
-    int rowNumber = 1;
-    for (String option : question.getAnswerOptions()) {
-      outputPrinterService.printlnMessage(rowNumber + ". " + option);
-      rowNumber++;
-    }
-  }
 
 }

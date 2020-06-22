@@ -2,13 +2,15 @@ package ru.otus.hw04.impl.configs;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@SpringBootTest(classes = {YamlProps.class})
+@EnableConfigurationProperties(YamlProps.class)
 class YamlPropsTest {
 
   @Autowired
@@ -34,4 +36,8 @@ class YamlPropsTest {
     assertEquals(Locale.forLanguageTag("en"), yamlProps.getLocale());
   }
 
+  @Test
+  void getTryInputAnswer() {
+    assertEquals(3, yamlProps.getTryInputAnswer());
+  }
 }
