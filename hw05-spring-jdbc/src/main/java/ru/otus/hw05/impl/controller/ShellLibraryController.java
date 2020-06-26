@@ -5,8 +5,10 @@ import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellMethodAvailability;
+import org.springframework.stereotype.Controller;
 import ru.otus.hw05.core.controller.LibraryController;
 
+@Controller
 @ShellComponent
 @RequiredArgsConstructor
 public class ShellLibraryController implements LibraryController {
@@ -19,7 +21,7 @@ public class ShellLibraryController implements LibraryController {
   }
 
   Availability isAvailable() {
-    return true ? Availability.available() : Availability.unavailable("");
+    return true ? Availability.available() : Availability.unavailable("?");
   }
 
 }
