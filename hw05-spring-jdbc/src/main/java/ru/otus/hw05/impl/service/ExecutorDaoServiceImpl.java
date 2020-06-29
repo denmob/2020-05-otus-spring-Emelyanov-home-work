@@ -22,8 +22,8 @@ public class ExecutorDaoServiceImpl implements ExecutorDaoService {
   @Override
   public boolean insertBook(@NonNull Book book) {
     if (authorDaoJdbc.getById(book.getAuthorId()) != null && genreDaoJdbc.getById(book.getGenreId()) != null) {
-      if( book.getId()==0L) {
-        book.setId(bookDaoJdbc.count()+1L);
+      if (book.getId() == 0L) {
+        book.setId(bookDaoJdbc.count() + 1L);
       }
       bookDaoJdbc.insert(book);
       return true;
@@ -42,6 +42,9 @@ public class ExecutorDaoServiceImpl implements ExecutorDaoService {
 
   @Override
   public boolean insertAuthor(@NonNull Author author) {
+    if (author.getId() == 0L) {
+      author.setId(authorDaoJdbc.count() + 1L);
+    }
     authorDaoJdbc.insert(author);
     return true;
   }
@@ -57,6 +60,9 @@ public class ExecutorDaoServiceImpl implements ExecutorDaoService {
 
   @Override
   public boolean insertGenre(@NonNull Genre genre) {
+    if (genre.getId() == 0L) {
+      genre.setId(genreDaoJdbc.count() + 1L);
+    }
     genreDaoJdbc.insert(genre);
     return true;
   }

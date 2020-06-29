@@ -63,8 +63,8 @@ public class BookDaoJdbc implements BookDao {
     @Override
     public Book mapRow(ResultSet resultSet, int i) throws SQLException {
       long id = resultSet.getLong("id");
-      Long authorId = resultSet.getLong("author_id");
-      Long genreId = resultSet.getLong("genre_id");
+      long authorId = resultSet.getLong("author_id");
+      long genreId = resultSet.getLong("genre_id");
       String title = resultSet.getString("title");
       Date date = resultSet.getDate("date");
       return new Book(id, authorId, genreId, title, date);
