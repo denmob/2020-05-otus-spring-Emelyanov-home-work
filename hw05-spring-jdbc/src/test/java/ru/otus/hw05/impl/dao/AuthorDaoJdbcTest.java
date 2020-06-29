@@ -1,7 +1,6 @@
 package ru.otus.hw05.impl.dao;
 
 import lombok.SneakyThrows;
-import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

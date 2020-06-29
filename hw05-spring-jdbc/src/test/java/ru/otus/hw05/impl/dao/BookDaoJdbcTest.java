@@ -8,7 +8,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
 import ru.otus.hw05.core.domain.Book;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
