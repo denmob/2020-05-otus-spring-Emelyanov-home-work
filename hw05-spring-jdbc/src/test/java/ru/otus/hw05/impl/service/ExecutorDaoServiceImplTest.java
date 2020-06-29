@@ -40,7 +40,7 @@ class ExecutorDaoServiceImplTest {
   @SneakyThrows
   @Test
   @DisplayName("found AuthorId and GenreId for insert book")
-  void insertBook() {
+  void insertBookWithId() {
     SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
     Book book = new Book(4L, 1L, 1L, "TestBook", sf.parse("2020-06-29"));
 
@@ -49,7 +49,23 @@ class ExecutorDaoServiceImplTest {
     Mockito.doNothing().when(bookDaoJdbc).insert(book);
 
     Assertions.assertTrue(executorDaoService.insertBook(book));
+    Assertions.assertEquals(4L, book.getId());
+    Mockito.verify(bookDaoJdbc, Mockito.times(1)).insert(book);
+  }
 
+  @SneakyThrows
+  @Test
+  @DisplayName("found AuthorId and GenreId for insert book")
+  void insertBookWithoutId() {
+    SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+    Book book = new Book(0L, 1L, 1L, "TestBook", sf.parse("2020-06-29"));
+
+    Mockito.when(authorDaoJdbc.getById(book.getAuthorId())).thenReturn(new Author());
+    Mockito.when(genreDaoJdbc.getById(book.getGenreId())).thenReturn(new Genre());
+    Mockito.doNothing().when(bookDaoJdbc).insert(book);
+
+    Assertions.assertTrue(executorDaoService.insertBook(book));
+    Assertions.assertEquals(1L, book.getId());
     Mockito.verify(bookDaoJdbc, Mockito.times(1)).insert(book);
   }
 

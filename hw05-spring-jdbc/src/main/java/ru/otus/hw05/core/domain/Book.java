@@ -9,9 +9,9 @@ import java.util.Date;
 @AllArgsConstructor
 public class Book {
 
-  private @NonNull Long id;
-  private @NonNull Long authorId;
-  private @NonNull Long genreId;
+  private long id;
+  private long authorId;
+  private long genreId;
   private @NonNull String title;
   private @NonNull Date date;
 

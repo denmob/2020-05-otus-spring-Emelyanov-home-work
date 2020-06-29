@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 public class Genre {
 
-  private @NonNull Long id;
+  private long id;
   private @NonNull String name;
 
 }

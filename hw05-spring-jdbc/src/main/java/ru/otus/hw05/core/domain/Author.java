@@ -9,7 +9,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class Author {
 
-  private @NonNull Long id;
+  private long id;
   private @NonNull String firstName;
   private @NonNull String lastName;
   private @NonNull Date birthday;

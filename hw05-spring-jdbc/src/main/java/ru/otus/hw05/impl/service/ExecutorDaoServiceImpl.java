@@ -22,6 +22,9 @@ public class ExecutorDaoServiceImpl implements ExecutorDaoService {
   @Override
   public boolean insertBook(@NonNull Book book) {
     if (authorDaoJdbc.getById(book.getAuthorId()) != null && genreDaoJdbc.getById(book.getGenreId()) != null) {
+      if( book.getId()==0L) {
+        book.setId(bookDaoJdbc.count()+1L);
+      }
       bookDaoJdbc.insert(book);
       return true;
     }
