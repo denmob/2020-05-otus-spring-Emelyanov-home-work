@@ -1,14 +1,13 @@
 package ru.otus.hw05.core.domain;
 
-import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class Genre {
 
-  private final @NonNull Long id;
-  private final @NonNull String name;
+  private @NonNull Long id;
+  private @NonNull String name;
 
 }

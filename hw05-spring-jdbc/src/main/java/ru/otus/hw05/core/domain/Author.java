@@ -1,18 +1,17 @@
 package ru.otus.hw05.core.domain;
 
-import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class Author {
 
-  private final @NonNull Long id;
-  private final @NonNull String firstName;
-  private final @NonNull String lastName;
-  private final @NonNull Date birthday;
+  private @NonNull Long id;
+  private @NonNull String firstName;
+  private @NonNull String lastName;
+  private @NonNull Date birthday;
 
 }
