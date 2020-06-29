@@ -1,5 +1,6 @@
 package ru.otus.hw05.impl.service;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.hw05.core.domain.Author;
@@ -19,32 +20,50 @@ public class ExecutorDaoServiceImpl implements ExecutorDaoService {
   private final GenreDaoJdbc genreDaoJdbc;
 
   @Override
-  public void insertBook(Book book) {
-    bookDaoJdbc.insert(book);
+  public boolean insertBook(@NonNull Book book) {
+    if (authorDaoJdbc.getById(book.getAuthorId()) != null && genreDaoJdbc.getById(book.getGenreId()) != null) {
+      bookDaoJdbc.insert(book);
+      return true;
+    }
+    return false;
   }
 
   @Override
-  public void deleteBook(long id) {
-    bookDaoJdbc.deleteById(id);
+  public boolean deleteBook(long id) {
+    if (bookDaoJdbc.getById(id) != null) {
+      bookDaoJdbc.deleteById(id);
+      return true;
+    }
+    return false;
   }
 
   @Override
-  public void insertAuthor(Author author) {
+  public boolean insertAuthor(@NonNull Author author) {
     authorDaoJdbc.insert(author);
+    return true;
   }
 
   @Override
-  public void deleteAuthor(long id) {
-    authorDaoJdbc.deleteById(id);
+  public boolean deleteAuthor(long id) {
+    if (authorDaoJdbc.getById(id) != null) {
+      authorDaoJdbc.deleteById(id);
+      return true;
+    }
+    return false;
   }
 
   @Override
-  public void insertGenre(Genre genre) {
+  public boolean insertGenre(@NonNull Genre genre) {
     genreDaoJdbc.insert(genre);
+    return true;
   }
 
   @Override
-  public void deleteGenre(long id) {
-    genreDaoJdbc.deleteById(id);
+  public boolean deleteGenre(long id) {
+    if (genreDaoJdbc.getById(id) != null) {
+      genreDaoJdbc.deleteById(id);
+      return true;
+    }
+    return false;
   }
 }

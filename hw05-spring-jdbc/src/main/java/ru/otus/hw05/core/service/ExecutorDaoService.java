@@ -6,17 +6,17 @@ import ru.otus.hw05.core.domain.Genre;
 
 public interface ExecutorDaoService {
 
-  void insertBook(Book book);
+  boolean insertBook(Book book);
 
-  void deleteBook(long id);
+  boolean deleteBook(long id);
 
-  void insertAuthor(Author author);
+  boolean insertAuthor(Author author);
 
-  void deleteAuthor(long id);
+  boolean deleteAuthor(long id);
 
-  void insertGenre(Genre genre);
+  boolean insertGenre(Genre genre);
 
-  void deleteGenre(long id);
+  boolean deleteGenre(long id);
 
 
 }

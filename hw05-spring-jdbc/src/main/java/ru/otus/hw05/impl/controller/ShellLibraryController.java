@@ -8,6 +8,8 @@ import org.springframework.shell.standard.ShellMethodAvailability;
 import org.springframework.stereotype.Controller;
 import ru.otus.hw05.core.controller.LibraryController;
 
+import java.util.Date;
+
 @Controller
 @ShellComponent
 @RequiredArgsConstructor
@@ -24,4 +26,8 @@ public class ShellLibraryController implements LibraryController {
     return true ? Availability.available() : Availability.unavailable("?");
   }
 
+  @Override
+  public void createBook(String title, Date date, Long authorId, Long genreId) {
+    
+  }
 }
