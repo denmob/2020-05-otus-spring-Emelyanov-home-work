@@ -39,16 +39,7 @@ class ViewRepositoryServiceImplTest {
   @SneakyThrows
   @Test
   void printTableBooks() {
-//    SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
-//    Book book = new Book(4L, 1L, 1L, "TestBook", sf.parse("2020-06-29"));
-//    List<Book> books = new ArrayList<>();
-//    books.add(book);
-//    Mockito.when(bookDaoJdbc.getAll()).thenReturn(books);
-//    Mockito.doNothing().when(outputPrintService).printlnMessage(book.toString());
-//
-//    viewDaoService.printTableBooks();
-//
-//    Mockito.verify(outputPrintService, Mockito.times(1)).printlnMessage(book.toString());
+
   }
 
   @SneakyThrows

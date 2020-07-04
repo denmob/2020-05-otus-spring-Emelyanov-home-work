@@ -20,7 +20,7 @@ public class GenreRepositoryJpaImpl implements GenreRepositoryJpa {
 
   @Override
   @Transactional(readOnly = true)
-  public int count() {
+  public long count() {
     String sql = "select count(g) from Genre g";
     return em.createQuery(sql, int.class).getSingleResult();
   }

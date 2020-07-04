@@ -19,7 +19,7 @@ public class AuthorRepositoryJpaImpl implements AuthorRepositoryJpa {
 
   @Override
   @Transactional(readOnly = true)
-  public int count() {
+  public long count() {
     String sql = "select count(a) from Author a";
     return em.createQuery(sql, int.class).getSingleResult();
   }

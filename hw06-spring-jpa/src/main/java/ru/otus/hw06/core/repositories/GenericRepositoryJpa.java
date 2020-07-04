@@ -5,7 +5,7 @@ import java.util.Optional;
 
 public interface GenericRepositoryJpa<T> {
 
-  int count();
+  long count();
 
   T insert(T entity);
 
