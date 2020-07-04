@@ -16,6 +16,10 @@ spring:
     interactive:
       enabled: false
 
+  h2:
+    console:
+      enabled: false
+
 logging:
   level:
     ROOT: ERROR

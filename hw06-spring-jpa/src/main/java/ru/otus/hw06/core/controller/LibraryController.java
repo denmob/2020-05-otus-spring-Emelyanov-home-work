@@ -15,4 +15,6 @@ public interface LibraryController {
   void printTableAuthors();
 
   void printTableGenres();
+
+  void printTableComments();
 }

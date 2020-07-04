@@ -17,11 +17,7 @@ public class Comment {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
-  @Column(name = "commentary ", nullable = false, unique = true)
+  @Column(name = "commentary", nullable = false, unique = true)
   private @NonNull String commentary;
-
-  @ManyToOne
-  @JoinColumn(name = "book_id", referencedColumnName = "id")
-  private Book book;
 
 }

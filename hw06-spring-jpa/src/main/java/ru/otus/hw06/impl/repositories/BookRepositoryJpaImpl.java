@@ -45,7 +45,7 @@ public class BookRepositoryJpaImpl implements BookRepositoryJpa {
   @Transactional(readOnly = true)
   public List<Book> getAll() {
     EntityGraph<?> entityGraph = em.getEntityGraph("book-genre-entity-graph");
-    TypedQuery<Book> query = em.createQuery("select b from Book b join fetch b.author", Book.class);
+    TypedQuery<Book> query = em.createQuery("select b from Book b join fetch b.author left join fetch b.comments", Book.class);
     query.setHint("javax.persistence.fetchgraph", entityGraph);
     return query.getResultList();
   }

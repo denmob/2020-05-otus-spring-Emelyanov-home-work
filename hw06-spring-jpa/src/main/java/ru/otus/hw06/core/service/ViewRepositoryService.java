@@ -7,4 +7,6 @@ public interface ViewRepositoryService {
   void printTableAuthors();
 
   void printTableGenres();
+
+  void printTableComments();
 }

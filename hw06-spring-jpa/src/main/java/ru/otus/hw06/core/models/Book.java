@@ -1,9 +1,13 @@
 package ru.otus.hw06.core.models;
 
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -31,5 +35,12 @@ public class Book {
   @ManyToOne
   @JoinColumn(name = "genre_id", referencedColumnName = "id")
   private Genre genre;
+
+  @Fetch(FetchMode.SELECT)
+  @BatchSize(size = 5)
+  @ManyToMany(targetEntity = Comment.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JoinTable(name = "book_comments", joinColumns = @JoinColumn(name = "book_id"),
+      inverseJoinColumns = @JoinColumn(name = "comment_id"))
+  private List<Comment> comments;
 
 }

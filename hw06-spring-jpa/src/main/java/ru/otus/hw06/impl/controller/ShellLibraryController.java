@@ -12,6 +12,8 @@ import ru.otus.hw06.core.models.Book;
 import ru.otus.hw06.core.models.Genre;
 import ru.otus.hw06.core.service.CRUDService;
 import ru.otus.hw06.core.service.ViewRepositoryService;
+import ru.otus.hw06.impl.service.CRUDBookService;
+import ru.otus.hw06.impl.service.CRUDCommentService;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,7 +23,8 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class ShellLibraryController implements LibraryController {
 
-  private final CRUDService crudService;
+  private final CRUDBookService crudBookService;
+  private final CRUDCommentService crudCommentService;
   private final ViewRepositoryService viewRepositoryService;
   private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -70,6 +73,12 @@ public class ShellLibraryController implements LibraryController {
   @ShellMethod(value = "Print table genres command", key = {"pg", "printGenres"})
   public void printTableGenres() {
     viewRepositoryService.printTableGenres();
+  }
+
+  @Override
+  @ShellMethod(value = "Print table comments command", key = {"pc", "printComments"})
+  public void printTableComments() {
+    viewRepositoryService.printTableComments();
   }
 
   private boolean validateInputArgumentsForInsertBook(String title, String date, long authorId, long genreId) {
