@@ -9,4 +9,5 @@
 >* hw03-testing-spring-boot/
 >* hw04-testing-spring-shell/
 >* hw05-spring-jdbc/
+>* hw06-spring-jpa/
 

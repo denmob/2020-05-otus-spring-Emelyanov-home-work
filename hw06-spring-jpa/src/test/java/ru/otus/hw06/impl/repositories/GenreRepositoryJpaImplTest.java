@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @JdbcTest
 @Import({GenreRepositoryJpaImpl.class})
-class GenreDaoJdbcTest {
+class GenreRepositoryJpaImplTest {
 
   @Autowired
   private GenreRepositoryJpaImpl genreDaoJdbc;

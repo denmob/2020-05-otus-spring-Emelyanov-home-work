@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @Import({AuthorRepositoryJpaImpl.class})
-class AuthorDaoJdbcTest {
+class AuthorRepositoryJpaImplTest {
 
   @Autowired
   private AuthorRepositoryJpaImpl authorDaoJdbc;

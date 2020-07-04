@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @DataJpaTest
 @Import({BookRepositoryJpaImpl.class})
-class BookDaoJdbcTest {
+class BookRepositoryJpaImplTest {
 
   @Autowired
   private BookRepositoryJpaImpl bookDaoJdbc;

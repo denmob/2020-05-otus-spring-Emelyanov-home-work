@@ -1,6 +1,6 @@
 package ru.otus.hw06.core.service;
 
-public interface ViewDaoService {
+public interface ViewRepositoryService {
 
   void printTableBooks();
 

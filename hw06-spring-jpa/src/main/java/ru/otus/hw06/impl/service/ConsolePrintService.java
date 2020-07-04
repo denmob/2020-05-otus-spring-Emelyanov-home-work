@@ -6,7 +6,7 @@ import ru.otus.hw06.core.service.OutputPrintService;
 import java.io.PrintStream;
 
 @Service
-public class OutputPrintServiceImpl implements OutputPrintService {
+public class ConsolePrintService implements OutputPrintService {
 
   private final PrintStream printStream = new PrintStream(System.out);
 

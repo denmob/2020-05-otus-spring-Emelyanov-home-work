@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@SpringBootTest(classes = ViewDaoServiceImpl.class)
-class ViewDaoServiceImplTest {
+@SpringBootTest(classes = ViewRepositoryServiceImpl.class)
+class ViewRepositoryServiceImplTest {
 
   @MockBean
   private AuthorRepositoryJpaImpl authorDaoJdbc;
@@ -34,7 +34,7 @@ class ViewDaoServiceImplTest {
   private OutputPrintService outputPrintService;
 
   @Autowired
-  private ViewDaoServiceImpl viewDaoService;
+  private ViewRepositoryServiceImpl viewDaoService;
 
   @SneakyThrows
   @Test

@@ -6,14 +6,14 @@ import ru.otus.hw06.core.models.Author;
 import ru.otus.hw06.core.models.Book;
 import ru.otus.hw06.core.models.Genre;
 import ru.otus.hw06.core.service.OutputPrintService;
-import ru.otus.hw06.core.service.ViewDaoService;
+import ru.otus.hw06.core.service.ViewRepositoryService;
 import ru.otus.hw06.impl.repositories.AuthorRepositoryJpaImpl;
 import ru.otus.hw06.impl.repositories.BookRepositoryJpaImpl;
 import ru.otus.hw06.impl.repositories.GenreRepositoryJpaImpl;
 
 @Service
 @RequiredArgsConstructor
-public class ViewDaoServiceImpl implements ViewDaoService {
+public class ViewRepositoryServiceImpl implements ViewRepositoryService {
 
   private final AuthorRepositoryJpaImpl authorDaoJdbc;
   private final BookRepositoryJpaImpl bookDaoJdbc;

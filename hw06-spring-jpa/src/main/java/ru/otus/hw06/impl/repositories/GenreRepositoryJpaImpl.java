@@ -19,12 +19,14 @@ public class GenreRepositoryJpaImpl implements GenreRepositoryJpa {
   private EntityManager em;
 
   @Override
+  @Transactional(readOnly = true)
   public int count() {
     String sql = "select count(g) from Genre g";
     return em.createQuery(sql, int.class).getSingleResult();
   }
 
   @Override
+  @Transactional(readOnly = false)
   public Genre insert(Genre genre) {
     if (genre.getId() <= 0) {
       em.persist(genre);
@@ -35,11 +37,13 @@ public class GenreRepositoryJpaImpl implements GenreRepositoryJpa {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Optional<Genre> getById(long id) {
     return Optional.ofNullable(em.find(Genre.class, id));
   }
 
   @Override
+  @Transactional(readOnly = true)
   public List<Genre> getAll() {
     String sql = "select g from Genre g";
     TypedQuery<Genre> query = em.createQuery(sql, Genre.class);
@@ -47,6 +51,7 @@ public class GenreRepositoryJpaImpl implements GenreRepositoryJpa {
   }
 
   @Override
+  @Transactional(readOnly = false)
   public void deleteById(long id) {
     String sql = "delete from Genre g where g.id = :id";
     Query query = em.createQuery(sql);

@@ -9,7 +9,6 @@ import ru.otus.hw06.core.models.Book;
 import javax.persistence.*;
 import java.util.*;
 
-@Transactional
 @Repository
 @RequiredArgsConstructor
 @SuppressWarnings({"ConstantConditions", "SqlDialectInspection"})
@@ -19,12 +18,14 @@ public class BookRepositoryJpaImpl implements BookRepositoryJpa {
   private EntityManager em;
 
   @Override
+  @Transactional(readOnly = true)
   public int count() {
     String sql = "select count(a) from Book a";
     return em.createQuery(sql, int.class).getSingleResult();
   }
 
   @Override
+  @Transactional(readOnly = false)
   public Book insert(Book book) {
     if (book.getId() <= 0) {
       em.persist(book);
@@ -35,11 +36,13 @@ public class BookRepositoryJpaImpl implements BookRepositoryJpa {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Optional<Book> getById(long id) {
     return Optional.ofNullable(em.find(Book.class, id));
   }
 
   @Override
+  @Transactional(readOnly = true)
   public List<Book> getAll() {
     EntityGraph<?> entityGraph = em.getEntityGraph("book-genre-entity-graph");
     TypedQuery<Book> query = em.createQuery("select b from Book b join fetch b.author", Book.class);
@@ -48,6 +51,7 @@ public class BookRepositoryJpaImpl implements BookRepositoryJpa {
   }
 
   @Override
+  @Transactional(readOnly = false)
   public void deleteById(long id) {
     String sql = "delete from Book b where b.id = :id";
     Query query = em.createQuery(sql);

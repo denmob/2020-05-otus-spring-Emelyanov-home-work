@@ -10,9 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.hw06.core.models.Author;
 import ru.otus.hw06.core.models.Genre;
-import ru.otus.hw06.core.service.ExecutorDaoService;
-import ru.otus.hw06.core.service.ViewDaoService;
-import ru.otus.hw06.impl.service.ExecutorDaoServiceImpl;
+import ru.otus.hw06.core.service.CRUDService;
+import ru.otus.hw06.core.service.ViewRepositoryService;
+import ru.otus.hw06.impl.service.CRUDBookService;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,14 +21,14 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 
-@SpringBootTest(classes = {ShellLibraryController.class, ExecutorDaoServiceImpl.class})
+@SpringBootTest(classes = {ShellLibraryController.class, CRUDBookService.class})
 class ShellLibraryControllerTest {
 
   @MockBean
-  private ExecutorDaoService executorDaoService;
+  private CRUDService executorDaoService;
 
   @MockBean
-  private ViewDaoService viewDaoService;
+  private ViewRepositoryService viewDaoService;
 
   @Autowired
   private ShellLibraryController shellLibraryController;
@@ -58,7 +58,7 @@ class ShellLibraryControllerTest {
   @Test
   @DisplayName("Expect success insert book")
   void insertBookSuccess() {
-    Mockito.when(executorDaoService.insertBook(any())).thenReturn(true);
+    Mockito.when(executorDaoService.create(any())).thenReturn(true);
 
     String actual = shellLibraryController.insertBook("Test", "2020-01-01", 1, 1);
 

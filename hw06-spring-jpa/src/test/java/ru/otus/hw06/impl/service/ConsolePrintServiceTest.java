@@ -9,9 +9,9 @@ import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class OutputPrintServiceImplTest {
+class ConsolePrintServiceTest {
 
-  private OutputPrintServiceImpl outputPrinterServiceImpl;
+  private ConsolePrintService outputPrinterServiceImpl;
   private OutputStream outputStream;
 
   @BeforeEach
@@ -19,7 +19,7 @@ class OutputPrintServiceImplTest {
     outputStream = new ByteArrayOutputStream();
     PrintStream printStream = new PrintStream(outputStream);
     System.setOut(printStream);
-    outputPrinterServiceImpl = new OutputPrintServiceImpl();
+    outputPrinterServiceImpl = new ConsolePrintService();
   }
 
   @Test
