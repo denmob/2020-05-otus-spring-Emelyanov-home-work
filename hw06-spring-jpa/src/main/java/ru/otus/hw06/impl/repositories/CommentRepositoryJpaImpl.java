@@ -19,37 +19,37 @@ import java.util.Optional;
 public class CommentRepositoryJpaImpl implements CommentRepositoryJpa {
 
   @PersistenceContext
-  private EntityManager em;
+  private EntityManager entityManager;
 
   @Override
   @Transactional(readOnly = true)
   public long count() {
     String sql = "select count(a) from Comment a";
-    return em.createQuery(sql, int.class).getSingleResult();
+    return entityManager.createQuery(sql, int.class).getSingleResult();
   }
 
   @Override
   @Transactional(readOnly = false)
   public Comment insert(Comment comment) {
     if (comment.getId() <= 0) {
-      em.persist(comment);
+      entityManager.persist(comment);
       return comment;
     } else {
-      return em.merge(comment);
+      return entityManager.merge(comment);
     }
   }
 
   @Override
   @Transactional(readOnly = true)
   public Optional<Comment> getById(long id) {
-    return Optional.ofNullable(em.find(Comment.class, id));
+    return Optional.ofNullable(entityManager.find(Comment.class, id));
   }
 
   @Override
   @Transactional(readOnly = true)
   public List<Comment> getAll() {
     String sql = "select a from Comment a";
-    TypedQuery<Comment> query = em.createQuery(sql, Comment.class);
+    TypedQuery<Comment> query = entityManager.createQuery(sql, Comment.class);
     return query.getResultList();
   }
 
@@ -57,7 +57,7 @@ public class CommentRepositoryJpaImpl implements CommentRepositoryJpa {
   @Transactional(readOnly = false)
   public void deleteById(long id) {
     String sql = "delete from Comment a where a.id = :id";
-    Query query = em.createQuery(sql);
+    Query query = entityManager.createQuery(sql);
     query.setParameter("id", id);
     query.executeUpdate();
   }

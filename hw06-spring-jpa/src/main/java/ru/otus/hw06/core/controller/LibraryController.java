@@ -10,6 +10,14 @@ public interface LibraryController {
 
   String deleteBook(long id);
 
+  String createComment(long bookId, String commentary);
+
+  String readComment(long id);
+
+  String updateComment(long id, String commentary);
+
+  String deleteComment(long id);
+
   void printTableBooks();
 
   void printTableAuthors();

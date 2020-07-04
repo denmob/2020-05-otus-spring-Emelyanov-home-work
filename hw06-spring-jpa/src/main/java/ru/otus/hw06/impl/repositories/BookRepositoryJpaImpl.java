@@ -15,37 +15,42 @@ import java.util.*;
 public class BookRepositoryJpaImpl implements BookRepositoryJpa {
 
   @PersistenceContext
-  private EntityManager em;
+  private EntityManager entityManager;
 
   @Override
   @Transactional(readOnly = true)
   public long count() {
     String sql = "select count(a) from Book a";
-    return em.createQuery(sql, int.class).getSingleResult();
+    return entityManager.createQuery(sql, int.class).getSingleResult();
   }
 
   @Override
   @Transactional(readOnly = false)
   public Book insert(Book book) {
     if (book.getId() <= 0) {
-      em.persist(book);
+      entityManager.persist(book);
       return book;
     } else {
-      return em.merge(book);
+      return entityManager.merge(book);
     }
   }
 
   @Override
   @Transactional(readOnly = true)
   public Optional<Book> getById(long id) {
-    return Optional.ofNullable(em.find(Book.class, id));
+    String sql = "select b from Book b join fetch b.author left join fetch b.comments where b.id=:id";
+    EntityGraph<?> entityGraph = entityManager.getEntityGraph("book-genre-entity-graph");
+    TypedQuery<Book> query = entityManager.createQuery(sql, Book.class);
+    query.setParameter("id", id);
+    query.setHint("javax.persistence.fetchgraph", entityGraph);
+    return Optional.ofNullable(query.getSingleResult());
   }
 
   @Override
   @Transactional(readOnly = true)
   public List<Book> getAll() {
-    EntityGraph<?> entityGraph = em.getEntityGraph("book-genre-entity-graph");
-    TypedQuery<Book> query = em.createQuery("select b from Book b join fetch b.author left join fetch b.comments", Book.class);
+    EntityGraph<?> entityGraph = entityManager.getEntityGraph("book-genre-entity-graph");
+    TypedQuery<Book> query = entityManager.createQuery("select b from Book b join fetch b.author left join fetch b.comments", Book.class);
     query.setHint("javax.persistence.fetchgraph", entityGraph);
     return query.getResultList();
   }
@@ -54,7 +59,7 @@ public class BookRepositoryJpaImpl implements BookRepositoryJpa {
   @Transactional(readOnly = false)
   public void deleteById(long id) {
     String sql = "delete from Book b where b.id = :id";
-    Query query = em.createQuery(sql);
+    Query query = entityManager.createQuery(sql);
     query.setParameter("id", id);
     query.executeUpdate();
   }

@@ -7,16 +7,14 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.stereotype.Controller;
 import ru.otus.hw06.core.controller.LibraryController;
-import ru.otus.hw06.core.models.Author;
 import ru.otus.hw06.core.models.Book;
-import ru.otus.hw06.core.models.Genre;
-import ru.otus.hw06.core.service.CRUDService;
 import ru.otus.hw06.core.service.ViewRepositoryService;
 import ru.otus.hw06.impl.service.CRUDBookService;
 import ru.otus.hw06.impl.service.CRUDCommentService;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
 
 @Controller
 @ShellComponent
@@ -42,7 +40,13 @@ public class ShellLibraryController implements LibraryController {
   @Override
   @ShellMethod(value = "Read book command. Format input: id", key = {"rb", "readBook"})
   public String readBook(long id) {
-    return SUCCESS_OPERATION;
+    if (validateArgumentId(id)) {
+      Optional<Book> book = crudBookService.read(id);
+      if (book.isPresent()) {
+        return book.get().toString();
+      }
+      return FAILURE_OPERATION;
+    } return ILLEGAL_ARGUMENTS;
   }
 
   @Override
@@ -55,6 +59,26 @@ public class ShellLibraryController implements LibraryController {
   @ShellMethod(value = "Delete book command. Format input: id", key = {"db", "deleteBook"})
   public String deleteBook(long id) {
     return SUCCESS_OPERATION;
+  }
+
+  @Override
+  public String createComment(long bookId, String commentary) {
+    return null;
+  }
+
+  @Override
+  public String readComment(long id) {
+    return null;
+  }
+
+  @Override
+  public String updateComment(long id, String commentary) {
+    return null;
+  }
+
+  @Override
+  public String deleteComment(long id) {
+    return null;
   }
 
   @Override
@@ -91,6 +115,10 @@ public class ShellLibraryController implements LibraryController {
 
   private boolean validateInputArgumentsForInsertGenre(String name) {
     return !name.isEmpty();
+  }
+
+  private boolean validateArgumentId(long id){
+    return id>0;
   }
 
   @SneakyThrows

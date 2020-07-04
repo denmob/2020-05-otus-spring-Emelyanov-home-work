@@ -16,37 +16,37 @@ import java.util.*;
 public class GenreRepositoryJpaImpl implements GenreRepositoryJpa {
 
   @PersistenceContext
-  private EntityManager em;
+  private EntityManager entityManager;
 
   @Override
   @Transactional(readOnly = true)
   public long count() {
     String sql = "select count(g) from Genre g";
-    return em.createQuery(sql, int.class).getSingleResult();
+    return entityManager.createQuery(sql, int.class).getSingleResult();
   }
 
   @Override
   @Transactional(readOnly = false)
   public Genre insert(Genre genre) {
     if (genre.getId() <= 0) {
-      em.persist(genre);
+      entityManager.persist(genre);
       return genre;
     } else {
-      return em.merge(genre);
+      return entityManager.merge(genre);
     }
   }
 
   @Override
   @Transactional(readOnly = true)
   public Optional<Genre> getById(long id) {
-    return Optional.ofNullable(em.find(Genre.class, id));
+    return Optional.ofNullable(entityManager.find(Genre.class, id));
   }
 
   @Override
   @Transactional(readOnly = true)
   public List<Genre> getAll() {
     String sql = "select g from Genre g";
-    TypedQuery<Genre> query = em.createQuery(sql, Genre.class);
+    TypedQuery<Genre> query = entityManager.createQuery(sql, Genre.class);
     return query.getResultList();
   }
 
@@ -54,7 +54,7 @@ public class GenreRepositoryJpaImpl implements GenreRepositoryJpa {
   @Transactional(readOnly = false)
   public void deleteById(long id) {
     String sql = "delete from Genre g where g.id = :id";
-    Query query = em.createQuery(sql);
+    Query query = entityManager.createQuery(sql);
     query.setParameter("id", id);
     query.executeUpdate();
   }

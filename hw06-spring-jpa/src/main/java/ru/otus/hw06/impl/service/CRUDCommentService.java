@@ -5,7 +5,8 @@ import org.springframework.stereotype.Service;
 import ru.otus.hw06.core.models.Comment;
 import ru.otus.hw06.core.repositories.CommentRepositoryJpa;
 import ru.otus.hw06.core.service.CRUDService;
-import ru.otus.hw06.impl.repositories.BookRepositoryJpaImpl;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -15,21 +16,22 @@ public class CRUDCommentService implements CRUDService<Comment> {
 
   @Override
   public Comment create(Comment entity) {
-    return null;
+    return commentRepositoryJpa.insert(entity);
   }
 
   @Override
-  public Comment read(Comment entity) {
-    return null;
+  public Optional<Comment> read(long id) {
+    return commentRepositoryJpa.getById(id);
   }
 
   @Override
   public boolean delete(long id) {
-    return false;
+     commentRepositoryJpa.deleteById(id);
+     return true;
   }
 
   @Override
   public Comment update(Comment entity) {
-    return null;
+    return commentRepositoryJpa.insert(entity);
   }
 }

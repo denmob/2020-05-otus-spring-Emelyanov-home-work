@@ -1,10 +1,12 @@
 package ru.otus.hw06.core.service;
 
+import java.util.Optional;
+
 public interface CRUDService<T> {
 
   T create(T entity);
 
-  T read(T entity);
+  Optional<T> read(long id);
 
   boolean delete(long id);
 

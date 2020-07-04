@@ -17,7 +17,6 @@ import ru.otus.hw06.impl.repositories.GenreRepositoryJpaImpl;
 @RequiredArgsConstructor
 public class ViewRepositoryServiceImpl implements ViewRepositoryService {
 
-
   private final AuthorRepositoryJpaImpl authorRepositoryJpa;
   private final BookRepositoryJpaImpl bookRepositoryJpa;
   private final GenreRepositoryJpaImpl genreRepositoryJpa;

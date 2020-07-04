@@ -6,6 +6,8 @@ import ru.otus.hw06.core.models.Book;
 import ru.otus.hw06.core.repositories.BookRepositoryJpa;
 import ru.otus.hw06.core.service.CRUDService;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class CRUDBookService implements CRUDService<Book> {
@@ -14,21 +16,22 @@ public class CRUDBookService implements CRUDService<Book> {
 
   @Override
   public Book create(Book entity) {
-    return null;
+    return bookRepositoryJpa.insert(entity);
   }
 
   @Override
-  public Book read(Book entity) {
-    return null;
+  public Optional<Book> read(long id) {
+    return bookRepositoryJpa.getById(id);
   }
 
   @Override
   public boolean delete(long id) {
-    return false;
+     bookRepositoryJpa.deleteById(id);
+    return true;
   }
 
   @Override
   public Book update(Book entity) {
-    return null;
+    return bookRepositoryJpa.insert(entity);
   }
 }
