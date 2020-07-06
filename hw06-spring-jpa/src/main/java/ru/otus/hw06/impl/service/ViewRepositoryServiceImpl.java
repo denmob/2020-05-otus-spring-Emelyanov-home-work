@@ -20,33 +20,33 @@ public class ViewRepositoryServiceImpl implements ViewRepositoryService {
   private final AuthorRepositoryJpaImpl authorRepositoryJpa;
   private final BookRepositoryJpaImpl bookRepositoryJpa;
   private final GenreRepositoryJpaImpl genreRepositoryJpa;
-  private final OutputPrintService consolePrintService;
   private final CommentRepositoryJpa commentRepositoryJpa;
+  private final OutputPrintService consolePrintService;
 
   @Override
   public void printTableBooks() {
-    for (Book book:bookRepositoryJpa.getAll()) {
+    for (Book book : bookRepositoryJpa.getAll()) {
       consolePrintService.printlnMessage(book.toString());
     }
   }
 
   @Override
   public void printTableAuthors() {
-    for (Author author:authorRepositoryJpa.getAll()) {
+    for (Author author : authorRepositoryJpa.getAll()) {
       consolePrintService.printlnMessage(author.toString());
     }
   }
 
   @Override
   public void printTableGenres() {
-    for (Genre genre:genreRepositoryJpa.getAll()) {
+    for (Genre genre : genreRepositoryJpa.getAll()) {
       consolePrintService.printlnMessage(genre.toString());
     }
   }
 
   @Override
   public void printTableComments() {
-    for (Comment comment:commentRepositoryJpa.getAll()) {
+    for (Comment comment : commentRepositoryJpa.getAll()) {
       consolePrintService.printlnMessage(comment.toString());
     }
   }

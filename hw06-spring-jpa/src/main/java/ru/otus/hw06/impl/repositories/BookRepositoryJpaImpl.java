@@ -57,11 +57,11 @@ public class BookRepositoryJpaImpl implements BookRepositoryJpa {
 
   @Override
   @Transactional(readOnly = false)
-  public void deleteById(long id) {
+  public boolean deleteById(long id) {
     String sql = "delete from Book b where b.id = :id";
     Query query = entityManager.createQuery(sql);
     query.setParameter("id", id);
-    query.executeUpdate();
+    return query.executeUpdate() > 0;
   }
 
 }

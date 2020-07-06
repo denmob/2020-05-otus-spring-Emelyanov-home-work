@@ -26,8 +26,7 @@ public class CRUDBookService implements CRUDService<Book> {
 
   @Override
   public boolean delete(long id) {
-     bookRepositoryJpa.deleteById(id);
-    return true;
+    return bookRepositoryJpa.deleteById(id);
   }
 
   @Override

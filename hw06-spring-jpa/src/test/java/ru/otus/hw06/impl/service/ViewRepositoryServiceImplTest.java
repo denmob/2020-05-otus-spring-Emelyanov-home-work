@@ -1,13 +1,17 @@
 package ru.otus.hw06.impl.service;
 
 import lombok.SneakyThrows;
+import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.hw06.core.models.Author;
+import ru.otus.hw06.core.models.Book;
+import ru.otus.hw06.core.models.Comment;
 import ru.otus.hw06.core.models.Genre;
+import ru.otus.hw06.core.repositories.CommentRepositoryJpa;
 import ru.otus.hw06.core.service.OutputPrintService;
 import ru.otus.hw06.impl.repositories.AuthorRepositoryJpaImpl;
 import ru.otus.hw06.impl.repositories.BookRepositoryJpaImpl;
@@ -15,31 +19,50 @@ import ru.otus.hw06.impl.repositories.GenreRepositoryJpaImpl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 
 @SpringBootTest(classes = ViewRepositoryServiceImpl.class)
 class ViewRepositoryServiceImplTest {
 
-  @MockBean
-  private AuthorRepositoryJpaImpl authorDaoJdbc;
+  private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
   @MockBean
-  private BookRepositoryJpaImpl bookDaoJdbc;
+  private AuthorRepositoryJpaImpl authorRepositoryJpa;
 
   @MockBean
-  private GenreRepositoryJpaImpl genreDaoJdbc;
+  private BookRepositoryJpaImpl bookRepositoryJpa;
 
   @MockBean
-  private OutputPrintService outputPrintService;
+  private GenreRepositoryJpaImpl genreRepositoryJpa;
+
+  @MockBean
+  private CommentRepositoryJpa commentRepositoryJpa;
+
+  @MockBean
+  private OutputPrintService consolePrintService;
 
   @Autowired
-  private ViewRepositoryServiceImpl viewDaoService;
+  private ViewRepositoryServiceImpl viewRepositoryService;
 
   @SneakyThrows
   @Test
   void printTableBooks() {
+    Book book = Book.builder()
+        .title("title")
+        .date(convertStringToDate("2020-01-01"))
+        .build();
+    List<Book> books = new ArrayList<>();
+    books.add(book);
 
+    Mockito.when(bookRepositoryJpa.getAll()).thenReturn(books);
+    Mockito.doNothing().when(consolePrintService).printlnMessage(book.toString());
+
+    viewRepositoryService.printTableBooks();
+
+    Mockito.verify(consolePrintService, Mockito.times(1)).printlnMessage(book.toString());
   }
 
   @SneakyThrows
@@ -49,12 +72,12 @@ class ViewRepositoryServiceImplTest {
     Author author = new Author(4L, "Evgeny", "Borisov", sf.parse("1978-10-03"));
     List<Author> authors = new ArrayList<>();
     authors.add(author);
-    Mockito.when(authorDaoJdbc.getAll()).thenReturn(authors);
-    Mockito.doNothing().when(outputPrintService).printlnMessage(author.toString());
+    Mockito.when(authorRepositoryJpa.getAll()).thenReturn(authors);
+    Mockito.doNothing().when(consolePrintService).printlnMessage(author.toString());
 
-    viewDaoService.printTableAuthors();
+    viewRepositoryService.printTableAuthors();
 
-    Mockito.verify(outputPrintService, Mockito.times(1)).printlnMessage(author.toString());
+    Mockito.verify(consolePrintService, Mockito.times(1)).printlnMessage(author.toString());
   }
 
   @Test
@@ -64,11 +87,30 @@ class ViewRepositoryServiceImplTest {
 
     List<Genre> genres = new ArrayList<>();
     genres.add(genre);
-    Mockito.when(genreDaoJdbc.getAll()).thenReturn(genres);
-    Mockito.doNothing().when(outputPrintService).printlnMessage(genre.toString());
+    Mockito.when(genreRepositoryJpa.getAll()).thenReturn(genres);
+    Mockito.doNothing().when(consolePrintService).printlnMessage(genre.toString());
 
-    viewDaoService.printTableGenres();
+    viewRepositoryService.printTableGenres();
 
-    Mockito.verify(outputPrintService, Mockito.times(1)).printlnMessage(genre.toString());
+    Mockito.verify(consolePrintService, Mockito.times(1)).printlnMessage(genre.toString());
+  }
+
+  @Test
+  void printTableComments() {
+    List<Comment> comments = new ArrayList<>();
+    Comment comment = new Comment(0L,"test");
+    comments.add(comment);
+
+    Mockito.when(commentRepositoryJpa.getAll()).thenReturn(comments);
+    Mockito.doNothing().when(consolePrintService).printlnMessage(comment.toString());
+
+    viewRepositoryService.printTableComments();
+
+    Mockito.verify(consolePrintService, Mockito.times(1)).printlnMessage(comment.toString());
+  }
+
+  @SneakyThrows
+  private Date convertStringToDate(String date) {
+    return DATE_FORMAT.parse(date);
   }
 }

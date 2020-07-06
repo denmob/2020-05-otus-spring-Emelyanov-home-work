@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -25,14 +26,14 @@ public class Book {
   @Column(name = "title", nullable = false, unique = true)
   private @NonNull String title;
 
-  @Column(name = "date", nullable = false, unique = true)
+  @Column(name = "date", nullable = false)
   private @NonNull Date date;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "author_id", referencedColumnName = "id")
   private Author author;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "genre_id", referencedColumnName = "id")
   private Genre genre;
 

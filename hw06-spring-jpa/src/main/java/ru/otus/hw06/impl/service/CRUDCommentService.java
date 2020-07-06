@@ -26,8 +26,7 @@ public class CRUDCommentService implements CRUDService<Comment> {
 
   @Override
   public boolean delete(long id) {
-     commentRepositoryJpa.deleteById(id);
-     return true;
+    return commentRepositoryJpa.deleteById(id);
   }
 
   @Override

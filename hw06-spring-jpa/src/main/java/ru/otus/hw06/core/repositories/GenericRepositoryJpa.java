@@ -13,5 +13,5 @@ public interface GenericRepositoryJpa<T> {
 
   List<T> getAll();
 
-  void deleteById(long id);
+  boolean deleteById(long id);
 }

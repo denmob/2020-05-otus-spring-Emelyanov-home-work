@@ -52,11 +52,11 @@ public class GenreRepositoryJpaImpl implements GenreRepositoryJpa {
 
   @Override
   @Transactional(readOnly = false)
-  public void deleteById(long id) {
+  public boolean deleteById(long id) {
     String sql = "delete from Genre g where g.id = :id";
     Query query = entityManager.createQuery(sql);
     query.setParameter("id", id);
-    query.executeUpdate();
+    return query.executeUpdate()>0;
   }
 
 }
