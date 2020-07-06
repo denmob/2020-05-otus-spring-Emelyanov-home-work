@@ -1,12 +1,11 @@
 package ru.otus.hw06.core.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
+
 import javax.persistence.*;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -19,9 +18,5 @@ public class Comment {
 
   @Column(name = "commentary", nullable = false, unique = true)
   private @NonNull String commentary;
-
-//  @ManyToOne
-//  @JoinColumn(name = "book_id", referencedColumnName = "id")
-//  private Book book;
 
 }

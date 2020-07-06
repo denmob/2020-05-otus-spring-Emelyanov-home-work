@@ -25,7 +25,7 @@ public class CommentRepositoryJpaImpl implements CommentRepositoryJpa {
   @Transactional(readOnly = true)
   public long count() {
     String sql = "select count(a) from Comment a";
-    return entityManager.createQuery(sql, int.class).getSingleResult();
+    return entityManager.createQuery(sql, Long.class).getSingleResult();
   }
 
   @Override

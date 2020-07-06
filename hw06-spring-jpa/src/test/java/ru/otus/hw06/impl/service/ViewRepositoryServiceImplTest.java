@@ -1,7 +1,6 @@
 package ru.otus.hw06.impl.service;
 
 import lombok.SneakyThrows;
-import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,6 @@ import ru.otus.hw06.impl.repositories.GenreRepositoryJpaImpl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -98,7 +96,7 @@ class ViewRepositoryServiceImplTest {
   @Test
   void printTableComments() {
     List<Comment> comments = new ArrayList<>();
-    Comment comment = new Comment(0L,"test");
+    Comment comment = new Comment(0L, "test");
     comments.add(comment);
 
     Mockito.when(commentRepositoryJpa.getAll()).thenReturn(comments);

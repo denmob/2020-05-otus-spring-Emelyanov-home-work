@@ -21,7 +21,7 @@ public class AuthorRepositoryJpaImpl implements AuthorRepositoryJpa {
   @Transactional(readOnly = true)
   public long count() {
     String sql = "select count(a) from Author a";
-    return entityManager.createQuery(sql, int.class).getSingleResult();
+    return entityManager.createQuery(sql, Long.class).getSingleResult();
   }
 
   @Override

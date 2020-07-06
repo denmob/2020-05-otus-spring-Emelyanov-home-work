@@ -21,7 +21,7 @@ public class BookRepositoryJpaImpl implements BookRepositoryJpa {
   @Transactional(readOnly = true)
   public long count() {
     String sql = "select count(a) from Book a";
-    return entityManager.createQuery(sql, int.class).getSingleResult();
+    return entityManager.createQuery(sql, Long.class).getSingleResult();
   }
 
   @Override
