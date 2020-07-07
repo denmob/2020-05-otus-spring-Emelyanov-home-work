@@ -17,7 +17,6 @@ import ru.otus.hw06.impl.service.CRUDGenreService;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -32,7 +31,7 @@ public class ShellLibraryController implements LibraryController {
 
   private final ViewRepositoryService viewRepositoryService;
 
-  private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+  private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
   private static final String SUCCESS_OPERATION = "Success operation";
   private static final String FAILURE_OPERATION = "Failure operation";
   private static final String ILLEGAL_ARGUMENTS = "Illegal Arguments";
@@ -40,14 +39,14 @@ public class ShellLibraryController implements LibraryController {
   @Override
   @ShellMethod(value = "Create book command. Format input: title, data(yyyy-MM-dd), authorId, genreId", key = {"cb", "createBook"})
   public String createBook(@NonNull String title, @NonNull String date, long authorId, long genreId) {
-    if (isValidInputArgumentsForInsertBook(title, date, authorId, genreId)) {
-      Book book = Book.builder()
-          .title(title)
-          .date(convertStringToDate(date))
-          .author(crudAuthorService.read(authorId).get())
-          .genre(crudGenreService.read(genreId).get())
-          .build();
-      if (crudBookService.create(book) != null) {
+    if (!title.isEmpty() && convertStringToDate(date) != null && authorId > 0 && genreId > 0) {
+      Book.BookBuilder builder = Book.builder();
+      builder.title(title);
+      builder.date(convertStringToDate(date));
+      crudAuthorService.read(authorId).ifPresent(builder::author);
+      crudGenreService.read(genreId).ifPresent(builder::genre);
+      Book book = builder.build();
+      if (book.getAuthor() != null && book.getGenre() != null && crudBookService.create(book) != null) {
         return SUCCESS_OPERATION;
       }
       return FAILURE_OPERATION;
@@ -71,14 +70,21 @@ public class ShellLibraryController implements LibraryController {
   @Override
   @ShellMethod(value = "Update book command. Format input: bookId, title, data(yyyy-MM-dd), authorId, genreId", key = {"ub", "updateBook"})
   public String updateBook(long bookId, String title, String date, long authorId, long genreId) {
-    if (isValidInputArgumentsForUpdateBook(bookId, title, date, authorId, genreId)) {
-      Book book = crudBookService.read(bookId).get();
-      book.setTitle(title == null ? book.getTitle() : title);
-      book.setDate(date == null ? book.getDate() : convertStringToDate(date));
-      book.setAuthor(authorId == 0 ? book.getAuthor() : crudAuthorService.read(authorId).get());
-      book.setGenre(genreId == 0 ? book.getGenre() : crudGenreService.read(genreId).get());
-      if (crudBookService.update(book) != null) {
-        return SUCCESS_OPERATION;
+    if (bookId > 0) {
+      Optional<Book> optionalBook = crudBookService.read(bookId);
+      if (optionalBook.isPresent()) {
+        Book book = optionalBook.get();
+        book.setTitle(title == null ? book.getTitle() : title);
+        book.setDate(date == null ? book.getDate() : convertStringToDate(date));
+        if (authorId > 0) {
+          crudAuthorService.read(authorId).ifPresent(book::setAuthor);
+        }
+        if (genreId > 0) {
+          crudGenreService.read(genreId).ifPresent(book::setGenre);
+        }
+        if (crudBookService.update(book) != null) {
+          return SUCCESS_OPERATION;
+        }
       }
       return FAILURE_OPERATION;
     }
@@ -99,18 +105,18 @@ public class ShellLibraryController implements LibraryController {
 
   @Override
   @ShellMethod(value = "Create comment command. Format input: bookId, commentary", key = {"cc", "createComment"})
-  public String createComment(long bookId, String commentary) {
-    if (isValidArgumentsForCreateComment(bookId, commentary)) {
-      Comment comment = new Comment();
-      comment.setCommentary(commentary);
+  public String createComment(long bookId, @NonNull String commentary) {
+    if (bookId > 0 && !commentary.isEmpty()) {
+      Comment comment = new Comment(0L, commentary);
 
-      Book book = crudBookService.read(bookId).get();
-      List<Comment> comments = book.getComments();
-      comments.add(comment);
-      book.setComments(comments);
+      Optional<Book> optionalBook = crudBookService.read(bookId);
+      if (optionalBook.isPresent()) {
+        Book book = optionalBook.get();
+        book.getComments().add(comment);
 
-      if (crudCommentService.create(comment) != null && crudBookService.update(book) != null) {
-        return SUCCESS_OPERATION;
+        if (crudCommentService.create(comment) != null && crudBookService.update(book) != null) {
+          return SUCCESS_OPERATION;
+        }
       }
       return FAILURE_OPERATION;
     }
@@ -182,29 +188,9 @@ public class ShellLibraryController implements LibraryController {
     viewRepositoryService.printTableComments();
   }
 
-  private boolean isValidInputArgumentsForInsertBook(String title, String date, long authorId, long genreId) {
-    return !title.isEmpty() &&
-        convertStringToDate(date) != null &&
-        authorId > 0 && crudAuthorService.read(authorId).isPresent() &&
-        genreId > 0 && crudGenreService.read(genreId).isPresent();
-  }
-
-  private boolean isValidInputArgumentsForUpdateBook(long bookId, String title, String date, long authorId, long genreId) {
-    return (bookId > 0 && crudBookService.read(bookId).isPresent()) &&
-        (title == null || !title.isEmpty()) &&
-        (date == null || convertStringToDate(date) != null) &&
-        (authorId == 0 || crudAuthorService.read(authorId).isPresent()) &&
-        (genreId == 0 || crudGenreService.read(genreId).isPresent());
-  }
-
-  private boolean isValidArgumentsForCreateComment(long bookId, String commentary) {
-    return (bookId > 0 && crudBookService.read(bookId).isPresent()) &&
-        (commentary != null && !commentary.isEmpty());
-  }
-
   @SneakyThrows
   private Date convertStringToDate(String date) {
-    return DATE_FORMAT.parse(date);
+    return dateFormat.parse(date);
   }
 
 }
