@@ -8,14 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.jdbc.Sql;
 import ru.otus.hw06.core.models.Author;
 import ru.otus.hw06.core.models.Book;
 import ru.otus.hw06.core.models.Genre;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.util.DateUtil.now;
 
 @DataJpaTest
+@Sql("classpath:data-test.sql")
 @Import(BookRepositoryJpaImpl.class)
 class BookRepositoryJpaImplTest {
 
@@ -77,7 +81,8 @@ class BookRepositoryJpaImplTest {
 
   @Test
   void getAll() {
-    assertThat(bookRepositoryJpa.getAll().size()).isEqualTo(3);
+    List<Book> books =  bookRepositoryJpa.getAll();
+    assertThat(books.size()).isEqualTo(3);
     assertThat(sessionFactory.getStatistics().getPrepareStatementCount()).isEqualTo(1);
   }
 
