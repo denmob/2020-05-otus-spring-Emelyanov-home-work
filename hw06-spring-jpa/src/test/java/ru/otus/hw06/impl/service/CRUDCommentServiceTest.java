@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import ru.otus.hw06.core.models.Book;
 import ru.otus.hw06.core.models.Comment;
 import ru.otus.hw06.core.repositories.CommentRepositoryJpa;
 import static org.mockito.Mockito.*;
@@ -20,7 +21,7 @@ class CRUDCommentServiceTest {
 
   @Test
   void create() {
-    Comment comment = new Comment(0L,"comment");
+    Comment comment = new Comment(0L,"comment",new Book());
     when(commentRepositoryJpa.insert(comment)).thenReturn(comment);
 
     crudCommentService.create(comment);
@@ -47,7 +48,7 @@ class CRUDCommentServiceTest {
 
   @Test
   void update() {
-    Comment comment = new Comment(1L,"comment");
+    Comment comment = new Comment(1L,"comment",new Book());
     when(commentRepositoryJpa.insert(comment)).thenReturn(comment);
 
     crudCommentService.update(comment);

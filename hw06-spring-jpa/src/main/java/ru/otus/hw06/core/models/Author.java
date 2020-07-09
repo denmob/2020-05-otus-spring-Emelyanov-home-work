@@ -12,7 +12,6 @@ import java.util.Date;
 @Entity
 @Table(name = "authors")
 public class Author {
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
@@ -25,5 +24,4 @@ public class Author {
 
   @Column(name = "birthday", nullable = false, unique = true)
   private @NonNull Date birthday;
-
 }

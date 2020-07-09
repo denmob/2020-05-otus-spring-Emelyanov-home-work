@@ -4,13 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.hw06.core.models.Genre;
 import ru.otus.hw06.core.repositories.GenreRepositoryJpa;
-import ru.otus.hw06.core.service.CRUDService;
+import ru.otus.hw06.core.service.CRUDServiceGeneric;
 
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class CRUDGenreService implements CRUDService<Genre> {
+public class CRUDGenreService implements CRUDServiceGeneric<Genre> {
 
   private final GenreRepositoryJpa genreRepositoryJpa;
 

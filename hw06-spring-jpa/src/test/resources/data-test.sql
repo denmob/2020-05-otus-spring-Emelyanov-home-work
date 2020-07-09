@@ -18,9 +18,9 @@ values (1, 1, 3, 'TestBook 1', '2015-05-01'),
        (2, 2, 1, 'TestBook 2', '2018-01-01'),
        (3, 3, 2, 'TestBook 3', '2016-05-17');
 
-insert into comments(id, commentary)
-values (1, 'Test 1'),
-       (2, 'Test 2');
+insert into comments(id, commentary, book_id)
+values (1, 'Test 1', 1),
+       (2, 'Test 2', 1);
 
 
 

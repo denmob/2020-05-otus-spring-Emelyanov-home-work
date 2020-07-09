@@ -2,11 +2,17 @@ package ru.otus.hw06.core.controller;
 
 public interface LibraryController {
 
-  String createBook(String title, String date, long authorId, long genreId);
+  String createBook();
 
   String readBook(long id);
 
-  String updateBook(long id, String title, String date, long authorId, long genreId);
+  String updateBookTitle(long bookId);
+
+  String updateBookDate(long bookId);
+
+  String updateBookGenre(long bookId);
+
+  String updateBookAuthor(long bookId);
 
   String deleteBook(long id);
 

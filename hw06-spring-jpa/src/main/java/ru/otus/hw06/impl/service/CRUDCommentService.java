@@ -4,13 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.hw06.core.models.Comment;
 import ru.otus.hw06.core.repositories.CommentRepositoryJpa;
-import ru.otus.hw06.core.service.CRUDService;
+import ru.otus.hw06.core.service.CRUDServiceGeneric;
 
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class CRUDCommentService implements CRUDService<Comment> {
+public class CRUDCommentService implements CRUDServiceGeneric<Comment> {
 
   private final CommentRepositoryJpa commentRepositoryJpa;
 

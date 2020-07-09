@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
+import ru.otus.hw06.core.models.Book;
 import ru.otus.hw06.core.models.Comment;
 
 import java.util.List;
@@ -48,7 +49,7 @@ class CommentRepositoryJpaImplTest {
 
   @Test
   void insertNewComment() {
-    Comment commentExpected = new Comment(0L,"testComment");
+    Comment commentExpected = new Comment(0L,"testComment",new Book());
     commentExpected = commentRepositoryJpa.insert(commentExpected);
     Comment commentActual = commentRepositoryJpa.getById(commentExpected.getId()).get();
     Assertions.assertEquals(commentExpected,commentActual);
@@ -56,7 +57,7 @@ class CommentRepositoryJpaImplTest {
 
   @Test
   void updateComment() {
-    Comment commentExpected = new Comment(0L,"testComment");
+    Comment commentExpected = new Comment(0L,"testComment",new Book());
     commentExpected = commentRepositoryJpa.insert(commentExpected);
     commentExpected.setCommentary("testComment 2");
     commentExpected = commentRepositoryJpa.insert(commentExpected);
@@ -68,7 +69,7 @@ class CommentRepositoryJpaImplTest {
 
   @Test
   void getById() {
-    Comment commentExpected = new Comment(0L,"testComment");
+    Comment commentExpected = new Comment(0L,"testComment",new Book());
     commentRepositoryJpa.insert(commentExpected);
     Comment commentActual = commentRepositoryJpa.getById(commentExpected.getId()).get();
     Assertions.assertEquals(commentExpected,commentActual);

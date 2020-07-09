@@ -4,13 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.hw06.core.models.Author;
 import ru.otus.hw06.core.repositories.AuthorRepositoryJpa;
-import ru.otus.hw06.core.service.CRUDService;
+import ru.otus.hw06.core.service.CRUDServiceGeneric;
 
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class CRUDAuthorService implements CRUDService<Author> {
+public class CRUDAuthorService implements CRUDServiceGeneric<Author> {
 
   private final AuthorRepositoryJpa authorRepositoryJpa;
 

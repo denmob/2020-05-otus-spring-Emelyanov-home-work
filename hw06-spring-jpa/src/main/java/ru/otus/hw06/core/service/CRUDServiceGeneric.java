@@ -2,7 +2,7 @@ package ru.otus.hw06.core.service;
 
 import java.util.Optional;
 
-public interface CRUDService<T> {
+public interface CRUDServiceGeneric<T> {
 
   T create(T entity);
 

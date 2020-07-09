@@ -22,14 +22,13 @@ public class CommentRepositoryJpaImpl implements CommentRepositoryJpa {
   private EntityManager entityManager;
 
   @Override
-  @Transactional(readOnly = true)
   public long count() {
     String sql = "select count(a) from Comment a";
     return entityManager.createQuery(sql, Long.class).getSingleResult();
   }
 
   @Override
-  @Transactional(readOnly = false)
+  @Transactional
   public Comment insert(Comment comment) {
     if (comment.getId() <= 0) {
       entityManager.persist(comment);
@@ -40,13 +39,11 @@ public class CommentRepositoryJpaImpl implements CommentRepositoryJpa {
   }
 
   @Override
-  @Transactional(readOnly = true)
   public Optional<Comment> getById(long id) {
     return Optional.ofNullable(entityManager.find(Comment.class, id));
   }
 
   @Override
-  @Transactional(readOnly = true)
   public List<Comment> getAll() {
     String sql = "select a from Comment a";
     TypedQuery<Comment> query = entityManager.createQuery(sql, Comment.class);
@@ -54,7 +51,7 @@ public class CommentRepositoryJpaImpl implements CommentRepositoryJpa {
   }
 
   @Override
-  @Transactional(readOnly = false)
+  @Transactional
   public boolean deleteById(long id) {
     String sql = "delete from Comment a where a.id = :id";
     Query query = entityManager.createQuery(sql);

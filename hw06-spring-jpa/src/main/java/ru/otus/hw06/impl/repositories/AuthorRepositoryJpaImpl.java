@@ -18,14 +18,13 @@ public class AuthorRepositoryJpaImpl implements AuthorRepositoryJpa {
   private EntityManager entityManager;
 
   @Override
-  @Transactional(readOnly = true)
   public long count() {
     String sql = "select count(a) from Author a";
     return entityManager.createQuery(sql, Long.class).getSingleResult();
   }
 
   @Override
-  @Transactional(readOnly = false)
+  @Transactional
   public Author insert(Author author) {
     if (author.getId() <= 0) {
       entityManager.persist(author);
@@ -36,13 +35,11 @@ public class AuthorRepositoryJpaImpl implements AuthorRepositoryJpa {
   }
 
   @Override
-  @Transactional(readOnly = true)
   public Optional<Author> getById(long id) {
     return Optional.ofNullable(entityManager.find(Author.class, id));
   }
 
   @Override
-  @Transactional(readOnly = true)
   public List<Author> getAll() {
     String sql = "select a from Author a";
     TypedQuery<Author> query = entityManager.createQuery(sql, Author.class);
@@ -50,7 +47,7 @@ public class AuthorRepositoryJpaImpl implements AuthorRepositoryJpa {
   }
 
   @Override
-  @Transactional(readOnly = false)
+  @Transactional
   public boolean deleteById(long id) {
     String sql = "delete from Author a where a.id = :id";
     Query query = entityManager.createQuery(sql);
