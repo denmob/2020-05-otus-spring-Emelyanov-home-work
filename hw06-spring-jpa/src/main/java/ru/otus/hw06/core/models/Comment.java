@@ -4,11 +4,14 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Data
+@Entity
+@Getter
+@Setter
 @Builder
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@ToString(exclude = "book")
 @Table(name = "comments")
 public class Comment {
   @Id
@@ -18,7 +21,7 @@ public class Comment {
   @Column(name = "commentary", nullable = false, unique = true)
   private @NonNull String commentary;
 
-  @ManyToOne(fetch = FetchType.EAGER)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "book_id", referencedColumnName = "id")
   private Book book;
 }

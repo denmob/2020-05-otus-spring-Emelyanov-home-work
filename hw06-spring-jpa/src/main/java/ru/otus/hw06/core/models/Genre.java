@@ -5,10 +5,10 @@ import lombok.*;
 import javax.persistence.*;
 
 @Data
+@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @Table(name = "genres")
 public class Genre {
   @Id

@@ -4,13 +4,12 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Data
+@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @Table(name = "books")
 @NamedEntityGraph(name = "book-genre-entity-graph", attributeNodes = {@NamedAttributeNode("genre")})
 public class Book {
@@ -31,8 +30,4 @@ public class Book {
   @ManyToOne
   @JoinColumn(name = "genre_id", referencedColumnName = "id")
   private Genre genre;
-
-  @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-  @JoinColumn(name = "book_id")
-  private List<Comment> comments;
 }

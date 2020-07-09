@@ -1,8 +1,10 @@
 package ru.otus.hw06.impl.repositories;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -12,15 +14,17 @@ import org.springframework.test.context.jdbc.Sql;
 import ru.otus.hw06.core.models.Author;
 import ru.otus.hw06.core.models.Book;
 import ru.otus.hw06.core.models.Genre;
+import ru.otus.hw06.core.repositories.CommentRepositoryJpa;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.util.DateUtil.now;
 
+@Slf4j
 @DataJpaTest
 @Sql("classpath:data-test.sql")
-@Import(BookRepositoryJpaImpl.class)
+@Import({BookRepositoryJpaImpl.class})
 class BookRepositoryJpaImplTest {
 
   @Autowired
@@ -81,7 +85,7 @@ class BookRepositoryJpaImplTest {
 
   @Test
   void getAll() {
-    List<Book> books =  bookRepositoryJpa.getAll();
+    List<Book> books = bookRepositoryJpa.getAll();
     assertThat(books.size()).isEqualTo(3);
     assertThat(sessionFactory.getStatistics().getPrepareStatementCount()).isEqualTo(1);
   }
@@ -90,5 +94,22 @@ class BookRepositoryJpaImplTest {
   void deleteById() {
     assertThat(bookRepositoryJpa.deleteById(3L)).isEqualTo(true);
     Assertions.assertEquals(2L, bookRepositoryJpa.count());
+  }
+
+  @Test
+  void getByIdWithCommentsNotEmpty() {
+    Assertions.assertTrue(bookRepositoryJpa.getByIdWithComments(1L).isPresent());
+    Assertions.assertEquals(2, bookRepositoryJpa.getByIdWithComments(1L).get().getComments().size());
+  }
+
+  @Test
+  void getByIdWithCommentsEmpty() {
+    Assertions.assertTrue(bookRepositoryJpa.getByIdWithComments(2L).isPresent());
+    Assertions.assertEquals(0, bookRepositoryJpa.getByIdWithComments(2L).get().getComments().size());
+  }
+
+  @Test
+  void getByIdWithCommentsWhenBookNotFound() {
+    Assertions.assertFalse(bookRepositoryJpa.getByIdWithComments(4L).isPresent());
   }
 }

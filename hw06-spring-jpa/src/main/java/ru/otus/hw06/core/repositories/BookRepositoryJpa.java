@@ -18,5 +18,4 @@ public interface BookRepositoryJpa {
   List<Book> getAll();
 
   boolean deleteById(long id);
-
 }

@@ -7,6 +7,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import ru.otus.hw06.core.dto.BookWithComments;
 import ru.otus.hw06.core.models.Author;
 import ru.otus.hw06.core.models.Book;
 import ru.otus.hw06.core.models.Comment;
@@ -16,17 +17,13 @@ import ru.otus.hw06.impl.service.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-import static org.assertj.core.util.DateUtil.now;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = {ShellLibraryController.class, ViewRepositoryServiceImpl.class, CRUDGenreService.class, CRUDCommentService.class, CRUDBookService.class, CRUDAuthorService.class})
+@SpringBootTest
 class ShellLibraryControllerTest {
 
   @MockBean
@@ -37,11 +34,15 @@ class ShellLibraryControllerTest {
   private CRUDAuthorService crudAuthorService;
   @MockBean
   private CRUDGenreService crudGenreService;
+  @MockBean
+  private InputReaderServiceImpl inputReaderService;
+  @MockBean
+  private ConsolePrintService consolePrintService;
 
   @MockBean
   private ViewRepositoryService viewRepositoryService;
 
-  private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+  private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy MM dd");
   private static final String SUCCESS_OPERATION = "Success operation";
   private static final String FAILURE_OPERATION = "Failure operation";
   private static final String ILLEGAL_ARGUMENTS = "Illegal Arguments";
@@ -50,58 +51,17 @@ class ShellLibraryControllerTest {
   private ShellLibraryController shellLibraryController;
 
   @Test
-  void createBookSUCCESS_OPERATION() {
-    Author author = new Author(1L, "FirstName", "LastName", now());
-    Genre genre = new Genre(1L, "newGenre");
-    Book book = new Book(0L, "Title", convertStringToDate("2020-01-01"), author, genre,null);
-
-    when(crudAuthorService.read(author.getId())).thenReturn(Optional.of(author));
-    when(crudGenreService.read(genre.getId())).thenReturn(Optional.of(genre));
-    when(crudBookService.create(book)).thenReturn(book);
-
-   // Assertions.assertEquals(SUCCESS_OPERATION, shellLibraryController.createBook(book.getTitle(), convertDateToString(book.getDate()), author.getId(), genre.getId()));
-  }
-
-  @Test
-  void createBookFAILURE_OPERATION() {
-    Author author = new Author(1L, "FirstName", "LastName", now());
-    Genre genre = new Genre(1L, "newGenre");
-    Book book = new Book(0L, "Title", convertStringToDate("2020-01-01"), author, genre,null);
-
-    when(crudAuthorService.read(author.getId())).thenReturn(Optional.empty());
-    when(crudGenreService.read(genre.getId())).thenReturn(Optional.empty());
-    when(crudBookService.create(book)).thenReturn(book);
-
-  //  Assertions.assertEquals(FAILURE_OPERATION, shellLibraryController.createBook(book.getTitle(), convertDateToString(book.getDate()), author.getId(), genre.getId()));
-  }
-
-  @Test
-  void createBookILLEGAL_ARGUMENTS() {
-    Author author = new Author(0L, "FirstName", "LastName", now());
-    Genre genre = new Genre(0L, "newGenre");
-    Book book = new Book(0L, "Title", convertStringToDate("2020-01-01"), author, genre,null);
-
-   // Assertions.assertEquals(ILLEGAL_ARGUMENTS, shellLibraryController.createBook(book.getTitle(), convertDateToString(book.getDate()), author.getId(), genre.getId()));
-  }
-
-  @Test
-  void createBookThrowParseDateToString() {
-    assertThrows(ParseException.class, () -> {
-     // shellLibraryController.createBook("Test", "20200101", 1, 1);
-    });
-  }
-
-  @Test
   void readBookSUCCESS_OPERATION() {
-    Book book = new Book(1L, "Title", convertStringToDate("2020-01-01"), null, null,null);
-    when(crudBookService.read(book.getId())).thenReturn(Optional.of(book));
+    Book book = new Book(1L, "Title", convertStringToDate("2020 01 01"), null, null);
+    BookWithComments bookWithComments = new BookWithComments(book,null);
+    when(crudBookService.readWithComments(book.getId())).thenReturn(Optional.of(bookWithComments));
 
-    Assertions.assertEquals(book.toString(), shellLibraryController.readBook(book.getId()));
+    Assertions.assertEquals(bookWithComments.toString(), shellLibraryController.readBook(book.getId()));
   }
 
   @Test
   void readBookFAILURE_OPERATION() {
-    Book book = new Book(1L, "Title", convertStringToDate("2020-01-01"), null, null,null);
+    Book book = new Book(1L, "Title", convertStringToDate("2020 01 01"), null, null);
     when(crudBookService.read(book.getId())).thenReturn(Optional.empty());
 
     Assertions.assertEquals(FAILURE_OPERATION, shellLibraryController.readBook(book.getId()));
@@ -109,45 +69,10 @@ class ShellLibraryControllerTest {
 
   @Test
   void readBookILLEGAL_ARGUMENTS() {
-    Book book = new Book(0L, "Title", convertStringToDate("2020-01-01"), null, null,null);
+    Book book = new Book(0L, "Title", convertStringToDate("2020 01 01"), null, null);
 
     Assertions.assertEquals(ILLEGAL_ARGUMENTS, shellLibraryController.readBook(book.getId()));
   }
-
-  @Test
-  void updateBookSUCCESS_OPERATION() {
-    Author author = new Author(0L, "FirstName", "LastName", now());
-    Genre genre = new Genre(0L, "newGenre");
-    Book book = new Book(1L, "Title", convertStringToDate("2020-01-01"), author, genre,null);
-
-    when(crudBookService.read(book.getId())).thenReturn(Optional.of(book));
-    when(crudAuthorService.read(author.getId())).thenReturn(Optional.of(author));
-    when(crudGenreService.read(genre.getId())).thenReturn(Optional.of(genre));
-    when(crudBookService.update(book)).thenReturn(book);
-
-   // Assertions.assertEquals(SUCCESS_OPERATION, shellLibraryController.updateBook(book.getId(), book.getTitle(), convertDateToString(book.getDate()), author.getId(), genre.getId()));
-  }
-
-  @Test
-  void updateBookFAILURE_OPERATION() {
-    Author author = new Author(0L, "FirstName", "LastName", now());
-    Genre genre = new Genre(0L, "newGenre");
-    Book book = new Book(1L, "Title", convertStringToDate("2020-01-01"), author, genre,null);
-
-    when(crudBookService.read(book.getId())).thenReturn(Optional.empty());
-
-   // Assertions.assertEquals(FAILURE_OPERATION, shellLibraryController.updateBook(book.getId(), book.getTitle(), convertDateToString(book.getDate()), author.getId(), genre.getId()));
-  }
-
-  @Test
-  void updateBookILLEGAL_ARGUMENTS() {
-    Author author = new Author(0L, "FirstName", "LastName", now());
-    Genre genre = new Genre(0L, "newGenre");
-    Book book = new Book(0L, "Title", convertStringToDate("2020-01-01"), author, genre,null);
-
-   // Assertions.assertEquals(ILLEGAL_ARGUMENTS, shellLibraryController.updateBook(book.getId(), book.getTitle(), convertDateToString(book.getDate()), author.getId(), genre.getId()));
-  }
-
 
   @Test
   void deleteBookSUCCESS_OPERATION() {
@@ -318,5 +243,81 @@ class ShellLibraryControllerTest {
   @SneakyThrows
   private String convertDateToString(Date date) {
     return DATE_FORMAT.format(date);
+  }
+
+  @Test
+  void createBook() {
+    List<String> values = new ArrayList<>();
+    values.add("title");
+    values.add("2020 01 01");
+    Iterator<String> stringIterator = values.iterator();
+    Mockito.when(inputReaderService.readLine()).thenAnswer(i ->stringIterator.next());
+    List<String> values2 = new ArrayList<>();
+    values2.add("1");
+    values2.add("1");
+    Iterator<String> stringIterator2 = values2.iterator();
+    Mockito.when(inputReaderService.readToken()).thenAnswer(i ->stringIterator2.next());
+    Mockito.when(crudBookService.create(any())).thenReturn(new Book());
+    Mockito.when(crudAuthorService.read(1)).thenReturn(any());
+    Mockito.when(crudGenreService.read(1)).thenReturn(any());
+
+    Assertions.assertEquals(SUCCESS_OPERATION,shellLibraryController.createBook());
+
+    verify(inputReaderService,times(2)).readLine();
+    verify(inputReaderService,times(2)).readToken();
+    verify(crudBookService,times(1)).create(any());
+    verify(consolePrintService,times(4)).printlnMessage(anyString());
+  }
+
+  @Test
+  void createBookWithThrows() {
+    List<String> values = new ArrayList<>();
+    values.add("title");
+    values.add("2020-01-01");
+    values.add("2020-01-01");
+    Iterator<String> stringIterator = values.iterator();
+    Mockito.when(inputReaderService.readLine()).thenAnswer(i ->stringIterator.next());
+    Assertions.assertEquals(FAILURE_OPERATION,shellLibraryController.createBook());
+
+    verify(inputReaderService,times(3)).readLine();
+  }
+
+  @Test
+  void updateBookTitleSUCCESS_OPERATION() {
+    Book book = new Book(1L,"title",convertStringToDate("2020 01 01"), new Author(), new Genre());
+    Mockito.when(crudBookService.read(book.getId())).thenReturn(Optional.of(book));
+    List<String> values = new ArrayList<>();
+    values.add("newTitle");
+    Iterator<String> stringIterator = values.iterator();
+    Mockito.when(inputReaderService.readLine()).thenAnswer(i ->stringIterator.next());
+    Mockito.when(crudBookService.update(any())).thenReturn(book);
+
+    Assertions.assertEquals(SUCCESS_OPERATION,shellLibraryController.updateBookTitle(book.getId()));
+  }
+
+  @Test
+  void updateBookTitleFAILURE_OPERATION() {
+    long bookId = 1L;
+    Mockito.when(crudBookService.read(bookId)).thenReturn(Optional.empty());
+
+    Assertions.assertEquals(FAILURE_OPERATION,shellLibraryController.updateBookTitle(bookId));
+  }
+
+  @Test
+  void updateBookTitleILLEGAL_ARGUMENTS() {
+    long bookId = 0L;
+    Assertions.assertEquals(ILLEGAL_ARGUMENTS,shellLibraryController.updateBookTitle(bookId));
+  }
+
+  @Test
+  void updateBookDate() {
+  }
+
+  @Test
+  void updateBookGenre() {
+  }
+
+  @Test
+  void updateBookAuthor() {
   }
 }

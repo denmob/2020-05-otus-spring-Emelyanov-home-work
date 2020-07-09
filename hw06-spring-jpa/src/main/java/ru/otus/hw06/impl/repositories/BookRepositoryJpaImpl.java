@@ -1,15 +1,18 @@
 package ru.otus.hw06.impl.repositories;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw06.core.dto.BookWithComments;
+import ru.otus.hw06.core.models.Comment;
 import ru.otus.hw06.core.repositories.BookRepositoryJpa;
 import ru.otus.hw06.core.models.Book;
 
 import javax.persistence.*;
 import java.util.*;
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 @SuppressWarnings({"ConstantConditions", "SqlDialectInspection"})
@@ -37,22 +40,28 @@ public class BookRepositoryJpaImpl implements BookRepositoryJpa {
 
   @Override
   public Optional<Book> getById(long id) {
-    String sql = "select b from Book b join fetch b.author where b.id=:id";
-    EntityGraph<?> entityGraph = entityManager.getEntityGraph("book-genre-entity-graph");
-    TypedQuery<Book> query = entityManager.createQuery(sql, Book.class);
-    query.setParameter("id", id);
-    query.setHint("javax.persistence.fetchgraph", entityGraph);
-    return Optional.ofNullable(query.getSingleResult());
+    try {
+      String sql = "select b from Book b join fetch b.author where b.id=:id";
+      EntityGraph<?> entityGraph = entityManager.getEntityGraph("book-genre-entity-graph");
+      TypedQuery<Book> query = entityManager.createQuery(sql, Book.class);
+      query.setParameter("id", id);
+      query.setHint("javax.persistence.fetchgraph", entityGraph);
+      return Optional.ofNullable(query.getSingleResult());
+    }catch (Exception e) {
+      log.error(e.getMessage(),e);
+    }
+    return Optional.empty();
   }
 
   @Override
   public Optional<BookWithComments> getByIdWithComments(long id) {
-    EntityGraph<?> entityGraph = entityManager.getEntityGraph("book-genre-entity-graph");
-    Query bookTypedQuery = entityManager.createQuery("select b from Book b join fetch b.author left join b.comments where b.id=:id");
-    bookTypedQuery.setParameter("id", id);
-    bookTypedQuery.setHint("javax.persistence.fetchgraph", entityGraph);
-    List list = bookTypedQuery.getResultList();
-
+    Optional<Book> optionalBook = getById(id);
+    if (optionalBook.isPresent()) {
+      String sql = "select c from Comment c where c.book=:instanceBook";
+      TypedQuery<Comment> query = entityManager.createQuery(sql, Comment.class);
+      query.setParameter("instanceBook", optionalBook.get());
+      return Optional.of(new BookWithComments(optionalBook.get(), query.getResultList()));
+    }
     return Optional.empty();
   }
 

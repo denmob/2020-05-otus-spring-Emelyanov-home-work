@@ -6,10 +6,10 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Data
+@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @Table(name = "authors")
 public class Author {
   @Id

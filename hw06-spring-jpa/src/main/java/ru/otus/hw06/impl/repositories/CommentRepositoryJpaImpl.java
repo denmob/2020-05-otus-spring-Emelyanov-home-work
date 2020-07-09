@@ -23,7 +23,7 @@ public class CommentRepositoryJpaImpl implements CommentRepositoryJpa {
 
   @Override
   public long count() {
-    String sql = "select count(a) from Comment a";
+    String sql = "select count(c) from Comment c";
     return entityManager.createQuery(sql, Long.class).getSingleResult();
   }
 
@@ -45,7 +45,7 @@ public class CommentRepositoryJpaImpl implements CommentRepositoryJpa {
 
   @Override
   public List<Comment> getAll() {
-    String sql = "select a from Comment a";
+    String sql = "select c from Comment c";
     TypedQuery<Comment> query = entityManager.createQuery(sql, Comment.class);
     return query.getResultList();
   }
@@ -53,7 +53,7 @@ public class CommentRepositoryJpaImpl implements CommentRepositoryJpa {
   @Override
   @Transactional
   public boolean deleteById(long id) {
-    String sql = "delete from Comment a where a.id = :id";
+    String sql = "delete from Comment c where c.id = :id";
     Query query = entityManager.createQuery(sql);
     query.setParameter("id", id);
     return query.executeUpdate()>0;

@@ -11,6 +11,7 @@ import ru.otus.hw06.core.controller.LibraryController;
 import ru.otus.hw06.core.dto.BookWithComments;
 import ru.otus.hw06.core.models.Book;
 import ru.otus.hw06.core.models.Comment;
+import ru.otus.hw06.core.service.InputReaderService;
 import ru.otus.hw06.core.service.ViewRepositoryService;
 import ru.otus.hw06.impl.service.*;
 
@@ -28,12 +29,13 @@ public class ShellLibraryController implements LibraryController {
   private final CRUDCommentService crudCommentService;
   private final CRUDAuthorService crudAuthorService;
   private final CRUDGenreService crudGenreService;
-  private final InputReaderServiceImpl inputReaderService;
+  private final InputReaderService inputReaderService;
   private final ConsolePrintService consolePrintService;
 
   private final ViewRepositoryService viewRepositoryService;
 
-  private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+  private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy MM dd");
+  private final Integer tryInput = 3;
   private static final String SUCCESS_OPERATION = "Success operation";
   private static final String FAILURE_OPERATION = "Failure operation";
   private static final String ILLEGAL_ARGUMENTS = "Illegal Arguments";
@@ -149,10 +151,9 @@ public class ShellLibraryController implements LibraryController {
   @ShellMethod(value = "Create comment command. Format input: bookId, commentary", key = {"cc", "createComment"})
   public String createComment(long bookId, @NonNull String commentary) {
     if (bookId > 0 && !commentary.isEmpty()) {
-
       Optional<Book> optionalBook = crudBookService.read(bookId);
       if (optionalBook.isPresent()) {
-        Comment comment = new Comment(0L, commentary,optionalBook.get());
+        Comment comment = new Comment(0L, commentary, optionalBook.get());
 
         if (crudCommentService.create(comment) != null) {
           return SUCCESS_OPERATION;
@@ -164,6 +165,7 @@ public class ShellLibraryController implements LibraryController {
   }
 
   @Override
+  @ShellMethod(value = "Read comment command. Format input: commentId", key = {"rc", "readComment"})
   public String readComment(long commentId) {
     if (commentId > 0) {
       Optional<Comment> comment = crudCommentService.read(commentId);
@@ -234,34 +236,41 @@ public class ShellLibraryController implements LibraryController {
   }
 
   private Book processingBookWithFunctionalStyle(Book book) {
-    try {
-      if (book.getTitle() == null) {
-        consolePrintService.printlnMessage("Please input title book");
-        String data = inputReaderService.readLine();
-        if (!data.isEmpty()) {
-          book.setTitle(data);
+    int actualTryInput = 0;
+    do {
+      try {
+        if (book.getTitle() == null) {
+          consolePrintService.printlnMessage("Please input title book");
+          String data = inputReaderService.readLine();
+          if (!data.isEmpty()) {
+            book.setTitle(data);
+          }
         }
+        if (book.getDate() == null) {
+          consolePrintService.printlnMessage("Please input date of issue book. format: " + dateFormat.toPattern());
+          String date = inputReaderService.readLine();
+          book.setDate(convertStringToDate(date));
+        }
+        if (book.getGenre() == null) {
+          consolePrintService.printlnMessage("Please input id exist genre of book.");
+          String date = inputReaderService.readToken();
+          crudGenreService.read(Long.parseLong(date)).ifPresent(book::setGenre);
+        }
+        if (book.getAuthor() == null) {
+          consolePrintService.printlnMessage("Please input id exist author of book.");
+          String date = inputReaderService.readToken();
+          crudAuthorService.read(Long.parseLong(date)).ifPresent(book::setAuthor);
+        }
+      } catch (Exception e) {
+        consolePrintService.printlnMessage(e.getMessage());
+        ++actualTryInput;
       }
-      if (book.getDate() == null) {
-        consolePrintService.printlnMessage("Please input date of issue book. format: " + dateFormat.toPattern());
-        String date = inputReaderService.readLine();
-        book.setDate(convertStringToDate(date));
-      }
-      if (book.getGenre() == null) {
-        consolePrintService.printlnMessage("Please input id exist genre of book.");
-        String date = inputReaderService.readToken();
-        crudGenreService.read(Long.parseLong(date)).ifPresent(book::setGenre);
-      }
-      if (book.getAuthor() == null) {
-        consolePrintService.printlnMessage("Please input id exist author of book.");
-        String date = inputReaderService.readToken();
-        crudAuthorService.read(Long.parseLong(date)).ifPresent(book::setAuthor);
-      }
-    } catch (Exception e) {
-      consolePrintService.printlnMessage(e.getMessage());
-      processingBookWithFunctionalStyle(book);
-    }
+    } while (!isValidBook(book) && actualTryInput < tryInput-1);
     return book;
+  }
+
+  private boolean isValidBook(Book book){
+    return (book.getAuthor() != null && book.getGenre() != null && !book.getTitle().isEmpty() && book.getDate() != null);
   }
 
 }
