@@ -1,7 +1,6 @@
 package ru.otus.hw06.core.controller;
 
 public interface LibraryController {
-
   String createBook();
 
   String readBook(long id);

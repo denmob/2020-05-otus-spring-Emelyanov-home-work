@@ -35,7 +35,6 @@ public class ShellLibraryController implements LibraryController {
   private final ViewRepositoryService viewRepositoryService;
 
   private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy MM dd");
-  private final Integer tryInput = 3;
   private static final String SUCCESS_OPERATION = "Success operation";
   private static final String FAILURE_OPERATION = "Failure operation";
   private static final String ILLEGAL_ARGUMENTS = "Illegal Arguments";
@@ -43,7 +42,7 @@ public class ShellLibraryController implements LibraryController {
   @Override
   @ShellMethod(value = "Create book command.", key = {"cb", "createBook"})
   public String createBook() {
-    Book book = processingBookWithFunctionalStyle(new Book());
+    Book book = processingBookInteractiveStyle(new Book());
     if (crudBookService.create(book) != null) {
       return SUCCESS_OPERATION;
     }
@@ -71,7 +70,7 @@ public class ShellLibraryController implements LibraryController {
       if (optionalBook.isPresent()) {
         Book book = optionalBook.get();
         book.setTitle(null);
-        processingBookWithFunctionalStyle(book);
+        processingBookInteractiveStyle(book);
         if (crudBookService.update(book) != null) {
           return SUCCESS_OPERATION;
         }
@@ -89,7 +88,7 @@ public class ShellLibraryController implements LibraryController {
       if (optionalBook.isPresent()) {
         Book book = optionalBook.get();
         book.setDate(null);
-        processingBookWithFunctionalStyle(book);
+        processingBookInteractiveStyle(book);
         if (crudBookService.update(book) != null) {
           return SUCCESS_OPERATION;
         }
@@ -107,7 +106,7 @@ public class ShellLibraryController implements LibraryController {
       if (optionalBook.isPresent()) {
         Book book = optionalBook.get();
         book.setGenre(null);
-        processingBookWithFunctionalStyle(book);
+        processingBookInteractiveStyle(book);
         if (crudBookService.update(book) != null) {
           return SUCCESS_OPERATION;
         }
@@ -125,7 +124,7 @@ public class ShellLibraryController implements LibraryController {
       if (optionalBook.isPresent()) {
         Book book = optionalBook.get();
         book.setAuthor(null);
-        processingBookWithFunctionalStyle(book);
+        processingBookInteractiveStyle(book);
         if (crudBookService.update(book) != null) {
           return SUCCESS_OPERATION;
         }
@@ -235,8 +234,9 @@ public class ShellLibraryController implements LibraryController {
     return dateFormat.parse(date);
   }
 
-  private Book processingBookWithFunctionalStyle(Book book) {
+  private Book processingBookInteractiveStyle(Book book) {
     int actualTryInput = 0;
+    int tryInput = 3;
     do {
       try {
         if (book.getTitle() == null) {
@@ -265,7 +265,7 @@ public class ShellLibraryController implements LibraryController {
         consolePrintService.printlnMessage(e.getMessage());
         ++actualTryInput;
       }
-    } while (!isValidBook(book) && actualTryInput < tryInput-1);
+    } while (!isValidBook(book) && actualTryInput < tryInput -1);
     return book;
   }
 

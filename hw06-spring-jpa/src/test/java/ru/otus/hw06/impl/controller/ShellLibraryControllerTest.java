@@ -293,6 +293,7 @@ class ShellLibraryControllerTest {
     Mockito.when(crudBookService.update(any())).thenReturn(book);
 
     Assertions.assertEquals(SUCCESS_OPERATION,shellLibraryController.updateBookTitle(book.getId()));
+    Assertions.assertEquals(values.get(0),book.getTitle());
   }
 
   @Test
@@ -310,14 +311,42 @@ class ShellLibraryControllerTest {
   }
 
   @Test
-  void updateBookDate() {
+  void updateBookDateSUCCESS_OPERATION() {
+    String newDate = "2020 10 10";
+    Book book = new Book(1L,"title",convertStringToDate("2020 01 01"), new Author(), new Genre());
+    Mockito.when(crudBookService.read(book.getId())).thenReturn(Optional.of(book));
+    Mockito.when(inputReaderService.readLine()).thenReturn(newDate);
+    Mockito.when(crudBookService.update(any())).thenReturn(book);
+
+    Assertions.assertEquals(SUCCESS_OPERATION,shellLibraryController.updateBookDate(book.getId()));
+    Assertions.assertEquals(convertStringToDate(newDate),book.getDate());
   }
 
   @Test
-  void updateBookGenre() {
+  void updateBookGenreSUCCESS_OPERATION() {
+    Genre genre = new Genre(4L,"test");
+    Book book = new Book(1L,"title",convertStringToDate("2020 01 01"), new Author(),genre );
+    Mockito.when(crudBookService.read(book.getId())).thenReturn(Optional.of(book));
+    Mockito.when(inputReaderService.readToken()).thenReturn(String.valueOf(genre.getId()));
+    Mockito.when(crudBookService.update(any())).thenReturn(book);
+    Mockito.when(crudGenreService.read(genre.getId())).thenReturn(Optional.of(genre));
+
+    Assertions.assertEquals(SUCCESS_OPERATION,shellLibraryController.updateBookGenre(book.getId()));
+    Assertions.assertEquals(genre.getId(),book.getGenre().getId());
   }
 
   @Test
-  void updateBookAuthor() {
+  void updateBookAuthorSUCCESS_OPERATION() {
+    Author author = new Author(4L,"FirstName","LastName",convertStringToDate("1988 09 19"));
+    Book book = new Book(1L,"title",convertStringToDate("2020 01 01"), author,new Genre());
+    Mockito.when(crudBookService.read(book.getId())).thenReturn(Optional.of(book));
+    Mockito.when(inputReaderService.readToken()).thenReturn(String.valueOf(author.getId()));
+    Mockito.when(crudBookService.update(any())).thenReturn(book);
+    Mockito.when(crudAuthorService.read(author.getId())).thenReturn(Optional.of(author));
+
+    Assertions.assertEquals(SUCCESS_OPERATION,shellLibraryController.updateBookAuthor(book.getId()));
+    Assertions.assertEquals(author.getId(),book.getAuthor().getId());
+
+    verify(crudAuthorService,times(1)).read(author.getId());
   }
 }

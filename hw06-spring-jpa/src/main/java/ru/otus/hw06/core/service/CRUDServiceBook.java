@@ -5,16 +5,6 @@ import ru.otus.hw06.core.models.Book;
 
 import java.util.Optional;
 
-public interface CRUDServiceBook {
-
-  Book create(Book book);
-
-  Optional<Book> read(long id);
-
+public interface CRUDServiceBook extends CRUDServiceGeneric<Book> {
   Optional<BookWithComments> readWithComments(long id);
-
-  boolean delete(long id);
-
-  Book update(Book book);
-
 }

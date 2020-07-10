@@ -13,7 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BookWithComments {
-
   private Book book;
   private List<Comment> comments = new ArrayList<>();
 }
