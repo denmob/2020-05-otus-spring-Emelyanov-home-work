@@ -6,8 +6,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.hw06.core.models.Author;
 import ru.otus.hw06.core.models.Book;
+import ru.otus.hw06.core.models.Comment;
 import ru.otus.hw06.core.models.Genre;
 import ru.otus.hw06.core.repositories.BookRepositoryJpa;
+import ru.otus.hw06.core.repositories.CommentRepositoryJpa;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.assertj.core.util.DateUtil.now;
 import static org.mockito.Mockito.*;
 
@@ -16,6 +22,9 @@ class CRUDBookServiceTest {
 
   @MockBean
   private BookRepositoryJpa bookRepositoryJpa;
+
+  @MockBean
+  private CommentRepositoryJpa commentRepositoryJpa;
 
   @Autowired
   private CRUDBookService crudBookService;
@@ -62,11 +71,19 @@ class CRUDBookServiceTest {
 
   @Test
   void readWithComments() {
-    long id = 1L;
-    when(bookRepositoryJpa.getByIdWithComments(id)).thenReturn(any());
+    Author author = new Author(0L,"FirstName","LastName",now());
+    Genre genre = new Genre(0L,"newGenre");
+    Book book = new Book(4L,"Title",now(),author,genre);
+    List<Comment> comments = new ArrayList<>();
+    comments.add(new Comment(0L,"test",book));
 
-    crudBookService.readWithComments(id);
-    verify(bookRepositoryJpa,times(1)).getByIdWithComments(id);
+    when(bookRepositoryJpa.getById(book.getId())).thenReturn(java.util.Optional.of(book));
+    when(commentRepositoryJpa.getAllByBookId(book.getId())).thenReturn(comments);
+
+    crudBookService.readWithComments(book.getId());
+    verify(bookRepositoryJpa,times(1)).getById(book.getId());
+    verify(commentRepositoryJpa,times(1)).getAllByBookId(book.getId());
 
   }
+
 }

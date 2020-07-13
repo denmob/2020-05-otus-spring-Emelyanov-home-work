@@ -96,20 +96,4 @@ class BookRepositoryJpaImplTest {
     Assertions.assertEquals(2L, bookRepositoryJpa.count());
   }
 
-  @Test
-  void getByIdWithCommentsNotEmpty() {
-    Assertions.assertTrue(bookRepositoryJpa.getByIdWithComments(1L).isPresent());
-    Assertions.assertEquals(2, bookRepositoryJpa.getByIdWithComments(1L).get().getComments().size());
-  }
-
-  @Test
-  void getByIdWithCommentsEmpty() {
-    Assertions.assertTrue(bookRepositoryJpa.getByIdWithComments(2L).isPresent());
-    Assertions.assertEquals(0, bookRepositoryJpa.getByIdWithComments(2L).get().getComments().size());
-  }
-
-  @Test
-  void getByIdWithCommentsWhenBookNotFound() {
-    Assertions.assertFalse(bookRepositoryJpa.getByIdWithComments(4L).isPresent());
-  }
 }

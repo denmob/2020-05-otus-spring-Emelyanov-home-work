@@ -177,29 +177,6 @@ class ShellLibraryControllerTest {
   }
 
   @Test
-  void deleteCommentSUCCESS_OPERATION() {
-    long commentId = 1L;
-    when(crudCommentService.delete(commentId)).thenReturn(true);
-
-    Assertions.assertEquals(SUCCESS_OPERATION, shellLibraryController.deleteComment(commentId));
-  }
-
-  @Test
-  void deleteCommentFAILURE_OPERATION() {
-    long commentId = 1L;
-    when(crudCommentService.delete(commentId)).thenReturn(false);
-
-    Assertions.assertEquals(FAILURE_OPERATION, shellLibraryController.deleteComment(commentId));
-  }
-
-  @Test
-  void deleteCommentILLEGAL_ARGUMENTS() {
-    long commentId = 0L;
-
-    Assertions.assertEquals(ILLEGAL_ARGUMENTS, shellLibraryController.deleteComment(commentId));
-  }
-
-  @Test
   void printTableBooks() {
     Mockito.doNothing().when(viewRepositoryService).printTableBooks();
 

@@ -21,8 +21,6 @@ public interface LibraryController {
 
   String updateComment(long id, String commentary);
 
-  String deleteComment(long id);
-
   void printTableBooks();
 
   void printTableAuthors();

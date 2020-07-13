@@ -4,13 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.hw06.core.models.Comment;
 import ru.otus.hw06.core.repositories.CommentRepositoryJpa;
-import ru.otus.hw06.core.service.CRUDServiceGeneric;
+import ru.otus.hw06.core.service.CRUDServiceComment;
 
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class CRUDCommentService implements CRUDServiceGeneric<Comment> {
+public class CRUDCommentService implements CRUDServiceComment {
 
   private final CommentRepositoryJpa commentRepositoryJpa;
 
@@ -22,11 +22,6 @@ public class CRUDCommentService implements CRUDServiceGeneric<Comment> {
   @Override
   public Optional<Comment> read(long id) {
     return commentRepositoryJpa.getById(id);
-  }
-
-  @Override
-  public boolean delete(long id) {
-    return commentRepositoryJpa.deleteById(id);
   }
 
   @Override

@@ -194,18 +194,6 @@ public class ShellLibraryController implements LibraryController {
   }
 
   @Override
-  @ShellMethod(value = "Delete comment command. Format input: commentId", key = {"dc", "deleteComment"})
-  public String deleteComment(long commentId) {
-    if (commentId > 0) {
-      if (crudCommentService.delete(commentId)) {
-        return SUCCESS_OPERATION;
-      }
-      return FAILURE_OPERATION;
-    }
-    return ILLEGAL_ARGUMENTS;
-  }
-
-  @Override
   @ShellMethod(value = "Print table books command", key = {"pb", "printBooks"})
   public void printTableBooks() {
     viewRepositoryService.printTableBooks();

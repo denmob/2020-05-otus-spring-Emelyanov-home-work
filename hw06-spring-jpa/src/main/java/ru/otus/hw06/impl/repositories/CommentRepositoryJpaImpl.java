@@ -51,12 +51,10 @@ public class CommentRepositoryJpaImpl implements CommentRepositoryJpa {
   }
 
   @Override
-  @Transactional
-  public boolean deleteById(long id) {
-    String sql = "delete from Comment c where c.id = :id";
-    Query query = entityManager.createQuery(sql);
-    query.setParameter("id", id);
-    return query.executeUpdate()>0;
+  public List<Comment> getAllByBookId(long bookId) {
+    String sql = "select c from Comment c where c.book.id=:book_id";
+    TypedQuery<Comment> query = entityManager.createQuery(sql, Comment.class);
+    query.setParameter("book_id", bookId);
+    return query.getResultList();
   }
-
 }

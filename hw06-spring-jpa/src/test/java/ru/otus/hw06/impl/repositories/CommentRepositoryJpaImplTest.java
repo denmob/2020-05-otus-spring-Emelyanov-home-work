@@ -81,9 +81,10 @@ class CommentRepositoryJpaImplTest {
     Assertions.assertEquals(2,comments.size());
   }
 
+
   @Test
-  void deleteById() {
-    commentRepositoryJpa.deleteById(1L);
-    Assertions.assertEquals(1,commentRepositoryJpa.count());
+  void getAllByBookId() {
+    List<Comment> comments = commentRepositoryJpa.getAllByBookId(1L);
+    Assertions.assertEquals(2,comments.size());
   }
 }
