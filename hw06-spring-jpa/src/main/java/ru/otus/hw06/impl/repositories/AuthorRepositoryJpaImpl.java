@@ -49,10 +49,12 @@ public class AuthorRepositoryJpaImpl implements AuthorRepositoryJpa {
   @Override
   @Transactional
   public boolean deleteById(long id) {
-    String sql = "delete from Author a where a.id = :id";
-    Query query = entityManager.createQuery(sql);
-    query.setParameter("id", id);
-    return query.executeUpdate() > 0;
+    Optional<Author> optionalAuthor = getById(id);
+    if (optionalAuthor.isPresent()) {
+      entityManager.remove(optionalAuthor.get());
+      return true;
+    }
+    return false;
   }
 
 }

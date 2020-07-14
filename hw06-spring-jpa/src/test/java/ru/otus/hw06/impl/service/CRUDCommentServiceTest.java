@@ -45,4 +45,13 @@ class CRUDCommentServiceTest {
     crudCommentService.update(comment);
     verify(commentRepositoryJpa,times(1)).insert(comment);
   }
+
+  @Test
+  void delete() {
+    long id = 1L;
+    when(commentRepositoryJpa.deleteById(id)).thenReturn(true);
+
+    crudCommentService.delete(id);
+    verify(commentRepositoryJpa,times(1)).deleteById(id);
+  }
 }

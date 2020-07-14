@@ -5,8 +5,6 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.hw06.core.dto.BookWithComments;
-import ru.otus.hw06.core.models.Comment;
 import ru.otus.hw06.core.repositories.BookRepositoryJpa;
 import ru.otus.hw06.core.models.Book;
 
@@ -61,10 +59,12 @@ public class BookRepositoryJpaImpl implements BookRepositoryJpa {
   @Override
   @Transactional
   public boolean deleteById(long id) {
-    String sql = "delete from Book b where b.id = :id";
-    Query query = entityManager.createQuery(sql);
-    query.setParameter("id", id);
-    return query.executeUpdate() > 0;
+    Optional<Book> optionalBook = getById(id);
+    if (optionalBook.isPresent()) {
+      entityManager.remove(optionalBook.get());
+      return true;
+    }
+    return false;
   }
 
 }

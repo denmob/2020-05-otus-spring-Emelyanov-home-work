@@ -82,13 +82,6 @@ class ShellLibraryControllerTest {
     Assertions.assertEquals(SUCCESS_OPERATION, shellLibraryController.deleteBook(bookId));
   }
 
-  @Test
-  void deleteBookFAILURE_OPERATION() {
-    long bookId = 1L;
-    when(crudBookService.delete(bookId)).thenReturn(false);
-
-    Assertions.assertEquals(FAILURE_OPERATION, shellLibraryController.deleteBook(bookId));
-  }
 
   @Test
   void deleteBookILLEGAL_ARGUMENTS() {
@@ -174,6 +167,29 @@ class ShellLibraryControllerTest {
     when(crudCommentService.read(comment.getId())).thenReturn(Optional.of(comment));
 
     Assertions.assertEquals(ILLEGAL_ARGUMENTS, shellLibraryController.updateComment(comment.getId(), comment.getCommentary()));
+  }
+
+  @Test
+  void deleteCommentILLEGAL_ARGUMENTS() {
+    long commentId = 0L;
+
+    Assertions.assertEquals(ILLEGAL_ARGUMENTS, shellLibraryController.deleteComment(commentId));
+  }
+
+  @Test
+  void deleteCommentSUCCESS_OPERATION() {
+    long commentId = 1L;
+    when(crudCommentService.delete(commentId)).thenReturn(true);
+
+    Assertions.assertEquals(SUCCESS_OPERATION, shellLibraryController.deleteComment(commentId));
+  }
+
+  @Test
+  void deleteCommentFAILURE_OPERATION() {
+    long commentId = 1L;
+    when(crudCommentService.delete(commentId)).thenReturn(false);
+
+    Assertions.assertEquals(FAILURE_OPERATION, shellLibraryController.deleteComment(commentId));
   }
 
   @Test

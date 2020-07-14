@@ -138,11 +138,9 @@ public class ShellLibraryController implements LibraryController {
   @ShellMethod(value = "Delete book command. Format input: bookId", key = {"db", "deleteBook"})
   public String deleteBook(long bookId) {
     if (bookId > 0) {
-      if (crudBookService.delete(bookId)) {
+      crudBookService.delete(bookId);
         return SUCCESS_OPERATION;
       }
-      return FAILURE_OPERATION;
-    }
     return ILLEGAL_ARGUMENTS;
   }
 
@@ -187,6 +185,18 @@ public class ShellLibraryController implements LibraryController {
         if (crudCommentService.update(comment) != null) {
           return SUCCESS_OPERATION;
         }
+      }
+      return FAILURE_OPERATION;
+    }
+    return ILLEGAL_ARGUMENTS;
+  }
+
+  @Override
+  @ShellMethod(value = "Delete comment command. Format input: commentId", key = {"dc", "deleteComment"})
+  public String deleteComment(long commentId) {
+    if (commentId > 0) {
+      if (crudCommentService.delete(commentId)) {
+        return SUCCESS_OPERATION;
       }
       return FAILURE_OPERATION;
     }

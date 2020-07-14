@@ -28,4 +28,9 @@ public class CRUDCommentService implements CRUDServiceComment {
   public Comment update(Comment entity) {
     return commentRepositoryJpa.insert(entity);
   }
+
+  @Override
+  public boolean delete(long id) {
+    return commentRepositoryJpa.deleteById(id);
+  }
 }

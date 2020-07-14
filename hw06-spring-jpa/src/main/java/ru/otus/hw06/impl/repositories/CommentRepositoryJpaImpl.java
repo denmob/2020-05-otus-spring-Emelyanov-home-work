@@ -8,7 +8,6 @@ import ru.otus.hw06.core.repositories.CommentRepositoryJpa;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
@@ -48,6 +47,17 @@ public class CommentRepositoryJpaImpl implements CommentRepositoryJpa {
     String sql = "select c from Comment c";
     TypedQuery<Comment> query = entityManager.createQuery(sql, Comment.class);
     return query.getResultList();
+  }
+
+  @Override
+  @Transactional
+  public boolean deleteById(long id) {
+    Optional<Comment> commentOptional = getById(id);
+    if (commentOptional.isPresent()) {
+      entityManager.remove(commentOptional.get());
+      return true;
+    }
+    return false;
   }
 
   @Override

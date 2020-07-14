@@ -3,6 +3,7 @@ package ru.otus.hw06.impl.repositories;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ru.otus.hw06.core.models.Comment;
 import ru.otus.hw06.core.repositories.GenreRepositoryJpa;
 import ru.otus.hw06.core.models.Genre;
 
@@ -50,10 +51,12 @@ public class GenreRepositoryJpaImpl implements GenreRepositoryJpa {
   @Override
   @Transactional
   public boolean deleteById(long id) {
-    String sql = "delete from Genre g where g.id = :id";
-    Query query = entityManager.createQuery(sql);
-    query.setParameter("id", id);
-    return query.executeUpdate()>0;
+    Optional<Genre> optionalGenre = getById(id);
+    if (optionalGenre.isPresent()) {
+      entityManager.remove(optionalGenre.get());
+      return true;
+    }
+    return false;
   }
 
 }
