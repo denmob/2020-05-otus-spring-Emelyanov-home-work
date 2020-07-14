@@ -22,12 +22,12 @@ public class CRUDGenreService implements CRUDServiceGenre {
   }
 
   @Override
-  @Transactional
   public Optional<Genre> read(long id) {
     return genreRepository.findById(id);
   }
 
   @Override
+  @Transactional
   public void delete(long id) {
       genreRepository.deleteById(id);
   }

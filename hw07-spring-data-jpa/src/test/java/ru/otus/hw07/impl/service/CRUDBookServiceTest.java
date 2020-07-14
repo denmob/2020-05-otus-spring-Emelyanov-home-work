@@ -1,5 +1,6 @@
 package ru.otus.hw07.impl.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,15 +31,21 @@ class CRUDBookServiceTest {
   @Autowired
   private CRUDBookService crudBookService;
 
+  private Book newBook;
+
+  @BeforeEach
+  void beforeEach(){
+    Author newAuthor = new Author(0L, "FirstName", "LastName", now());
+    Genre newGenre = new Genre(0L, "newGenre");
+    newBook = new Book(0L,"Title",now(), newAuthor, newGenre);
+  }
+
   @Test
   void create() {
-    Author author = new Author(0L,"FirstName","LastName",now());
-    Genre genre = new Genre(0L,"newGenre");
-    Book book = new Book(0L,"Title",now(),author,genre);
-    when(bookRepository.save(book)).thenReturn(book);
+    when(bookRepository.save(newBook)).thenReturn(newBook);
 
-    crudBookService.create(book);
-    verify(bookRepository,times(1)).save(book);
+    crudBookService.create(newBook);
+    verify(bookRepository,times(1)).save(newBook);
   }
 
   @Test
@@ -61,30 +68,23 @@ class CRUDBookServiceTest {
 
   @Test
   void update() {
-    Author author = new Author(0L,"FirstName","LastName",now());
-    Genre genre = new Genre(0L,"newGenre");
-    Book book = new Book(3L,"Title",now(),author,genre);
-    when(bookRepository.save(book)).thenReturn(book);
+    when(bookRepository.save(newBook)).thenReturn(newBook);
 
-    crudBookService.update(book);
-    verify(bookRepository,times(1)).save(book);
+    crudBookService.update(newBook);
+    verify(bookRepository,times(1)).save(newBook);
   }
 
   @Test
   void readWithComments() {
-    Author author = new Author(0L,"FirstName","LastName",now());
-    Genre genre = new Genre(0L,"newGenre");
-    Book book = new Book(4L,"Title",now(),author,genre);
     List<Comment> comments = new ArrayList<>();
-    comments.add(new Comment(0L,"test",book));
+    comments.add(new Comment(0L,"test",newBook));
 
-    when(bookRepository.findById(book.getId())).thenReturn(java.util.Optional.of(book));
-    when(commentRepository.getAllByBookId(book.getId())).thenReturn(comments);
+    when(bookRepository.findById(newBook.getId())).thenReturn(java.util.Optional.of(newBook));
+    when(commentRepository.getAllByBookId(newBook.getId())).thenReturn(comments);
 
-    crudBookService.readWithComments(book.getId());
-    verify(bookRepository,times(1)).findById(book.getId());
-    verify(commentRepository,times(1)).getAllByBookId(book.getId());
-
+    crudBookService.readWithComments(newBook.getId());
+    verify(bookRepository,times(1)).findById(newBook.getId());
+    verify(commentRepository,times(1)).getAllByBookId(newBook.getId());
   }
 
 }

@@ -1,5 +1,6 @@
 package ru.otus.hw07.impl.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,13 +18,19 @@ class CRUDGenreServiceTest {
   @Autowired
   private CRUDGenreService crudGenreService;
 
+  private Genre newGenre;
+
+  @BeforeEach
+  void beforeEach(){
+    newGenre = new Genre(0L, "newGenre");
+  }
+
   @Test
   void create() {
-    Genre genre = new Genre(0L, "newGenre");
-    when(genreRepository.save(genre)).thenReturn(genre);
+    when(genreRepository.save(newGenre)).thenReturn(newGenre);
 
-    crudGenreService.create(genre);
-    verify(genreRepository, times(1)).save(genre);
+    crudGenreService.create(newGenre);
+    verify(genreRepository, times(1)).save(newGenre);
   }
 
   @Test
@@ -46,10 +53,9 @@ class CRUDGenreServiceTest {
 
   @Test
   void update() {
-    Genre genre = new Genre(1L, "newGenre");
-    when(genreRepository.save(genre)).thenReturn(genre);
+    when(genreRepository.save(newGenre)).thenReturn(newGenre);
 
-    crudGenreService.update(genre);
-    verify(genreRepository, times(1)).save(genre);
+    crudGenreService.update(newGenre);
+    verify(genreRepository, times(1)).save(newGenre);
   }
 }

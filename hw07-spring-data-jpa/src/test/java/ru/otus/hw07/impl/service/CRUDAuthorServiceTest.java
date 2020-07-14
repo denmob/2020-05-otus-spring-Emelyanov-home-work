@@ -1,5 +1,6 @@
 package ru.otus.hw07.impl.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -7,10 +8,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.hw07.core.models.Author;
 import ru.otus.hw07.core.repositories.AuthorRepository;
 
-import java.util.Optional;
-
 import static org.assertj.core.util.DateUtil.now;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest(classes = CRUDAuthorService.class)
@@ -22,13 +20,19 @@ class CRUDAuthorServiceTest {
   @Autowired
   private CRUDAuthorService crudAuthorService;
 
+  private Author newAuthor;
+
+  @BeforeEach
+  void beforeEach(){
+    newAuthor = new Author(1L,"FirstName","LastName",now());
+  }
+
   @Test
   void create() {
-    Author author = new Author(1L,"FirstName","LastName",now());
-    when(authorRepository.save(author)).thenReturn(author);
+    when(authorRepository.save(newAuthor)).thenReturn(newAuthor);
 
-    crudAuthorService.create(author);
-    verify(authorRepository,times(1)).save(author);
+    crudAuthorService.create(newAuthor);
+    verify(authorRepository,times(1)).save(newAuthor);
   }
 
   @Test
@@ -42,19 +46,17 @@ class CRUDAuthorServiceTest {
 
   @Test
   void delete() {
-    Author author = new Author(1L,"FirstName","LastName",now());
-    doNothing().when(authorRepository).deleteById(author.getId());
+    doNothing().when(authorRepository).deleteById(newAuthor.getId());
 
-    crudAuthorService.delete(author.getId());
-    verify(authorRepository,times(1)).deleteById(author.getId());
+    crudAuthorService.delete(newAuthor.getId());
+    verify(authorRepository,times(1)).deleteById(newAuthor.getId());
   }
 
   @Test
   void update() {
-    Author author = new Author(3L,"FirstName","LastName",now());
-    when(authorRepository.save(author)).thenReturn(author);
+    when(authorRepository.save(newAuthor)).thenReturn(newAuthor);
 
-    crudAuthorService.update(author);
-    verify(authorRepository,times(1)).save(author);
+    crudAuthorService.update(newAuthor);
+    verify(authorRepository,times(1)).save(newAuthor);
   }
 }

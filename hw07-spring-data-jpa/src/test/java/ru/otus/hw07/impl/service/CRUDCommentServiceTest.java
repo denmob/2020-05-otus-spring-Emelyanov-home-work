@@ -1,5 +1,6 @@
 package ru.otus.hw07.impl.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,14 +20,19 @@ class CRUDCommentServiceTest {
   @Autowired
   private CRUDCommentService crudCommentService;
 
+  private Comment newComment;
+
+  @BeforeEach
+  void beforeEach(){
+     newComment = new Comment(0L,"comment",new Book());
+  }
 
   @Test
   void create() {
-    Comment comment = new Comment(0L,"comment",new Book());
-    when(commentRepository.save(comment)).thenReturn(comment);
+    when(commentRepository.save(newComment)).thenReturn(newComment);
 
-    crudCommentService.create(comment);
-    verify(commentRepository,times(1)).save(comment);
+    crudCommentService.create(newComment);
+    verify(commentRepository,times(1)).save(newComment);
   }
 
   @Test
@@ -40,11 +46,10 @@ class CRUDCommentServiceTest {
 
   @Test
   void update() {
-    Comment comment = new Comment(1L,"comment",new Book());
-    when(commentRepository.save(comment)).thenReturn(comment);
+    when(commentRepository.save(newComment)).thenReturn(newComment);
 
-    crudCommentService.update(comment);
-    verify(commentRepository,times(1)).save(comment);
+    crudCommentService.update(newComment);
+    verify(commentRepository,times(1)).save(newComment);
   }
 
   @Test

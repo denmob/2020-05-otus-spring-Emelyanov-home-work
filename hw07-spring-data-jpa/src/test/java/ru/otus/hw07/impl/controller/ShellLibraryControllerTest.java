@@ -2,6 +2,7 @@ package ru.otus.hw07.impl.controller;
 
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,9 @@ import ru.otus.hw07.core.service.ViewRepositoryService;
 import ru.otus.hw07.impl.service.*;
 import ru.otus.hw07.impl.service.CRUDBookService;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -43,7 +42,6 @@ class ShellLibraryControllerTest {
   @MockBean
   private ViewRepositoryService viewRepositoryService;
 
-  private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy MM dd");
   private static final String SUCCESS_OPERATION = "Success operation";
   private static final String FAILURE_OPERATION = "Failure operation";
   private static final String ILLEGAL_ARGUMENTS = "Illegal Arguments";
@@ -51,62 +49,64 @@ class ShellLibraryControllerTest {
   @Autowired
   private ShellLibraryController shellLibraryController;
 
-  @Test
-  void readBookSUCCESS_OPERATION() {
-    Book book = new Book(1L, "Title", convertStringToDate("2020 01 01"), null, null);
-    BookWithComments bookWithComments = new BookWithComments(book,null);
-    when(crudBookService.readWithComments(book.getId())).thenReturn(Optional.of(bookWithComments));
+  private Book newBook;
+  private Book oldBook;
+  private Comment newComment;
+  private Comment oldComment;
 
-    Assertions.assertEquals(bookWithComments.toString(), shellLibraryController.readBook(book.getId()));
+  @BeforeEach
+  void beforeEach(){
+    Author author = new Author(4L, "FirstName", "LastName", convertStringToDate("1988 09 19"));
+    Genre genre = new Genre(4L, "test");
+    newBook = new Book(0L, "Title new", convertStringToDate("2020 02 01"), new Author(), new Genre());
+    oldBook = new Book(4L, "Title old", convertStringToDate("2020 02 01"), author, genre);
+    newComment = new Comment(0L, "new comment", oldBook);
+    oldComment = new Comment(1L, "old comment", oldBook);
   }
 
   @Test
-  void readBookFAILURE_OPERATION() {
-    Book book = new Book(1L, "Title", convertStringToDate("2020 01 01"), null, null);
-    when(crudBookService.read(book.getId())).thenReturn(Optional.empty());
+  void readBookSuccessOperation() {
+    BookWithComments bookWithComments = new BookWithComments(oldBook, null);
+    when(crudBookService.readWithComments(oldBook.getId())).thenReturn(Optional.of(bookWithComments));
 
-    Assertions.assertEquals(FAILURE_OPERATION, shellLibraryController.readBook(book.getId()));
+    Assertions.assertEquals(bookWithComments.toString(), shellLibraryController.readBook(oldBook.getId()));
   }
 
   @Test
-  void readBookILLEGAL_ARGUMENTS() {
-    Book book = new Book(0L, "Title", convertStringToDate("2020 01 01"), null, null);
+  void readBookFailureOperation() {
+    when(crudBookService.read(oldBook.getId())).thenReturn(Optional.empty());
 
-    Assertions.assertEquals(ILLEGAL_ARGUMENTS, shellLibraryController.readBook(book.getId()));
+    Assertions.assertEquals(FAILURE_OPERATION, shellLibraryController.readBook(oldBook.getId()));
   }
 
   @Test
-  void deleteBookSUCCESS_OPERATION() {
-    long bookId = 1L;
-    doNothing().when(crudBookService).delete(bookId);
-
-    Assertions.assertEquals(SUCCESS_OPERATION, shellLibraryController.deleteBook(bookId));
-  }
-
-
-  @Test
-  void deleteBookILLEGAL_ARGUMENTS() {
-    long bookId = 0L;
-
-    Assertions.assertEquals(ILLEGAL_ARGUMENTS, shellLibraryController.deleteBook(bookId));
-  }
-
-
-  @Test
-  void createCommentSUCCESS_OPERATION() {
-    long bookId = 1L;
-    Book book = new Book();
-    Comment comment = new Comment(0L, "comment",new Book());
-
-    when(crudBookService.read(bookId)).thenReturn(java.util.Optional.of(book));
-    when(crudCommentService.create(comment)).thenReturn(comment);
-    when(crudBookService.update(book)).thenReturn(book);
-
-    Assertions.assertEquals(SUCCESS_OPERATION, shellLibraryController.createComment(bookId, comment.getCommentary()));
+  void readBookIllegalArguments() {
+    Assertions.assertEquals(ILLEGAL_ARGUMENTS, shellLibraryController.readBook(newBook.getId()));
   }
 
   @Test
-  void createCommentILLEGAL_ARGUMENTS() {
+  void deleteBookSuccessOperation() {
+    doNothing().when(crudBookService).delete(oldBook.getId());
+
+    Assertions.assertEquals(SUCCESS_OPERATION, shellLibraryController.deleteBook(oldBook.getId()));
+  }
+
+  @Test
+  void deleteBookIllegalArguments() {
+    Assertions.assertEquals(ILLEGAL_ARGUMENTS, shellLibraryController.deleteBook(newBook.getId()));
+  }
+
+  @Test
+  void createCommentSuccessOperation() {
+    when(crudBookService.read(oldBook.getId())).thenReturn(java.util.Optional.of(oldBook));
+    when(crudCommentService.create(newComment)).thenReturn(newComment);
+    when(crudBookService.update(oldBook)).thenReturn(oldBook);
+
+    Assertions.assertEquals(SUCCESS_OPERATION, shellLibraryController.createComment(oldBook.getId(), newComment.getCommentary()));
+  }
+
+  @Test
+  void createCommentIllegalArguments() {
     long bookId = 0L;
     when(crudBookService.read(bookId)).thenReturn(java.util.Optional.empty());
 
@@ -114,75 +114,65 @@ class ShellLibraryControllerTest {
   }
 
   @Test
-  void createCommentFAILURE_OPERATION() {
-    long bookId = 10L;
-    when(crudBookService.read(bookId)).thenReturn(Optional.empty());
+  void createCommentFailureOperation() {
+    when(crudBookService.read(oldBook.getId())).thenReturn(Optional.empty());
 
-    Assertions.assertEquals(FAILURE_OPERATION, shellLibraryController.createComment(bookId, "comment"));
+    Assertions.assertEquals(FAILURE_OPERATION, shellLibraryController.createComment(oldBook.getId(), "comment fail"));
   }
 
   @Test
-  void readCommentSUCCESS_OPERATION() {
-    Comment comment = new Comment(1L, "comment",new Book());
-    when(crudCommentService.read(comment.getId())).thenReturn(java.util.Optional.of(comment));
+  void readCommentSuccessOperation() {
+    when(crudCommentService.read(oldComment.getId())).thenReturn(java.util.Optional.of(oldComment));
 
-    Assertions.assertEquals(comment.toString(), shellLibraryController.readComment(comment.getId()));
+    Assertions.assertEquals(oldComment.toString(), shellLibraryController.readComment(oldComment.getId()));
   }
 
   @Test
-  void readCommentFAILURE_OPERATION() {
-    Comment comment = new Comment(1L, "comment",new Book());
-    when(crudCommentService.read(comment.getId())).thenReturn(Optional.empty());
+  void readCommentFailureOperation() {
+    when(crudCommentService.read(oldComment.getId())).thenReturn(Optional.empty());
 
-    Assertions.assertEquals(FAILURE_OPERATION, shellLibraryController.readComment(comment.getId()));
+    Assertions.assertEquals(FAILURE_OPERATION, shellLibraryController.readComment(oldComment.getId()));
   }
 
   @Test
-  void readCommentILLEGAL_ARGUMENTS() {
-    Comment comment = new Comment(0L, "comment",new Book());
-    when(crudCommentService.read(comment.getId())).thenReturn(Optional.of(comment));
+  void readCommentIllegalArguments() {
+    when(crudCommentService.read(newComment.getId())).thenReturn(Optional.of(newComment));
 
-    Assertions.assertEquals(ILLEGAL_ARGUMENTS, shellLibraryController.readComment(comment.getId()));
+    Assertions.assertEquals(ILLEGAL_ARGUMENTS, shellLibraryController.readComment(newComment.getId()));
   }
 
   @Test
-  void updateCommentSUCCESS_OPERATION() {
-    Comment comment = new Comment(1L, "comment",new Book());
-    when(crudCommentService.read(comment.getId())).thenReturn(Optional.of(comment));
-    when(crudCommentService.update(comment)).thenReturn(comment);
+  void updateCommentSuccessOperation() {
+    when(crudCommentService.read(oldComment.getId())).thenReturn(Optional.of(oldComment));
+    when(crudCommentService.update(oldComment)).thenReturn(oldComment);
 
-    Assertions.assertEquals(SUCCESS_OPERATION, shellLibraryController.updateComment(comment.getId(), comment.getCommentary()));
+    Assertions.assertEquals(SUCCESS_OPERATION, shellLibraryController.updateComment(oldComment.getId(), oldComment.getCommentary()));
   }
 
   @Test
-  void updateCommentFAILURE_OPERATION() {
-    Comment comment = new Comment(1L, "comment",new Book());
-    when(crudCommentService.read(comment.getId())).thenReturn(Optional.empty());
+  void updateCommentFailureOperation() {
+    when(crudCommentService.read(oldComment.getId())).thenReturn(Optional.empty());
 
-    Assertions.assertEquals(FAILURE_OPERATION, shellLibraryController.updateComment(comment.getId(), comment.getCommentary()));
+    Assertions.assertEquals(FAILURE_OPERATION, shellLibraryController.updateComment(oldComment.getId(), oldComment.getCommentary()));
   }
 
   @Test
-  void updateCommentILLEGAL_ARGUMENTS() {
-    Comment comment = new Comment(0L, "comment",new Book());
-    when(crudCommentService.read(comment.getId())).thenReturn(Optional.of(comment));
+  void updateCommentIllegalArguments() {
+    when(crudCommentService.read(newComment.getId())).thenReturn(Optional.of(newComment));
 
-    Assertions.assertEquals(ILLEGAL_ARGUMENTS, shellLibraryController.updateComment(comment.getId(), comment.getCommentary()));
+    Assertions.assertEquals(ILLEGAL_ARGUMENTS, shellLibraryController.updateComment(newComment.getId(), newComment.getCommentary()));
   }
 
   @Test
-  void deleteCommentILLEGAL_ARGUMENTS() {
-    long commentId = 0L;
-
-    Assertions.assertEquals(ILLEGAL_ARGUMENTS, shellLibraryController.deleteComment(commentId));
+  void deleteCommentIllegalArguments() {
+    Assertions.assertEquals(ILLEGAL_ARGUMENTS, shellLibraryController.deleteComment(newComment.getId()));
   }
 
   @Test
-  void deleteCommentSUCCESS_OPERATION() {
-    long commentId = 1L;
-    doNothing().when(crudCommentService).delete(commentId);
+  void deleteCommentSuccessOperation() {
+    doNothing().when(crudCommentService).delete(oldComment.getId());
 
-    Assertions.assertEquals(SUCCESS_OPERATION, shellLibraryController.deleteComment(commentId));
+    Assertions.assertEquals(SUCCESS_OPERATION, shellLibraryController.deleteComment(oldComment.getId()));
   }
 
   @Test
@@ -221,15 +211,6 @@ class ShellLibraryControllerTest {
     Mockito.verify(viewRepositoryService, Mockito.times(1)).printTableComments();
   }
 
-  @SneakyThrows
-  private Date convertStringToDate(String date) {
-    return DATE_FORMAT.parse(date);
-  }
-
-  @SneakyThrows
-  private String convertDateToString(Date date) {
-    return DATE_FORMAT.format(date);
-  }
 
   @Test
   void createBook() {
@@ -258,81 +239,78 @@ class ShellLibraryControllerTest {
   @Test
   void createBookWithThrows() {
     List<String> values = new ArrayList<>();
-    values.add("title");
+    values.add("title345");
     values.add("2020-01-01");
     values.add("2020-01-01");
     Iterator<String> stringIterator = values.iterator();
-    Mockito.when(inputReaderService.readLine()).thenAnswer(i ->stringIterator.next());
-    Assertions.assertEquals(FAILURE_OPERATION,shellLibraryController.createBook());
+    Mockito.when(inputReaderService.readLine()).thenAnswer(i -> stringIterator.next());
+    Assertions.assertEquals(FAILURE_OPERATION, shellLibraryController.createBook());
 
-    verify(inputReaderService,times(3)).readLine();
+    verify(inputReaderService, times(3)).readLine();
   }
 
   @Test
-  void updateBookTitleSUCCESS_OPERATION() {
-    Book book = new Book(1L,"title",convertStringToDate("2020 01 01"), new Author(), new Genre());
-    Mockito.when(crudBookService.read(book.getId())).thenReturn(Optional.of(book));
+  void updateBookTitleSuccessOperation() {
+    Mockito.when(crudBookService.read(oldBook.getId())).thenReturn(Optional.of(oldBook));
     List<String> values = new ArrayList<>();
     values.add("newTitle");
     Iterator<String> stringIterator = values.iterator();
-    Mockito.when(inputReaderService.readLine()).thenAnswer(i ->stringIterator.next());
-    Mockito.when(crudBookService.update(any())).thenReturn(book);
+    Mockito.when(inputReaderService.readLine()).thenAnswer(i -> stringIterator.next());
+    Mockito.when(crudBookService.update(any())).thenReturn(oldBook);
 
-    Assertions.assertEquals(SUCCESS_OPERATION,shellLibraryController.updateBookTitle(book.getId()));
-    Assertions.assertEquals(values.get(0),book.getTitle());
+    Assertions.assertEquals(SUCCESS_OPERATION, shellLibraryController.updateBookTitle(oldBook.getId()));
+    Assertions.assertEquals(values.get(0), oldBook.getTitle());
   }
 
   @Test
-  void updateBookTitleFAILURE_OPERATION() {
-    long bookId = 1L;
-    Mockito.when(crudBookService.read(bookId)).thenReturn(Optional.empty());
+  void updateBookTitleFailureOperation() {
+    Mockito.when(crudBookService.read(oldBook.getId())).thenReturn(Optional.empty());
 
-    Assertions.assertEquals(FAILURE_OPERATION,shellLibraryController.updateBookTitle(bookId));
+    Assertions.assertEquals(FAILURE_OPERATION, shellLibraryController.updateBookTitle(oldBook.getId()));
   }
 
   @Test
-  void updateBookTitleILLEGAL_ARGUMENTS() {
-    long bookId = 0L;
-    Assertions.assertEquals(ILLEGAL_ARGUMENTS,shellLibraryController.updateBookTitle(bookId));
+  void updateBookTitleIllegalArguments() {
+    Assertions.assertEquals(ILLEGAL_ARGUMENTS, shellLibraryController.updateBookTitle(newBook.getId()));
   }
 
   @Test
-  void updateBookDateSUCCESS_OPERATION() {
+  void updateBookDateSuccessOperation() {
     String newDate = "2020 10 10";
-    Book book = new Book(1L,"title",convertStringToDate("2020 01 01"), new Author(), new Genre());
-    Mockito.when(crudBookService.read(book.getId())).thenReturn(Optional.of(book));
+    Mockito.when(crudBookService.read(oldBook.getId())).thenReturn(Optional.of(oldBook));
     Mockito.when(inputReaderService.readLine()).thenReturn(newDate);
-    Mockito.when(crudBookService.update(any())).thenReturn(book);
+    Mockito.when(crudBookService.update(any())).thenReturn(oldBook);
 
-    Assertions.assertEquals(SUCCESS_OPERATION,shellLibraryController.updateBookDate(book.getId()));
-    Assertions.assertEquals(convertStringToDate(newDate),book.getDate());
+    Assertions.assertEquals(SUCCESS_OPERATION, shellLibraryController.updateBookDate(oldBook.getId()));
+    Assertions.assertEquals(convertStringToDate(newDate), oldBook.getDate());
   }
 
   @Test
-  void updateBookGenreSUCCESS_OPERATION() {
-    Genre genre = new Genre(4L,"test");
-    Book book = new Book(1L,"title",convertStringToDate("2020 01 01"), new Author(),genre );
-    Mockito.when(crudBookService.read(book.getId())).thenReturn(Optional.of(book));
-    Mockito.when(inputReaderService.readToken()).thenReturn(String.valueOf(genre.getId()));
-    Mockito.when(crudBookService.update(any())).thenReturn(book);
-    Mockito.when(crudGenreService.read(genre.getId())).thenReturn(Optional.of(genre));
+  void updateBookGenreSuccessOperation() {
+    Mockito.when(crudBookService.read(oldBook.getId())).thenReturn(Optional.of(oldBook));
+    Mockito.when(inputReaderService.readToken()).thenReturn(String.valueOf(oldBook.getGenre().getId()));
+    Mockito.when(crudBookService.update(any())).thenReturn(oldBook);
+    Mockito.when(crudGenreService.read(oldBook.getGenre().getId())).thenReturn(Optional.of(oldBook.getGenre()));
 
-    Assertions.assertEquals(SUCCESS_OPERATION,shellLibraryController.updateBookGenre(book.getId()));
-    Assertions.assertEquals(genre.getId(),book.getGenre().getId());
+    Assertions.assertEquals(SUCCESS_OPERATION, shellLibraryController.updateBookGenre(oldBook.getId()));
+    Assertions.assertEquals(oldBook.getGenre().getId(), oldBook.getGenre().getId());
   }
 
   @Test
-  void updateBookAuthorSUCCESS_OPERATION() {
-    Author author = new Author(4L,"FirstName","LastName",convertStringToDate("1988 09 19"));
-    Book book = new Book(1L,"title",convertStringToDate("2020 01 01"), author,new Genre());
-    Mockito.when(crudBookService.read(book.getId())).thenReturn(Optional.of(book));
-    Mockito.when(inputReaderService.readToken()).thenReturn(String.valueOf(author.getId()));
-    Mockito.when(crudBookService.update(any())).thenReturn(book);
-    Mockito.when(crudAuthorService.read(author.getId())).thenReturn(Optional.of(author));
+  void updateBookAuthorSuccessOperation() {
+    Mockito.when(crudBookService.read(oldBook.getId())).thenReturn(Optional.of(oldBook));
+    Mockito.when(inputReaderService.readToken()).thenReturn(String.valueOf(oldBook.getAuthor().getId()));
+    Mockito.when(crudBookService.update(any())).thenReturn(oldBook);
+    Mockito.when(crudAuthorService.read(oldBook.getAuthor().getId())).thenReturn(Optional.of(oldBook.getAuthor()));
 
-    Assertions.assertEquals(SUCCESS_OPERATION,shellLibraryController.updateBookAuthor(book.getId()));
-    Assertions.assertEquals(author.getId(),book.getAuthor().getId());
+    Assertions.assertEquals(SUCCESS_OPERATION, shellLibraryController.updateBookAuthor(oldBook.getId()));
+    Assertions.assertEquals(oldBook.getAuthor().getId(), oldBook.getAuthor().getId());
 
-    verify(crudAuthorService,times(1)).read(author.getId());
+    verify(crudAuthorService, times(1)).read(oldBook.getAuthor().getId());
+  }
+
+  @SneakyThrows
+  private Date convertStringToDate(String date) {
+    return new SimpleDateFormat("yyyy MM dd").parse(date);
   }
 }
