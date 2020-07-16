@@ -10,5 +10,5 @@
 >* hw04-testing-spring-shell/
 >* hw05-spring-jdbc/
 >* hw06-spring-jpa/
->* hw06-spring-data-jpa/
+>* hw07-spring-data-jpa/
 
