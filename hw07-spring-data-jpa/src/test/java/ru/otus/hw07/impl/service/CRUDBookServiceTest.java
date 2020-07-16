@@ -37,7 +37,7 @@ class CRUDBookServiceTest {
   void beforeEach(){
     Author newAuthor = new Author(0L, "FirstName", "LastName", now());
     Genre newGenre = new Genre(0L, "newGenre");
-    newBook = new Book(0L,"Title",now(), newAuthor, newGenre);
+    newBook = new Book(0L,"Title",now(), newAuthor, newGenre,null);
   }
 
   @Test
@@ -76,15 +76,10 @@ class CRUDBookServiceTest {
 
   @Test
   void readWithComments() {
-    List<Comment> comments = new ArrayList<>();
-    comments.add(new Comment(0L,"test",newBook));
-
     when(bookRepository.findById(newBook.getId())).thenReturn(java.util.Optional.of(newBook));
-    when(commentRepository.getAllByBookId(newBook.getId())).thenReturn(comments);
 
     crudBookService.readWithComments(newBook.getId());
-    verify(bookRepository,times(1)).findById(newBook.getId());
-    verify(commentRepository,times(1)).getAllByBookId(newBook.getId());
-  }
 
+    verify(bookRepository,times(1)).findById(newBook.getId());
+  }
 }

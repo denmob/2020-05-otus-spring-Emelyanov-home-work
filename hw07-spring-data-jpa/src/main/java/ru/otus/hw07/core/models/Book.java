@@ -3,7 +3,9 @@ package ru.otus.hw07.core.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -11,6 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "books")
+@ToString(exclude = "comments")
 @NamedEntityGraph(name = "book-genre-entity-graph", attributeNodes = {@NamedAttributeNode("genre")})
 public class Book {
   @Id
@@ -30,4 +33,7 @@ public class Book {
   @ManyToOne
   @JoinColumn(name = "genre_id", referencedColumnName = "id")
   private Genre genre;
+
+  @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
+  private List<Comment> comments = new ArrayList<>();
 }

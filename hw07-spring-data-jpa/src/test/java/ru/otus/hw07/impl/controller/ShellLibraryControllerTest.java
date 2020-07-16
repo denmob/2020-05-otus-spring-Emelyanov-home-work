@@ -58,8 +58,8 @@ class ShellLibraryControllerTest {
   void beforeEach(){
     Author author = new Author(4L, "FirstName", "LastName", convertStringToDate("1988 09 19"));
     Genre genre = new Genre(4L, "test");
-    newBook = new Book(0L, "Title new", convertStringToDate("2020 02 01"), new Author(), new Genre());
-    oldBook = new Book(4L, "Title old", convertStringToDate("2020 02 01"), author, genre);
+    newBook = new Book(0L, "Title new", convertStringToDate("2020 02 01"), new Author(), new Genre(),null);
+    oldBook = new Book(4L, "Title old", convertStringToDate("2020 02 01"), author, genre,null);
     newComment = new Comment(0L, "new comment", oldBook);
     oldComment = new Comment(1L, "old comment", oldBook);
   }
