@@ -1,0 +1,13 @@
+spring:
+  data:
+    mongodb:
+      database: hw08-test
+
+  shell:
+    interactive:
+      enabled: false
+
+logging:
+  level:
+    ROOT: INFO
+

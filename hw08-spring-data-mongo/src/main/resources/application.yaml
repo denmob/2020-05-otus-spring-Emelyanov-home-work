@@ -1,0 +1,15 @@
+spring:
+  data:
+    mongodb:
+      database: hw08
+      uri: mongodb://localhost
+      port: 27017
+
+  shell:
+    interactive:
+      enabled: true
+
+logging:
+  level:
+    ROOT: INFO
+
