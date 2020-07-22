@@ -2,8 +2,10 @@ spring:
   data:
     mongodb:
       database: hw08-test
-      uri: mongodb://localhost
-      port: 27017
+      port: 0
+#      database: hw08-test
+#      uri: mongodb://localhost
+#      port: 27017
 
   shell:
     interactive:

@@ -9,4 +9,8 @@ import java.util.List;
 public interface CommentRepository extends MongoRepository<Comment,String>, CrudRepository<Comment,String> {
 
   List<Comment> findAllByBookId(String bookId);
+
+  boolean deleteCommentByBookId(String bookId);
+
+  boolean deleteCommentByCommentaryContains(String partComment);
 }
