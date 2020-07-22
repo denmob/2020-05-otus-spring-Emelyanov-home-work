@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 @SpringBootTest(classes = ViewRepositoryServiceImpl.class)
 class ViewRepositoryServiceImplTest {
 

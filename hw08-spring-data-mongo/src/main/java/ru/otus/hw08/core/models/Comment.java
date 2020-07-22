@@ -3,9 +3,10 @@ package ru.otus.hw08.core.models;
 import lombok.*;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.util.Date;
 
 @Data
 @Builder
@@ -21,6 +22,9 @@ public class Comment {
   @Field(name = "commentary")
   private @NonNull String commentary;
 
-  @DBRef
-  private Book book;
+  @Field(name = "book_id")
+  private String bookId;
+
+  @Field(name = "timestamp")
+  private final Date timestamp = new Date();
 }

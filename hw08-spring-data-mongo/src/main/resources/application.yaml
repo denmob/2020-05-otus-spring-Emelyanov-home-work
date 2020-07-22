@@ -5,6 +5,9 @@ spring:
       uri: mongodb://localhost
       port: 27017
 
+  mongock:
+    changelogs: "ru.otus.hw08.impl.changelogs"
+
   shell:
     interactive:
       enabled: true
@@ -12,4 +15,3 @@ spring:
 logging:
   level:
     ROOT: INFO
-

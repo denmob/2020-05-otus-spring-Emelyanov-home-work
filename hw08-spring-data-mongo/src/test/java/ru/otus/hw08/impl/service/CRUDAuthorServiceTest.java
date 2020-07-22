@@ -21,10 +21,12 @@ class CRUDAuthorServiceTest {
   private CRUDAuthorService crudAuthorService;
 
   private Author newAuthor;
+  private Author oldAuthor;
 
   @BeforeEach
   void beforeEach(){
-    newAuthor = new Author("1","FirstName","LastName",now());
+    newAuthor = new Author("0","new FirstName","new LastName",now());
+    oldAuthor = new Author("1","old FirstName","old LastName",now());
   }
 
   @Test
@@ -37,11 +39,10 @@ class CRUDAuthorServiceTest {
 
   @Test
   void read() {
-    String id = "1";
-    when(authorRepository.findById(id)).thenReturn(any());
+    when(authorRepository.findById(oldAuthor.getId())).thenReturn(any());
 
-    crudAuthorService.read(id);
-    verify(authorRepository,times(1)).findById(id);
+    crudAuthorService.read(oldAuthor.getId());
+    verify(authorRepository,times(1)).findById(oldAuthor.getId());
   }
 
   @Test

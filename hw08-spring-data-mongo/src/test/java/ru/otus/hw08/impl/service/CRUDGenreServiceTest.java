@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.hw08.core.models.Genre;
 import ru.otus.hw08.core.repositories.GenreRepository;
+
 import static org.mockito.Mockito.*;
 
 @SpringBootTest(classes = CRUDGenreService.class)
@@ -19,10 +20,12 @@ class CRUDGenreServiceTest {
   private CRUDGenreService crudGenreService;
 
   private Genre newGenre;
+  private Genre oldGenre;
 
   @BeforeEach
-  void beforeEach(){
+  void beforeEach() {
     newGenre = new Genre("0", "newGenre");
+    oldGenre = new Genre("1", "oldGenre");
   }
 
   @Test
@@ -35,20 +38,18 @@ class CRUDGenreServiceTest {
 
   @Test
   void read() {
-    String id = "1";
-    when(genreRepository.findById(id)).thenReturn(any());
+    when(genreRepository.findById(oldGenre.getId())).thenReturn(any());
 
-    crudGenreService.read(id);
-    verify(genreRepository, times(1)).findById(id);
+    crudGenreService.read(oldGenre.getId());
+    verify(genreRepository, times(1)).findById(oldGenre.getId());
   }
 
   @Test
   void delete() {
-    String id = "1";
-    doNothing().when(genreRepository).deleteById(id);
+    doNothing().when(genreRepository).deleteById(oldGenre.getId());
 
-    crudGenreService.delete(id);
-    verify(genreRepository, times(1)).deleteById(id);
+    crudGenreService.delete(oldGenre.getId());
+    verify(genreRepository, times(1)).deleteById(oldGenre.getId());
   }
 
   @Test

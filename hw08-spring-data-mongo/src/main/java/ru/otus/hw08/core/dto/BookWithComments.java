@@ -14,5 +14,5 @@ import java.util.List;
 @AllArgsConstructor
 public class BookWithComments {
   private Book book;
-  private List<Comment> comments = new ArrayList<>();
+  private List<Comment> comments;
 }

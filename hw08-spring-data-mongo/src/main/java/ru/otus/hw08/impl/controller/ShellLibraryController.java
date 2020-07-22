@@ -154,7 +154,7 @@ public class ShellLibraryController implements LibraryController {
     if (!bookId.isEmpty() && !commentary.isEmpty()) {
       Optional<Book> optionalBook = crudBookService.read(bookId);
       if (optionalBook.isPresent()) {
-        Comment comment =  Comment.builder().id("").commentary(commentary).book(optionalBook.get()).build();
+        Comment comment =  Comment.builder().id("").commentary(commentary).bookId(optionalBook.get().getId()).build();
 
         if (crudCommentService.create(comment) != null) {
           return SUCCESS_OPERATION;

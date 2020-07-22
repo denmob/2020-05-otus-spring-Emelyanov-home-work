@@ -11,6 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
+import static com.mongodb.MongoClient.getDefaultCodecRegistry;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
@@ -18,20 +19,23 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 @Component
 @ConfigurationProperties("spring.data.mongodb")
 public class MongoConfig {
+
   private int port;
   private String database;
   private String uri;
 
   @Bean
   public MongoClient mongoClient() {
-    CodecRegistry pojoCodecRegistry =
-        fromRegistries(com.mongodb.MongoClient.getDefaultCodecRegistry(), fromProviders(PojoCodecProvider.builder().automatic(true).build()));
-    MongoClientSettings settings =  MongoClientSettings.builder().codecRegistry(pojoCodecRegistry).build();
-    return MongoClients.create(settings);
+    return MongoClients.create(createMongoClientSettings());
   }
 
   @Bean
-  public MongoDatabase mongoDatabase(MongoClient mongoClient){
+  public MongoDatabase mongoDatabase(MongoClient mongoClient) {
     return mongoClient.getDatabase(database);
+  }
+
+  private MongoClientSettings createMongoClientSettings() {
+    CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(PojoCodecProvider.builder().automatic(true).build()));
+    return MongoClientSettings.builder().codecRegistry(pojoCodecRegistry).build();
   }
 }

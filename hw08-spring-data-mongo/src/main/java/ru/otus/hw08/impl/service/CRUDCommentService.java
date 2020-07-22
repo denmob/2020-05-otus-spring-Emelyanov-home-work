@@ -1,12 +1,15 @@
 package ru.otus.hw08.impl.service;
 
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw08.core.models.Comment;
 import ru.otus.hw08.core.repositories.CommentRepository;
 import ru.otus.hw08.core.service.CRUDServiceComment;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,6 +30,11 @@ public class CRUDCommentService implements CRUDServiceComment {
   }
 
   @Override
+  public List<Comment> readAllForBook(String bookId) {
+    return commentRepository.findAllByBookId(bookId);
+  }
+
+  @Override
   @Transactional
   public Comment update(Comment entity) {
     return commentRepository.save(entity);
@@ -35,6 +43,6 @@ public class CRUDCommentService implements CRUDServiceComment {
   @Override
   @Transactional
   public void delete(String id) {
-      commentRepository.deleteById(id);
+    commentRepository.deleteById(id);
   }
 }

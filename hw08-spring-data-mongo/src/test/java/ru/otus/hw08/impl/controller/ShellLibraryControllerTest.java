@@ -6,8 +6,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 import ru.otus.hw08.core.dto.BookWithComments;
 import ru.otus.hw08.core.models.Author;
 import ru.otus.hw08.core.models.Book;
@@ -23,6 +25,8 @@ import java.util.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@ActiveProfiles("test")
+@EnableConfigurationProperties
 @SpringBootTest
 class ShellLibraryControllerTest {
 
@@ -58,10 +62,10 @@ class ShellLibraryControllerTest {
   void beforeEach() {
     Author author = new Author("4", "FirstName", "LastName", convertStringToDate("1988 09 19"));
     Genre genre = new Genre("4", "test");
-    newBook = new Book("", "Title new", convertStringToDate("2020 02 01"), new Author(), new Genre(), null);
-    oldBook = new Book("4", "Title old", convertStringToDate("2020 02 01"), author, genre, null);
-    newComment =  Comment.builder().id("").commentary("new comment").book(oldBook).build();
-    oldComment = new Comment("1", "old comment", oldBook);
+    newBook = new Book("", "Title new", convertStringToDate("2020 02 01"), new Author(), new Genre());
+    oldBook = new Book("4", "Title old", convertStringToDate("2020 02 01"), author, genre);
+    newComment =  Comment.builder().id("").commentary("new comment").bookId(oldBook.getId()).build();
+    oldComment = new Comment("1", "old comment", oldBook.getId());
   }
 
   @Test
@@ -99,7 +103,7 @@ class ShellLibraryControllerTest {
   @Test
   void createCommentSuccessOperation() {
     when(crudBookService.read(oldBook.getId())).thenReturn(java.util.Optional.of(oldBook));
-    when(crudCommentService.create(newComment)).thenReturn(newComment);
+    when(crudCommentService.create(any())).thenReturn(newComment);
   //  when(crudBookService.update(oldBook)).thenReturn(oldBook);
 
     Assertions.assertEquals(SUCCESS_OPERATION, shellLibraryController.createComment(oldBook.getId(), newComment.getCommentary()));
