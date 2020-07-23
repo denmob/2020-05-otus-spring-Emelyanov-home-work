@@ -25,8 +25,8 @@ public class CRUDCommentService implements CRUDServiceComment {
   }
 
   @Override
-  public Optional<Comment> read(String id) {
-    return commentRepository.findById(id);
+  public List<Comment> readCommentaryContains(String partComment) {
+    return commentRepository.findCommentByCommentaryContains(partComment);
   }
 
   @Override
@@ -42,7 +42,7 @@ public class CRUDCommentService implements CRUDServiceComment {
 
   @Override
   @Transactional
-  public boolean delete(String id) {
-    return (commentRepository.deleteCommentById(id)==1L);
+  public boolean deleteCommentaryContains(String partComment) {
+    return (commentRepository.deleteCommentByCommentaryContains(partComment)==1L);
   }
 }

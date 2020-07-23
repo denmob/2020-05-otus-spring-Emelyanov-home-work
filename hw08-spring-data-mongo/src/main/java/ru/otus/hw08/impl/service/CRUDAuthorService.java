@@ -22,8 +22,8 @@ public class CRUDAuthorService implements CRUDServiceAuthor {
   }
 
   @Override
-  public Optional<Author> read(String id) {
-    return authorRepository.findById(id);
+  public Optional<Author> readLastNameEquals(String lastName) {
+    return authorRepository.findByLastNameEquals(lastName);
   }
 
   @Override

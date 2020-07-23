@@ -8,11 +8,11 @@ import java.util.Optional;
 public interface CRUDServiceComment {
   Comment create(Comment entity);
 
-  Optional<Comment> read(String id);
+  List<Comment> readCommentaryContains(String partComment);
 
   List<Comment> readAllForBook(String bookId);
 
   Comment update(Comment entity);
 
-  boolean delete(String id);
+  boolean deleteCommentaryContains(String id);
 }

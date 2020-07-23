@@ -46,12 +46,12 @@ class GenreRepositoryTest {
   @Test
   @DirtiesContext
   void deleteAllByNameEqualsExistName() {
-    assertEquals(1L, (long) genreRepository.deleteAllByNameEquals(existName));
+    assertEquals(1L, (long) genreRepository.deleteByNameEquals(existName));
   }
 
   @Test
   void deleteAllByNameEqualsNonExistName() {
-    assertEquals(0L, (long) genreRepository.deleteAllByNameEquals(nonExistName));
+    assertEquals(0L, (long) genreRepository.deleteByNameEquals(nonExistName));
   }
 
 

@@ -8,7 +8,7 @@ public interface CRUDServiceAuthor{
 
   Author create(Author entity);
 
-  Optional<Author> read(String id);
+  Optional<Author> readLastNameEquals(String id);
 
   Author update(Author entity);
 

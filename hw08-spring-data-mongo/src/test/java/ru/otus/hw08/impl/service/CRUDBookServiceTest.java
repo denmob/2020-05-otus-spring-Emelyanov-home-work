@@ -55,18 +55,21 @@ class CRUDBookServiceTest {
 
   @Test
   void read() {
-    when(bookRepository.findById(oldBook.getId())).thenReturn(any());
+    when(bookRepository.findByTitleEquals(oldBook.getTitle())).thenReturn(any());
 
-    crudBookService.read(oldBook.getId());
-    verify(bookRepository,times(1)).findById(oldBook.getId());
+    crudBookService.readByTitleEquals(oldBook.getTitle());
+    verify(bookRepository,times(1)).findByTitleEquals(oldBook.getTitle());
   }
 
   @Test
   void delete() {
+    when(bookRepository.findByTitleEquals(oldBook.getTitle())).thenReturn(Optional.ofNullable(oldBook));
     when(bookRepository.deleteBookById(oldBook.getId())).thenReturn(1L);
+    when(commentRepository.deleteCommentAllByBookId(oldBook.getId())).thenReturn(1L);
 
-    crudBookService.delete(oldBook.getId());
+    crudBookService.deleteByTitleEquals(oldBook.getTitle());
     verify(bookRepository,times(1)).deleteBookById(oldBook.getId());
+    verify(commentRepository,times(1)).deleteCommentAllByBookId(oldBook.getId());
   }
 
   @Test
@@ -82,9 +85,9 @@ class CRUDBookServiceTest {
     List<Comment> comments = new ArrayList<>();
     comments.add(new Comment());
     BookWithComments bookWithComments = new BookWithComments(oldBook,comments);
-    when(bookRepository.findById(oldBook.getId())).thenReturn(Optional.ofNullable(oldBook));
+    when(bookRepository.findByTitleEquals(oldBook.getTitle())).thenReturn(Optional.ofNullable(oldBook));
     when(commentRepository.findAllByBookId(oldBook.getId())).thenReturn(comments);
 
-    Assertions.assertEquals(bookWithComments,crudBookService.readWithComments(oldBook.getId()).get());
+    Assertions.assertEquals(bookWithComments,crudBookService.readWithComments(oldBook.getTitle()).get());
   }
 }

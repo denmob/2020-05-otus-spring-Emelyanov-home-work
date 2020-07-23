@@ -28,8 +28,8 @@ public class CRUDGenreService implements CRUDServiceGenre {
 
   @Override
   @Transactional
-  public boolean delete(String id) {
-      return genreRepository.deleteGenreById(id)==1L;
+  public boolean deleteNameEquals(String name) {
+      return genreRepository.deleteByNameEquals(name)==1L;
   }
 
   @Override

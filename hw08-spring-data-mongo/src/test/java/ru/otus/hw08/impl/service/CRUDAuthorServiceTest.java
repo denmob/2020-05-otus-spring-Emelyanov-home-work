@@ -39,10 +39,10 @@ class CRUDAuthorServiceTest {
 
   @Test
   void read() {
-    when(authorRepository.findById(oldAuthor.getId())).thenReturn(any());
+    when(authorRepository.findByLastNameEquals(oldAuthor.getLastName())).thenReturn(any());
 
-    crudAuthorService.read(oldAuthor.getId());
-    verify(authorRepository,times(1)).findById(oldAuthor.getId());
+    crudAuthorService.readLastNameEquals(oldAuthor.getLastName());
+    verify(authorRepository,times(1)).findByLastNameEquals(oldAuthor.getLastName());
   }
 
   @Test

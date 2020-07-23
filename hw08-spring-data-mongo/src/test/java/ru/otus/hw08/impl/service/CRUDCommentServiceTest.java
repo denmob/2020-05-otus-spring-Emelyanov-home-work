@@ -50,10 +50,10 @@ class CRUDCommentServiceTest {
 
   @Test
   void read() {
-    when(commentRepository.findById(oldComment.getId())).thenReturn(Optional.ofNullable(oldComment));
+    when(commentRepository.findCommentByCommentaryContains(oldComment.getId())).thenReturn(anyList());
 
-    crudCommentService.read(oldComment.getId());
-    verify(commentRepository, times(1)).findById(oldComment.getId());
+    crudCommentService.readCommentaryContains(oldComment.getId());
+    verify(commentRepository, times(1)).findCommentByCommentaryContains(oldComment.getId());
   }
 
   @Test
@@ -66,10 +66,10 @@ class CRUDCommentServiceTest {
 
   @Test
   void delete() {
-    when(commentRepository.deleteCommentById(oldComment.getId())).thenReturn(1L);
+    when(commentRepository.deleteCommentByCommentaryContains(oldComment.getCommentary())).thenReturn(1L);
 
-    crudCommentService.delete(oldComment.getId());
-    verify(commentRepository, times(1)).deleteCommentById(oldComment.getId());
+    crudCommentService.deleteCommentaryContains(oldComment.getCommentary());
+    verify(commentRepository, times(1)).deleteCommentByCommentaryContains(oldComment.getCommentary());
   }
 
   @Test

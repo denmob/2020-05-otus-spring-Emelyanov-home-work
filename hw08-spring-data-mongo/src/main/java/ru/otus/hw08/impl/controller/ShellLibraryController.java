@@ -4,6 +4,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.stereotype.Controller;
@@ -12,15 +13,13 @@ import ru.otus.hw08.core.dto.BookWithComments;
 import ru.otus.hw08.core.models.Book;
 import ru.otus.hw08.core.models.Comment;
 import ru.otus.hw08.core.service.InputReaderService;
-import ru.otus.hw08.core.service.ViewRepositoryService;
-import ru.otus.hw08.impl.service.*;
-import ru.otus.hw08.impl.service.CRUDAuthorService;
-import ru.otus.hw08.impl.service.CRUDBookService;
-import ru.otus.hw08.impl.service.CRUDCommentService;
+import ru.otus.hw08.core.service.ManagerDataService;
 import ru.otus.hw08.impl.service.ConsolePrintService;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -29,14 +28,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ShellLibraryController implements LibraryController {
 
-  private final CRUDBookService crudBookService;
-  private final CRUDCommentService crudCommentService;
-  private final CRUDAuthorService crudAuthorService;
-  private final CRUDGenreService crudGenreService;
-  private final InputReaderService inputReaderService;
+  private final ManagerDataService managerDataService;
   private final ConsolePrintService consolePrintService;
-
-  private final ViewRepositoryService viewRepositoryService;
+  private final InputReaderService inputReaderService;
 
   private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy MM dd");
   private static final String SUCCESS_OPERATION = "Success operation";
@@ -47,17 +41,17 @@ public class ShellLibraryController implements LibraryController {
   @ShellMethod(value = "Create book command.", key = {"cb", "createBook"})
   public String createBook() {
     Book book = processingBookInteractiveStyle(new Book());
-    if (crudBookService.create(book) != null) {
+    if (managerDataService.createBook(book)) {
       return SUCCESS_OPERATION;
     }
     return FAILURE_OPERATION;
   }
 
   @Override
-  @ShellMethod(value = "Read book command. Format input: bookId", key = {"rb", "readBook"})
-  public String readBook(@NonNull String bookId) {
-    if (!bookId.isEmpty()) {
-      Optional<BookWithComments> optionalBookWithComments = crudBookService.readWithComments(bookId);
+  @ShellMethod(value = "Read book command. Format input: bookTitle", key = {"rb", "readBook"})
+  public String readBook(@NonNull String bookTitle) {
+    if (!bookTitle.isEmpty()) {
+      Optional<BookWithComments> optionalBookWithComments = managerDataService.readBookByTitle(bookTitle);
       if (optionalBookWithComments.isPresent()) {
         return optionalBookWithComments.get().toString();
       }
@@ -67,98 +61,21 @@ public class ShellLibraryController implements LibraryController {
   }
 
   @Override
-  @ShellMethod(value = "Update book title command. Format input: bookId ", key = {"ubt", "updateBookTitle"})
-  public String updateBookTitle(@NonNull String bookId) {
-    if (!bookId.isEmpty()) {
-      Optional<Book> optionalBook = crudBookService.read(bookId);
-      if (optionalBook.isPresent()) {
-        Book book = optionalBook.get();
-        book.setTitle(null);
-        processingBookInteractiveStyle(book);
-        if (crudBookService.update(book) != null) {
-          return SUCCESS_OPERATION;
-        }
-      }
-      return FAILURE_OPERATION;
-    }
-    return ILLEGAL_ARGUMENTS;
-  }
-
-  @Override
-  @ShellMethod(value = "Update book title command. Format input: bookId", key = {"ubd", "updateBookDate"})
-  public String updateBookDate(@NonNull String bookId) {
-    if (!bookId.isEmpty()) {
-      Optional<Book> optionalBook = crudBookService.read(bookId);
-      if (optionalBook.isPresent()) {
-        Book book = optionalBook.get();
-        book.setDate(null);
-        processingBookInteractiveStyle(book);
-        if (crudBookService.update(book) != null) {
-          return SUCCESS_OPERATION;
-        }
-      }
-      return FAILURE_OPERATION;
-    }
-    return ILLEGAL_ARGUMENTS;
-  }
-
-  @Override
-  @ShellMethod(value = "Update book genre command. Format input: bookId", key = {"ubg", "updateBookGenre"})
-  public String updateBookGenre(@NonNull String bookId) {
-    if (!bookId.isEmpty()) {
-      Optional<Book> optionalBook = crudBookService.read(bookId);
-      if (optionalBook.isPresent()) {
-        Book book = optionalBook.get();
-        book.setGenre(null);
-        processingBookInteractiveStyle(book);
-        if (crudBookService.update(book) != null) {
-          return SUCCESS_OPERATION;
-        }
-      }
-      return FAILURE_OPERATION;
-    }
-    return ILLEGAL_ARGUMENTS;
-  }
-
-  @Override
-  @ShellMethod(value = "Update book genre command. Format input: bookId, genreId ", key = {"uba", "updateBookAuthor"})
-  public String updateBookAuthor(@NonNull String bookId) {
-    if (!bookId.isEmpty()) {
-      Optional<Book> optionalBook = crudBookService.read(bookId);
-      if (optionalBook.isPresent()) {
-        Book book = optionalBook.get();
-        book.setAuthor(null);
-        processingBookInteractiveStyle(book);
-        if (crudBookService.update(book) != null) {
-          return SUCCESS_OPERATION;
-        }
-      }
-      return FAILURE_OPERATION;
-    }
-    return ILLEGAL_ARGUMENTS;
-  }
-
-  @Override
-  @ShellMethod(value = "Delete book command. Format input: bookId", key = {"db", "deleteBook"})
-  public String deleteBook(@NonNull String bookId) {
-    if (!bookId.isEmpty()) {
-      crudBookService.delete(bookId);
+  @ShellMethod(value = "Delete book command. Format input: bookTitle", key = {"db", "deleteBook"})
+  public String deleteBook(@NonNull String bookTitle) {
+    if (!bookTitle.isEmpty()) {
+      managerDataService.deleteBookByTitle(bookTitle);
       return SUCCESS_OPERATION;
     }
     return ILLEGAL_ARGUMENTS;
   }
 
   @Override
-  @ShellMethod(value = "Create comment command. Format input: bookId, commentary", key = {"cc", "createComment"})
-  public String createComment(@NonNull String bookId, @NonNull String commentary) {
-    if (!bookId.isEmpty() && !commentary.isEmpty()) {
-      Optional<Book> optionalBook = crudBookService.read(bookId);
-      if (optionalBook.isPresent()) {
-        Comment comment =  Comment.builder().id("").commentary(commentary).bookId(optionalBook.get().getId()).build();
-
-        if (crudCommentService.create(comment) != null) {
-          return SUCCESS_OPERATION;
-        }
+  @ShellMethod(value = "Create comment command. Format input: bookTitle, commentary", key = {"cc", "createComment"})
+  public String createComment(@NonNull String bookTitle, @NonNull String commentary) {
+    if (!bookTitle.isEmpty() && !commentary.isEmpty()) {
+      if (managerDataService.createComment(bookTitle, commentary)) {
+        return SUCCESS_OPERATION;
       }
       return FAILURE_OPERATION;
     }
@@ -166,12 +83,12 @@ public class ShellLibraryController implements LibraryController {
   }
 
   @Override
-  @ShellMethod(value = "Read comment command. Format input: commentId", key = {"rc", "readComment"})
-  public String readComment(@NonNull String commentId) {
-    if (!commentId.isEmpty()) {
-      Optional<Comment> comment = crudCommentService.read(commentId);
-      if (comment.isPresent()) {
-        return comment.get().toString();
+  @ShellMethod(value = "Read comment command. Format input: partComment", key = {"rc", "readComment"})
+  public String readComment(@NonNull String partComment) {
+    if (!partComment.isEmpty()) {
+      List<Comment> comments = managerDataService.readComments(partComment);
+      if (!comments.isEmpty()) {
+        return StringUtils.join(comments, "|");
       }
       return FAILURE_OPERATION;
     }
@@ -179,27 +96,10 @@ public class ShellLibraryController implements LibraryController {
   }
 
   @Override
-  @ShellMethod(value = "Update comment command. Format input: commentId, commentary", key = {"uc", "updateComment"})
-  public String updateComment(@NonNull String commentId, String commentary) {
-    if (!commentId.isEmpty()) {
-      Optional<Comment> commentOptional = crudCommentService.read(commentId);
-      if (commentOptional.isPresent()) {
-        Comment comment = commentOptional.get();
-        comment.setCommentary(commentary);
-        if (crudCommentService.update(comment) != null) {
-          return SUCCESS_OPERATION;
-        }
-      }
-      return FAILURE_OPERATION;
-    }
-    return ILLEGAL_ARGUMENTS;
-  }
-
-  @Override
-  @ShellMethod(value = "Delete comment command. Format input: commentId", key = {"dc", "deleteComment"})
-  public String deleteComment(@NonNull String commentId) {
-    if (!commentId.isEmpty()) {
-      crudCommentService.delete(commentId);
+  @ShellMethod(value = "Delete comment command. Format input: partComment", key = {"dc", "deleteComment"})
+  public String deleteComment(@NonNull String partComment) {
+    if (!partComment.isEmpty()) {
+      managerDataService.deleteComment(partComment);
       return SUCCESS_OPERATION;
     }
     return ILLEGAL_ARGUMENTS;
@@ -208,25 +108,25 @@ public class ShellLibraryController implements LibraryController {
   @Override
   @ShellMethod(value = "Print table books command", key = {"pb", "printBooks"})
   public void printTableBooks() {
-    viewRepositoryService.printTableBooks();
+    managerDataService.printTableBooks();
   }
 
   @Override
   @ShellMethod(value = "Print table authors command", key = {"pa", "printAuthors"})
   public void printTableAuthors() {
-    viewRepositoryService.printTableAuthors();
+    managerDataService.printTableAuthors();
   }
 
   @Override
   @ShellMethod(value = "Print table genres command", key = {"pg", "printGenres"})
   public void printTableGenres() {
-    viewRepositoryService.printTableGenres();
+    managerDataService.printTableGenres();
   }
 
   @Override
   @ShellMethod(value = "Print table comments command", key = {"pc", "printComments"})
   public void printTableComments() {
-    viewRepositoryService.printTableComments();
+    managerDataService.printTableComments();
   }
 
   @SneakyThrows
@@ -252,14 +152,14 @@ public class ShellLibraryController implements LibraryController {
           book.setDate(convertStringToDate(date));
         }
         if (book.getGenre() == null) {
-          consolePrintService.printlnMessage("Please input id exist genre of book.");
+          consolePrintService.printlnMessage("Please input name exist genre of book.");
           String date = inputReaderService.readToken();
-          crudGenreService.read(date).ifPresent(book::setGenre);
+          managerDataService.readGenreByName(date).ifPresent(book::setGenre);
         }
         if (book.getAuthor() == null) {
-          consolePrintService.printlnMessage("Please input id exist author of book.");
+          consolePrintService.printlnMessage("Please input lastName exist author of book.");
           String date = inputReaderService.readToken();
-          crudAuthorService.read(date).ifPresent(book::setAuthor);
+          managerDataService.readAuthorByLastName(date).ifPresent(book::setAuthor);
         }
       } catch (Exception e) {
         consolePrintService.printlnMessage(e.getMessage());
@@ -272,5 +172,4 @@ public class ShellLibraryController implements LibraryController {
   private boolean isValidBook(Book book) {
     return (book.getAuthor() != null && book.getGenre() != null && !book.getTitle().isEmpty() && book.getDate() != null);
   }
-
 }

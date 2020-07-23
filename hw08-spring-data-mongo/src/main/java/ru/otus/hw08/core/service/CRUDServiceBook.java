@@ -8,11 +8,11 @@ public interface CRUDServiceBook {
 
   Book create(Book entity);
 
-  Optional<Book> read(String id);
+  Optional<Book> readByTitleEquals(String id);
 
-  Optional<BookWithComments> readWithComments(String id);
+  Optional<BookWithComments> readWithComments(String bookTitle);
 
   Book update(Book entity);
 
-  boolean delete(String id);
+  boolean deleteByTitleEquals(String id);
 }
