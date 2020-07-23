@@ -7,7 +7,7 @@ import java.util.Optional;
 public interface CRUDServiceGenre {
   Genre create(Genre entity);
 
-  Optional<Genre> read(String id);
+  Optional<Genre> readNameEquals(String id);
 
   Genre update(Genre entity);
 

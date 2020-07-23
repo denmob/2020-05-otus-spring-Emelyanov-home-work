@@ -9,7 +9,6 @@ import ru.otus.hw08.core.repositories.BookRepository;
 import ru.otus.hw08.core.repositories.CommentRepository;
 import ru.otus.hw08.core.service.CRUDServiceBook;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,21 +26,21 @@ public class CRUDBookService implements CRUDServiceBook {
 
   @Override
   @Transactional(readOnly = true)
-  public Optional<Book> readByTitleEquals(String bookTitle) {
-    return bookRepository.findByTitleEquals(bookTitle);
+  public Optional<Book> readByTitleContains(String bookTitle) {
+    return bookRepository.findByTitleContains(bookTitle);
   }
 
   @Override
   @Transactional(readOnly = true)
   public Optional<BookWithComments> readWithComments(String bookTitle) {
-    Optional<Book> optionalBook = bookRepository.findByTitleEquals(bookTitle);
+    Optional<Book> optionalBook = bookRepository.findByTitleContains(bookTitle);
     return optionalBook.map(book -> new BookWithComments(book, commentRepository.findAllByBookId(optionalBook.get().getId())));
   }
 
   @Override
   @Transactional
   public boolean deleteByTitleEquals(String bookTitle) {
-    Optional<Book> optionalBook = readByTitleEquals(bookTitle);
+    Optional<Book> optionalBook = readByTitleContains(bookTitle);
     if (optionalBook.isPresent()) {
       bookRepository.deleteBookById(optionalBook.get().getId());
       commentRepository.deleteCommentAllByBookId(optionalBook.get().getId());

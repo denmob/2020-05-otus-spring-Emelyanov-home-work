@@ -41,10 +41,11 @@ public class ManagerDataServiceImpl implements ManagerDataService {
 
   @Override
   public boolean createComment(String bookTitle, String commentary) {
-    Optional<Book> optionalBook = crudBookService.readByTitleEquals(bookTitle);
+    Optional<Book> optionalBook = crudBookService.readByTitleContains(bookTitle);
     if (optionalBook.isPresent()) {
       Comment comment = Comment.builder().bookId(optionalBook.get().getId()).commentary(commentary).timestamp(new Date()).build();
       crudCommentService.create(comment);
+      return true;
     }
     return false;
   }
@@ -86,6 +87,6 @@ public class ManagerDataServiceImpl implements ManagerDataService {
 
   @Override
   public Optional<Genre> readGenreByName(String name) {
-    return Optional.empty();
+    return crudGenreService.readNameEquals(name);
   }
 }

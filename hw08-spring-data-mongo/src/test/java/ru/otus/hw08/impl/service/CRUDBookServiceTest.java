@@ -55,15 +55,15 @@ class CRUDBookServiceTest {
 
   @Test
   void read() {
-    when(bookRepository.findByTitleEquals(oldBook.getTitle())).thenReturn(any());
+    when(bookRepository.findByTitleContains(oldBook.getTitle())).thenReturn(any());
 
-    crudBookService.readByTitleEquals(oldBook.getTitle());
-    verify(bookRepository,times(1)).findByTitleEquals(oldBook.getTitle());
+    crudBookService.readByTitleContains(oldBook.getTitle());
+    verify(bookRepository,times(1)).findByTitleContains(oldBook.getTitle());
   }
 
   @Test
   void delete() {
-    when(bookRepository.findByTitleEquals(oldBook.getTitle())).thenReturn(Optional.ofNullable(oldBook));
+    when(bookRepository.findByTitleContains(oldBook.getTitle())).thenReturn(Optional.ofNullable(oldBook));
     when(bookRepository.deleteBookById(oldBook.getId())).thenReturn(1L);
     when(commentRepository.deleteCommentAllByBookId(oldBook.getId())).thenReturn(1L);
 
@@ -85,7 +85,7 @@ class CRUDBookServiceTest {
     List<Comment> comments = new ArrayList<>();
     comments.add(new Comment());
     BookWithComments bookWithComments = new BookWithComments(oldBook,comments);
-    when(bookRepository.findByTitleEquals(oldBook.getTitle())).thenReturn(Optional.ofNullable(oldBook));
+    when(bookRepository.findByTitleContains(oldBook.getTitle())).thenReturn(Optional.ofNullable(oldBook));
     when(commentRepository.findAllByBookId(oldBook.getId())).thenReturn(comments);
 
     Assertions.assertEquals(bookWithComments,crudBookService.readWithComments(oldBook.getTitle()).get());

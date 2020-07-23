@@ -8,7 +8,7 @@ public interface CRUDServiceBook {
 
   Book create(Book entity);
 
-  Optional<Book> readByTitleEquals(String id);
+  Optional<Book> readByTitleContains(String id);
 
   Optional<BookWithComments> readWithComments(String bookTitle);
 

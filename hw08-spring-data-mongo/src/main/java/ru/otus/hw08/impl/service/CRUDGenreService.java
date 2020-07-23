@@ -22,8 +22,8 @@ public class CRUDGenreService implements CRUDServiceGenre {
   }
 
   @Override
-  public Optional<Genre> read(String id) {
-    return genreRepository.findById(id);
+  public Optional<Genre> readNameEquals(String name) {
+    return genreRepository.findByNameEquals(name);
   }
 
   @Override

@@ -38,10 +38,10 @@ class CRUDGenreServiceTest {
 
   @Test
   void read() {
-    when(genreRepository.findById(oldGenre.getId())).thenReturn(any());
+    when(genreRepository.findByNameEquals(oldGenre.getName())).thenReturn(any());
 
-    crudGenreService.read(oldGenre.getId());
-    verify(genreRepository, times(1)).findById(oldGenre.getId());
+    crudGenreService.readNameEquals(oldGenre.getName());
+    verify(genreRepository, times(1)).findByNameEquals(oldGenre.getName());
   }
 
   @Test
