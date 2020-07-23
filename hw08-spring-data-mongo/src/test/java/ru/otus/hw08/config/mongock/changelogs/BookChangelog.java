@@ -1,15 +1,9 @@
-package ru.otus.hw08.impl.changelogs;
+package ru.otus.hw08.config.mongock.changelogs;
 
 import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.bson.Document;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import ru.otus.hw08.core.models.Author;
@@ -18,15 +12,11 @@ import ru.otus.hw08.core.models.Genre;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
-
-import static com.mongodb.client.model.Filters.eq;
 
 @ChangeLog(order = "003")
 public class BookChangelog {
 
   private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
 
   @ChangeSet(order = "000", id = "dropBooks", author = "dyemelianov", runAlways = true)
   public void dropBooks(MongoTemplate template) {
@@ -42,7 +32,7 @@ public class BookChangelog {
         Criteria.where("name").regex("^P")), Genre.class);
 
     var book = Book.builder()
-        .title("Pragmatic Unit Testing in Java 8 with JUnit")
+        .title("Pragmatic Unit Testing in Java 8 with JUnit(test)")
         .author(author)
         .genre(genre)
         .date(convertStringToDate("2015-05-01")).build();
@@ -58,7 +48,7 @@ public class BookChangelog {
         Criteria.where("name").regex("^S")), Genre.class);
 
     var book = Book.builder()
-        .title("Effective Java")
+        .title("Effective Java(test)")
         .author(author)
         .genre(genre)
         .date(convertStringToDate("2018-01-01")).build();
@@ -74,7 +64,7 @@ public class BookChangelog {
         Criteria.where("name").regex("^Soft")), Genre.class);
 
     var book = Book.builder()
-        .title("Java Core Fundamentals")
+        .title("Java Core Fundamentals(test)")
         .author(author)
         .genre(genre)
         .date(convertStringToDate("2016-05-17")).build();

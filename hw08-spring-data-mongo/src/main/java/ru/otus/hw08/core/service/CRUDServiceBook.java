@@ -14,5 +14,5 @@ public interface CRUDServiceBook {
 
   Book update(Book entity);
 
-  void delete(String id);
+  boolean delete(String id);
 }

@@ -63,10 +63,10 @@ class CRUDBookServiceTest {
 
   @Test
   void delete() {
-    doNothing().when(bookRepository).deleteById(oldBook.getId());
+    when(bookRepository.deleteBookById(oldBook.getId())).thenReturn(1L);
 
     crudBookService.delete(oldBook.getId());
-    verify(bookRepository,times(1)).deleteById(oldBook.getId());
+    verify(bookRepository,times(1)).deleteBookById(oldBook.getId());
   }
 
   @Test

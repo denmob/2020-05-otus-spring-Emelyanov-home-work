@@ -11,5 +11,5 @@ public interface CRUDServiceGenre {
 
   Genre update(Genre entity);
 
-  void delete(String id);
+  boolean delete(String id);
 }

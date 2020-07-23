@@ -42,7 +42,7 @@ public class CRUDCommentService implements CRUDServiceComment {
 
   @Override
   @Transactional
-  public void delete(String id) {
-    commentRepository.deleteById(id);
+  public boolean delete(String id) {
+    return (commentRepository.deleteCommentById(id)==1L);
   }
 }

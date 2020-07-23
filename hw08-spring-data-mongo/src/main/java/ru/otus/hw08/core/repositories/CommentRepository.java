@@ -1,16 +1,19 @@
 package ru.otus.hw08.core.repositories;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.repository.CrudRepository;
 import ru.otus.hw08.core.models.Comment;
 
 import java.util.List;
 
-public interface CommentRepository extends MongoRepository<Comment,String>, CrudRepository<Comment,String> {
+public interface CommentRepository extends MongoRepository<Comment,String>{
 
   List<Comment> findAllByBookId(String bookId);
 
-  boolean deleteCommentByBookId(String bookId);
+  List<Comment> findCommentByCommentaryContains(String partComment);
 
-  boolean deleteCommentByCommentaryContains(String partComment);
+  Long deleteCommentAllByBookId(String bookId);
+
+  Long deleteCommentByCommentaryContains(String partComment);
+
+  Long deleteCommentById(String commentId);
 }

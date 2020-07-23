@@ -28,8 +28,8 @@ public class CRUDAuthorService implements CRUDServiceAuthor {
 
   @Override
   @Transactional
-  public void delete(String id) {
-    authorRepository.deleteById(id);
+  public boolean delete(String id) {
+    return authorRepository.deleteAuthorById(id) == 1L;
   }
 
   @Override

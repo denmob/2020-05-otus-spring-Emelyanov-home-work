@@ -46,10 +46,10 @@ class CRUDGenreServiceTest {
 
   @Test
   void delete() {
-    doNothing().when(genreRepository).deleteById(oldGenre.getId());
+    when(genreRepository.deleteGenreById(oldGenre.getId())).thenReturn(1L);
 
     crudGenreService.delete(oldGenre.getId());
-    verify(genreRepository, times(1)).deleteById(oldGenre.getId());
+    verify(genreRepository, times(1)).deleteGenreById(oldGenre.getId());
   }
 
   @Test

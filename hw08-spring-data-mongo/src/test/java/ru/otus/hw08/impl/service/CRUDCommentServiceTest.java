@@ -16,6 +16,7 @@ import ru.otus.hw08.core.models.Comment;
 import ru.otus.hw08.core.repositories.CommentRepository;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,8 +36,8 @@ class CRUDCommentServiceTest {
 
   @BeforeEach
   void beforeEach() {
-    newComment = new Comment("0", "new comment", "1");
-    oldComment = new Comment("1", "old comment", "2");
+    newComment = new Comment("0", "new comment", "1",new Date());
+    oldComment = new Comment("1", "old comment", "2",new Date());
   }
 
   @Test
@@ -65,10 +66,10 @@ class CRUDCommentServiceTest {
 
   @Test
   void delete() {
-    doNothing().when(commentRepository).deleteById(oldComment.getId());
+    when(commentRepository.deleteCommentById(oldComment.getId())).thenReturn(1L);
 
     crudCommentService.delete(oldComment.getId());
-    verify(commentRepository, times(1)).deleteById(oldComment.getId());
+    verify(commentRepository, times(1)).deleteCommentById(oldComment.getId());
   }
 
   @Test

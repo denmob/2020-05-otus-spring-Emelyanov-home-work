@@ -1,4 +1,4 @@
-package ru.otus.hw08.impl.config;
+package ru.otus.hw08.config;
 
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;

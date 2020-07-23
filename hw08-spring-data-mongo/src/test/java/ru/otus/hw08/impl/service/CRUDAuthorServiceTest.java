@@ -47,10 +47,10 @@ class CRUDAuthorServiceTest {
 
   @Test
   void delete() {
-    doNothing().when(authorRepository).deleteById(newAuthor.getId());
+    when(authorRepository.deleteAuthorById(newAuthor.getId())).thenReturn(1L);
 
     crudAuthorService.delete(newAuthor.getId());
-    verify(authorRepository,times(1)).deleteById(newAuthor.getId());
+    verify(authorRepository,times(1)).deleteAuthorById(newAuthor.getId());
   }
 
   @Test

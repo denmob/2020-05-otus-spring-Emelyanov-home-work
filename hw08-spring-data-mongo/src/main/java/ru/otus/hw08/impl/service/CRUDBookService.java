@@ -39,8 +39,11 @@ public class CRUDBookService implements CRUDServiceBook {
 
   @Override
   @Transactional
-  public void delete(String id) {
-    bookRepository.deleteById(id);
+  public boolean delete(String id) {
+    if (bookRepository.deleteBookById(id) == 1L) {
+      commentRepository.deleteCommentAllByBookId(id);
+    }
+    return false;
   }
 
   @Override

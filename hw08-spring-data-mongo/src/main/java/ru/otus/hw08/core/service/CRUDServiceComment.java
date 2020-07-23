@@ -14,5 +14,5 @@ public interface CRUDServiceComment {
 
   Comment update(Comment entity);
 
-  void delete(String id);
+  boolean delete(String id);
 }

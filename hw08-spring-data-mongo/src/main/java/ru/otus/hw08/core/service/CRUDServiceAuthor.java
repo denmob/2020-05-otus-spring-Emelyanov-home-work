@@ -12,5 +12,5 @@ public interface CRUDServiceAuthor{
 
   Author update(Author entity);
 
-  void delete(String id);
+  boolean delete(String id);
 }

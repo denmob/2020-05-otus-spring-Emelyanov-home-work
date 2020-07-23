@@ -26,5 +26,5 @@ public class Comment {
   private String bookId;
 
   @Field(name = "timestamp")
-  private final Date timestamp = new Date();
+  private Date timestamp;
 }

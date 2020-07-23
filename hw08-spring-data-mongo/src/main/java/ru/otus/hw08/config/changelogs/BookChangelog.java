@@ -1,4 +1,4 @@
-package ru.otus.hw08.mongock.changelogs;
+package ru.otus.hw08.config.changelogs;
 
 import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;
@@ -12,6 +12,8 @@ import ru.otus.hw08.core.models.Genre;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static com.mongodb.client.model.Filters.eq;
 
 @ChangeLog(order = "003")
 public class BookChangelog {
@@ -33,7 +35,7 @@ public class BookChangelog {
         Criteria.where("name").regex("^P")), Genre.class);
 
     var book = Book.builder()
-        .title("Pragmatic Unit Testing in Java 8 with JUnit(test)")
+        .title("Pragmatic Unit Testing in Java 8 with JUnit")
         .author(author)
         .genre(genre)
         .date(convertStringToDate("2015-05-01")).build();
@@ -49,7 +51,7 @@ public class BookChangelog {
         Criteria.where("name").regex("^S")), Genre.class);
 
     var book = Book.builder()
-        .title("Effective Java(test)")
+        .title("Effective Java")
         .author(author)
         .genre(genre)
         .date(convertStringToDate("2018-01-01")).build();
@@ -65,7 +67,7 @@ public class BookChangelog {
         Criteria.where("name").regex("^Soft")), Genre.class);
 
     var book = Book.builder()
-        .title("Java Core Fundamentals(test)")
+        .title("Java Core Fundamentals")
         .author(author)
         .genre(genre)
         .date(convertStringToDate("2016-05-17")).build();

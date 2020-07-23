@@ -95,7 +95,7 @@ class ViewRepositoryServiceImplTest {
   @Test
   void printTableComments() {
     List<Comment> comments = new ArrayList<>();
-    Comment comment = new Comment("0", "test",null);
+    Comment comment = new Comment("0", "test",null,new Date());
     comments.add(comment);
 
     Mockito.when(commentRepository.findAll()).thenReturn(comments);
