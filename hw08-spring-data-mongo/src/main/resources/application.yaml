@@ -1,0 +1,17 @@
+spring:
+  data:
+    mongodb:
+      database: hw08
+      uri: mongodb://localhost
+      port: 27017
+
+  mongock:
+    changelogs: "ru.otus.hw08.config.changelogs"
+
+  shell:
+    interactive:
+      enabled: true
+
+logging:
+  level:
+    ROOT: INFO

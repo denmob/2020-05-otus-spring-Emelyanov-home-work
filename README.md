@@ -11,4 +11,5 @@
 >* hw05-spring-jdbc/
 >* hw06-spring-jpa/
 >* hw07-spring-data-jpa/
+>* hw08-spring-data-mongo/
 
