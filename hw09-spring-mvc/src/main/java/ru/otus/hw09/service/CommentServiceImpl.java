@@ -17,7 +17,7 @@ public class CommentServiceImpl implements CommentService {
 
   @Override
   @Transactional
-  public Comment create(Comment entity) {
+  public Comment save(Comment entity) {
     return commentRepository.save(entity);
   }
 

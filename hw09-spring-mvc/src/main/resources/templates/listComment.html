@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>View comments</title>
+  <link rel="stylesheet" th:href="@{/css/main.css}"/>
+</head>
+<body th:object="${bookWithComments}">
+
+<h1 th:text="*{book.title}">book title :</h1>
+<table class="comments">
+  <thead>
+  <tr>
+    <th>commentary</th>
+    <th>timestamp</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="comment : *{comments}">
+    <td th:text="${comment.commentary}">commentary</td>
+    <td th:text="${comment.timestamp}">timestamp</td>
+  </tr>
+  </tbody>
+</table>
+<br>
+<a th:href="@{/}" href="listBook.html">Back to list books page</a>
+</body>
+</html>

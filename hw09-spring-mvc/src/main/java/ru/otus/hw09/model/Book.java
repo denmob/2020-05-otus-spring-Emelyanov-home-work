@@ -5,6 +5,7 @@ import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -22,6 +23,7 @@ public class Book {
   private String title;
 
   @Field(name = "date")
+  @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
   private Date date;
 
   @Field(name = "author")

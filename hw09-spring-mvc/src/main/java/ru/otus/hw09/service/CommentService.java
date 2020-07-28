@@ -5,7 +5,7 @@ import ru.otus.hw09.model.Comment;
 import java.util.List;
 
 public interface CommentService {
-  Comment create(Comment entity);
+  Comment save(Comment entity);
 
   List<Comment> readCommentaryContains(String partComment);
 

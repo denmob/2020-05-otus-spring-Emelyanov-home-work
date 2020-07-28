@@ -1,0 +1,31 @@
+body {
+  padding: 50px;
+}
+
+label {
+  display: inline-block;
+  width: 100px;
+}
+
+input:read-only {
+  background: lightgray;
+  width: 200px;
+}
+
+input {
+  width: 200px;
+}
+
+.row {
+  margin-top: 10px;
+}
+
+.books, .books td {
+  border: 1px solid lightgray;
+  padding: 5px;
+}
+
+.comments, .comments td {
+  border: 1px solid lightgray;
+  padding: 5px;
+}

@@ -49,7 +49,7 @@ class BookServiceImplTest {
   void create() {
     when(bookRepository.save(newBook)).thenReturn(newBook);
 
-    bookService.create(newBook);
+    bookService.save(newBook);
     verify(bookRepository,times(1)).save(newBook);
   }
 
@@ -57,7 +57,7 @@ class BookServiceImplTest {
   void read() {
     when(bookRepository.findByTitleContains(oldBook.getTitle())).thenReturn(any());
 
-    bookService.readByTitleContains(oldBook.getTitle());
+    bookService.readBookByTitleContains(oldBook.getTitle());
     verify(bookRepository,times(1)).findByTitleContains(oldBook.getTitle());
   }
 
@@ -88,6 +88,10 @@ class BookServiceImplTest {
     when(bookRepository.findByTitleContains(oldBook.getTitle())).thenReturn(Optional.ofNullable(oldBook));
     when(commentRepository.findAllByBookId(oldBook.getId())).thenReturn(comments);
 
-    Assertions.assertEquals(bookWithComments, bookService.readWithComments(oldBook.getTitle()).get());
+    Assertions.assertEquals(bookWithComments, bookService.readBookWithCommentsByTitleContains(oldBook.getTitle()).get());
+  }
+
+  @Test
+  void getLastAddedBooks() {
   }
 }

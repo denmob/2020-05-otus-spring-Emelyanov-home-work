@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface AuthorService {
 
-  Author create(Author entity);
+  Author save(Author entity);
 
   Optional<Author> readLastNameEquals(String id);
 

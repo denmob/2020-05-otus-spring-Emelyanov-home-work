@@ -33,7 +33,7 @@ class AuthorBookImplTest {
   void create() {
     when(authorRepository.save(newAuthor)).thenReturn(newAuthor);
 
-    authorService.create(newAuthor);
+    authorService.save(newAuthor);
     verify(authorRepository,times(1)).save(newAuthor);
   }
 

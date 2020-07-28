@@ -16,7 +16,7 @@ public class GenreServiceImpl implements GenreService {
 
   @Override
   @Transactional
-  public Genre create(Genre entity) {
+  public Genre save(Genre entity) {
     return genreRepository.save(entity);
   }
 

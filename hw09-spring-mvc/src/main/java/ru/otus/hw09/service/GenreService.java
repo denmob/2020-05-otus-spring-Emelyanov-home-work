@@ -5,7 +5,7 @@ import ru.otus.hw09.model.Genre;
 import java.util.Optional;
 
 public interface GenreService {
-  Genre create(Genre entity);
+  Genre save(Genre entity);
 
   Optional<Genre> readNameEquals(String id);
 

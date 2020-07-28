@@ -32,7 +32,7 @@ class GenreServiceImplTest {
   void create() {
     when(genreRepository.save(newGenre)).thenReturn(newGenre);
 
-    genreService.create(newGenre);
+    genreService.save(newGenre);
     verify(genreRepository, times(1)).save(newGenre);
   }
 
