@@ -41,7 +41,7 @@ class AuthorBookImplTest {
   void read() {
     when(authorRepository.findByLastNameEquals(oldAuthor.getLastName())).thenReturn(any());
 
-    authorService.readLastNameEquals(oldAuthor.getLastName());
+    authorService.findByLastNameEquals(oldAuthor.getLastName());
     verify(authorRepository,times(1)).findByLastNameEquals(oldAuthor.getLastName());
   }
 
@@ -49,7 +49,7 @@ class AuthorBookImplTest {
   void delete() {
     when(authorRepository.deleteAuthorById(newAuthor.getId())).thenReturn(1L);
 
-    authorService.delete(newAuthor.getId());
+    authorService.deleteAuthorById(newAuthor.getId());
     verify(authorRepository,times(1)).deleteAuthorById(newAuthor.getId());
   }
 
@@ -57,7 +57,7 @@ class AuthorBookImplTest {
   void update() {
     when(authorRepository.save(newAuthor)).thenReturn(newAuthor);
 
-    authorService.update(newAuthor);
+    authorService.save(newAuthor);
     verify(authorRepository,times(1)).save(newAuthor);
   }
 }

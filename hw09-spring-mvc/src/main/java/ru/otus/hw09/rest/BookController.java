@@ -28,7 +28,7 @@ public class BookController {
   @GetMapping("/createBook")
   public String createBookPage(Model model) {
     model.addAttribute("book", new Book());
-    model.addAttribute("authors", authorService.getAll());
+    model.addAttribute("authors", authorService.findAll());
     model.addAttribute("genres", genreService.getAll());
     return "createBook";
   }
@@ -43,7 +43,7 @@ public class BookController {
   public String editBookPage(@RequestParam("id") String id, Model model) {
     Book book = bookService.readBookById(id).orElseThrow(NotFoundException::new);
     model.addAttribute("book", book);
-    model.addAttribute("authors", authorService.getAll());
+    model.addAttribute("authors", authorService.findAll());
     model.addAttribute("genres", genreService.getAll());
     return "editBook";
   }

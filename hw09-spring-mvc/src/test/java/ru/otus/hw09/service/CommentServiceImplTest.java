@@ -53,7 +53,7 @@ class CommentServiceImplTest {
   void update() {
     when(commentRepository.save(newComment)).thenReturn(newComment);
 
-    commentService.update(newComment);
+    commentService.save(newComment);
     verify(commentRepository, times(1)).save(newComment);
   }
 

@@ -10,8 +10,6 @@ public interface GenreService {
 
   Optional<Genre> readNameEquals(String id);
 
-  Genre update(Genre entity);
-
   boolean deleteNameEquals(String name);
 
   List<Genre> getAll();

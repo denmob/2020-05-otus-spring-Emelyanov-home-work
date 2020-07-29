@@ -9,11 +9,11 @@ public interface AuthorService {
 
   Author save(Author entity);
 
-  Optional<Author> readLastNameEquals(String lastName);
+  Optional<Author> findByLastNameEquals(String authorLastName);
 
-  Author update(Author entity);
+  boolean deleteAuthorByLastNameEquals(String authorLastName);
 
-  boolean delete(String id);
+  boolean deleteAuthorById(String authorId);
 
-  List<Author> getAll();
+  List<Author> findAll();
 }

@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import ru.otus.hw09.model.Author;
 import ru.otus.hw09.model.Book;
 import ru.otus.hw09.model.Genre;
@@ -48,8 +51,24 @@ class BookServiceImplTest {
   void update() {
     when(bookRepository.save(newBook)).thenReturn(newBook);
 
-    bookService.update(newBook);
+    bookService.save(newBook);
     verify(bookRepository,times(1)).save(newBook);
   }
 
+  @Test
+  void getLastAddedBooks() {
+    PageRequest pageRequest = PageRequest.of(0, 5, Sort.by(Sort.Direction.DESC, "id"));
+    when(bookRepository.findAll(pageRequest)).thenReturn(any());
+
+    bookService.getLastAddedBooks(pageRequest.getPageSize());
+    verify(bookRepository,times(1)).findAll(pageRequest);
+  }
+
+  @Test
+  void deleteBookById() {
+    when(bookRepository.deleteBookById(newBook.getId())).thenReturn(1L);
+
+    bookService.deleteBookById(newBook.getId());
+    verify(bookRepository,times(1)).deleteBookById(newBook.getId());
+  }
 }

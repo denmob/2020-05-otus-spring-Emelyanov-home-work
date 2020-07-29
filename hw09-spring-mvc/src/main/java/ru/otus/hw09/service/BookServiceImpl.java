@@ -30,13 +30,8 @@ public class BookServiceImpl implements BookService {
 
   @Override
   public Page<Book> getLastAddedBooks(int count) {
-    return bookRepository.findAll(PageRequest.of(0, count, Sort.by(Sort.Direction.DESC, "id")));
-  }
-
-  @Override
-  @Transactional
-  public Book update(Book entity) {
-    return bookRepository.save(entity);
+    PageRequest pageRequest = PageRequest.of(0, count, Sort.by(Sort.Direction.DESC, "id"));
+    return bookRepository.findAll(pageRequest);
   }
 
   @Override

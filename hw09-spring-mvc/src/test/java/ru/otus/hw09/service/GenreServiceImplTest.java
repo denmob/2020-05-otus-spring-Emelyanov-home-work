@@ -56,7 +56,7 @@ class GenreServiceImplTest {
   void update() {
     when(genreRepository.save(newGenre)).thenReturn(newGenre);
 
-    genreService.update(newGenre);
+    genreService.save(newGenre);
     verify(genreRepository, times(1)).save(newGenre);
   }
 }

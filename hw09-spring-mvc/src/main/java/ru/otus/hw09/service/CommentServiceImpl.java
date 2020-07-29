@@ -33,12 +33,6 @@ public class CommentServiceImpl implements CommentService {
 
   @Override
   @Transactional
-  public Comment update(Comment entity) {
-    return commentRepository.save(entity);
-  }
-
-  @Override
-  @Transactional
   public boolean deleteCommentaryContains(String partComment) {
     return (commentRepository.deleteCommentByCommentaryContains(partComment)==1L);
   }

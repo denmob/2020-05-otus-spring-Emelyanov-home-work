@@ -11,7 +11,5 @@ public interface CommentService {
 
   List<Comment> readAllForBook(String bookId);
 
-  Comment update(Comment entity);
-
   boolean deleteCommentaryContains(String partComment);
 }

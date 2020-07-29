@@ -29,17 +29,11 @@ public class GenreServiceImpl implements GenreService {
   @Override
   @Transactional
   public boolean deleteNameEquals(String name) {
-      return genreRepository.deleteByNameEquals(name)==1L;
+    return genreRepository.deleteByNameEquals(name) == 1L;
   }
 
   @Override
   public List<Genre> getAll() {
     return genreRepository.findAll();
-  }
-
-  @Override
-  @Transactional
-  public Genre update(Genre entity) {
-    return genreRepository.save(entity);
   }
 }

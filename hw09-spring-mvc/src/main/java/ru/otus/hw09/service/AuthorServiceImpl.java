@@ -23,24 +23,22 @@ public class AuthorServiceImpl implements AuthorService {
   }
 
   @Override
-  public Optional<Author> readLastNameEquals(String lastName) {
-    return authorRepository.findByLastNameEquals(lastName);
+  public Optional<Author> findByLastNameEquals(String authorLastName) {
+    return  authorRepository.findByLastNameEquals(authorLastName);
   }
 
   @Override
-  @Transactional
-  public boolean delete(String id) {
-    return authorRepository.deleteAuthorById(id) == 1L;
+  public boolean deleteAuthorByLastNameEquals(String authorLastName) {
+    return authorRepository.deleteAuthorByLastNameEquals(authorLastName)== 1L;
   }
 
   @Override
-  public List<Author> getAll() {
+  public boolean deleteAuthorById(String authorId) {
+    return authorRepository.deleteAuthorById(authorId) == 1L;
+  }
+
+  @Override
+  public List<Author> findAll() {
     return authorRepository.findAll();
-  }
-
-  @Override
-  @Transactional
-  public Author update(Author entity) {
-    return authorRepository.save(entity);
   }
 }
