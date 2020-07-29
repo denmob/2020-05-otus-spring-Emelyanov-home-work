@@ -7,13 +7,12 @@ label {
   width: 100px;
 }
 
-input:read-only {
-  background: lightgray;
-  width: 200px;
+input {
+  width: 300px;
 }
 
-input {
-  width: 200px;
+.createButton {
+  background-color: #008CBA;
 }
 
 .row {

@@ -4,52 +4,53 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
-import ru.otus.hw09.dto.BookWithComments;
+import org.springframework.web.bind.annotation.*;
 import ru.otus.hw09.model.Book;
+import ru.otus.hw09.service.AuthorService;
 import ru.otus.hw09.service.BookService;
+import ru.otus.hw09.service.GenreService;
 
 @Controller
 @RequiredArgsConstructor
 public class BookController {
 
   private final BookService bookService;
+  private final AuthorService authorService;
+  private final GenreService genreService;
 
   @GetMapping("/")
-  public String listPage(Model model) {
+  public String listBookPage(Model model) {
     Page<Book> books = bookService.getLastAddedBooks(5);
     model.addAttribute("books", books);
     return "listBook";
   }
 
-  @GetMapping("/edit")
-  public String editPage(@RequestParam("id") String id, Model model) {
-    Book book = bookService.readBookById(id).orElseThrow(NotFoundException::new);
-    model.addAttribute("book", book);
-    return "editBook";
+  @GetMapping("/createBook")
+  public String createBookPage(Model model) {
+    model.addAttribute("book", new Book());
+    model.addAttribute("authors", authorService.getAll());
+    model.addAttribute("genres", genreService.getAll());
+    return "createBook";
   }
 
-  @GetMapping("/comments")
-  public String viewPage(@RequestParam("id") String id, Model model) {
-    BookWithComments bookWithComments = bookService.readBookWithCommentsById(id).orElseThrow(NotFoundException::new);
-    model.addAttribute("bookWithComments", bookWithComments);
-    return "listComment";
-  }
-
-  @PostMapping("/edit")
-  public String savePerson(Book book) {
+  @PostMapping("/saveBook")
+  public String saveBook(@ModelAttribute Book book) {
     bookService.save(book);
     return "redirect:/";
   }
 
-  @ExceptionHandler(NullPointerException.class)
-  public ModelAndView handleNPE(NullPointerException e) {
-    ModelAndView modelAndView = new ModelAndView("error");
-    modelAndView.addObject("message", e.getMessage());
-    return modelAndView;
+  @GetMapping("/editBook")
+  public String editBookPage(@RequestParam("id") String id, Model model) {
+    Book book = bookService.readBookById(id).orElseThrow(NotFoundException::new);
+    model.addAttribute("book", book);
+    model.addAttribute("authors", authorService.getAll());
+    model.addAttribute("genres", genreService.getAll());
+    return "editBook";
+  }
+
+  @PostMapping("/deleteBook")
+  public String deleteBook(@RequestParam("id") String id) {
+    bookService.deleteBookById(id);
+    return "redirect:/";
   }
 }

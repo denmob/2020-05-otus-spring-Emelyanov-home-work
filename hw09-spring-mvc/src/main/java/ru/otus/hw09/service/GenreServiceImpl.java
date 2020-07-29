@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw09.model.Genre;
 import ru.otus.hw09.repository.GenreRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,6 +30,11 @@ public class GenreServiceImpl implements GenreService {
   @Transactional
   public boolean deleteNameEquals(String name) {
       return genreRepository.deleteByNameEquals(name)==1L;
+  }
+
+  @Override
+  public List<Genre> getAll() {
+    return genreRepository.findAll();
   }
 
   @Override

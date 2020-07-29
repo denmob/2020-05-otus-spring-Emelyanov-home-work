@@ -5,6 +5,7 @@ import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -25,5 +26,6 @@ public class Author {
   private @NonNull String lastName;
 
   @Field(name = "birthday")
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
   private @NonNull Date birthday;
 }

@@ -7,14 +7,9 @@
 </head>
 <body>
 
-<!-- Book edition -->
-<form id="edit-form" th:object="${book}" th:action="@{/saveBook(id=${book.id})}" th:method="post">
+<!-- Book creating -->
+<form id="create-form" th:object="${book}" th:action="@{/saveBook}" th:method="post">
   <h1>Book Info:</h1>
-
-  <div class="row">
-    <label for="id-input">ID:</label>
-    <input id="id-input" type="text" readonly="readonly" th:value="*{id}" value="id"/>
-  </div>
 
   <div class="row">
     <label for="holder-input-title">Title:</label>
@@ -23,7 +18,7 @@
 
   <div class="row">
     <label for="holder-input-date">Date:</label>
-    <input id="holder-input-date" name="date" type="date" th:field="*{date}" value="date"/>
+    <input id="holder-input-date" name="date" type="date" th:field="*{date}" value=""/>
   </div>
 
   <div class="row">

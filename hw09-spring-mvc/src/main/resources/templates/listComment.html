@@ -5,9 +5,9 @@
   <title>View comments</title>
   <link rel="stylesheet" th:href="@{/css/main.css}"/>
 </head>
-<body th:object="${bookWithComments}">
+<body>
 
-<h1 th:text="*{book.title}">book title :</h1>
+<h1 th:text="${title}">book title :</h1>
 <table class="comments">
   <thead>
   <tr>
@@ -16,7 +16,7 @@
   </tr>
   </thead>
   <tbody>
-  <tr th:each="comment : *{comments}">
+  <tr th:each="comment : ${comments}">
     <td th:text="${comment.commentary}">commentary</td>
     <td th:text="${comment.timestamp}">timestamp</td>
   </tr>

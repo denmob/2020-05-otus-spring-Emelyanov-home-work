@@ -7,6 +7,7 @@ import ru.otus.hw09.model.Author;
 import ru.otus.hw09.repository.AuthorRepository;
 
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,6 +31,11 @@ public class AuthorServiceImpl implements AuthorService {
   @Transactional
   public boolean delete(String id) {
     return authorRepository.deleteAuthorById(id) == 1L;
+  }
+
+  @Override
+  public List<Author> getAll() {
+    return authorRepository.findAll();
   }
 
   @Override

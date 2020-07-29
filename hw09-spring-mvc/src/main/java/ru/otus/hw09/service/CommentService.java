@@ -13,5 +13,5 @@ public interface CommentService {
 
   Comment update(Comment entity);
 
-  boolean deleteCommentaryContains(String id);
+  boolean deleteCommentaryContains(String partComment);
 }

@@ -6,10 +6,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.hw09.dto.BookWithComments;
 import ru.otus.hw09.model.Book;
 import ru.otus.hw09.repository.BookRepository;
-import ru.otus.hw09.repository.CommentRepository;
 
 import java.util.Optional;
 
@@ -18,7 +16,6 @@ import java.util.Optional;
 public class BookServiceImpl implements BookService {
 
   private final BookRepository bookRepository;
-  private final CommentRepository commentRepository;
 
   @Override
   @Transactional
@@ -32,37 +29,6 @@ public class BookServiceImpl implements BookService {
   }
 
   @Override
-  @Transactional(readOnly = true)
-  public Optional<Book> readBookByTitleContains(String bookTitle) {
-    return bookRepository.findByTitleContains(bookTitle);
-  }
-
-  @Override
-  public Optional<BookWithComments> readBookWithCommentsById(String bookId) {
-    Optional<Book> optionalBook = bookRepository.findById(bookId);
-    return optionalBook.map(book -> new BookWithComments(book, commentRepository.findAllByBookId(optionalBook.get().getId())));
-  }
-
-  @Override
-  @Transactional(readOnly = true)
-  public Optional<BookWithComments> readBookWithCommentsByTitleContains(String bookTitle) {
-    Optional<Book> optionalBook = bookRepository.findByTitleContains(bookTitle);
-    return optionalBook.map(book -> new BookWithComments(book, commentRepository.findAllByBookId(optionalBook.get().getId())));
-  }
-
-  @Override
-  @Transactional
-  public boolean deleteByTitleEquals(String bookTitle) {
-    Optional<Book> optionalBook = readBookByTitleContains(bookTitle);
-    if (optionalBook.isPresent()) {
-      bookRepository.deleteBookById(optionalBook.get().getId());
-      commentRepository.deleteCommentAllByBookId(optionalBook.get().getId());
-      return true;
-    }
-    return false;
-  }
-
-  @Override
   public Page<Book> getLastAddedBooks(int count) {
     return bookRepository.findAll(PageRequest.of(0, count, Sort.by(Sort.Direction.DESC, "id")));
   }
@@ -71,5 +37,10 @@ public class BookServiceImpl implements BookService {
   @Transactional
   public Book update(Book entity) {
     return bookRepository.save(entity);
+  }
+
+  @Override
+  public boolean deleteBookById(String bookId) {
+    return bookRepository.deleteBookById(bookId) == 1L;
   }
 }

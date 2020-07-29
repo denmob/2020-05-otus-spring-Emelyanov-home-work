@@ -6,18 +6,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import ru.otus.hw09.dto.BookWithComments;
 import ru.otus.hw09.model.Author;
 import ru.otus.hw09.model.Book;
-import ru.otus.hw09.model.Comment;
 import ru.otus.hw09.model.Genre;
 import ru.otus.hw09.repository.BookRepository;
-import ru.otus.hw09.repository.CommentRepository;
 
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.util.DateUtil.now;
 import static org.mockito.Mockito.*;
@@ -27,9 +20,6 @@ class BookServiceImplTest {
 
   @MockBean
   private BookRepository bookRepository;
-
-  @MockBean
-  private CommentRepository commentRepository;
 
   @Autowired
   private BookServiceImpl bookService;
@@ -53,24 +43,6 @@ class BookServiceImplTest {
     verify(bookRepository,times(1)).save(newBook);
   }
 
-  @Test
-  void read() {
-    when(bookRepository.findByTitleContains(oldBook.getTitle())).thenReturn(any());
-
-    bookService.readBookByTitleContains(oldBook.getTitle());
-    verify(bookRepository,times(1)).findByTitleContains(oldBook.getTitle());
-  }
-
-  @Test
-  void delete() {
-    when(bookRepository.findByTitleContains(oldBook.getTitle())).thenReturn(Optional.ofNullable(oldBook));
-    when(bookRepository.deleteBookById(oldBook.getId())).thenReturn(1L);
-    when(commentRepository.deleteCommentAllByBookId(oldBook.getId())).thenReturn(1L);
-
-    bookService.deleteByTitleEquals(oldBook.getTitle());
-    verify(bookRepository,times(1)).deleteBookById(oldBook.getId());
-    verify(commentRepository,times(1)).deleteCommentAllByBookId(oldBook.getId());
-  }
 
   @Test
   void update() {
@@ -80,18 +52,4 @@ class BookServiceImplTest {
     verify(bookRepository,times(1)).save(newBook);
   }
 
-  @Test
-  void readWithComments() {
-    List<Comment> comments = new ArrayList<>();
-    comments.add(new Comment());
-    BookWithComments bookWithComments = new BookWithComments(oldBook,comments);
-    when(bookRepository.findByTitleContains(oldBook.getTitle())).thenReturn(Optional.ofNullable(oldBook));
-    when(commentRepository.findAllByBookId(oldBook.getId())).thenReturn(comments);
-
-    Assertions.assertEquals(bookWithComments, bookService.readBookWithCommentsByTitleContains(oldBook.getTitle()).get());
-  }
-
-  @Test
-  void getLastAddedBooks() {
-  }
 }

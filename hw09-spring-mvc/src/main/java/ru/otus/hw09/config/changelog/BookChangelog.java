@@ -29,16 +29,16 @@ public class BookChangelog {
   @ChangeSet(order = "001", id = "addBook01", author = "dyemelianov", runAlways = true)
   public void addBook01(MongoTemplate template) {
     Author author = template.findOne(new Query().addCriteria(
-        Criteria.where("last_name").is("Langr")), Author.class);
+        Criteria.where("birthday").lt(convertStringToDate("1960-11-08"))), Author.class);
 
     Genre genre = template.findOne(new Query().addCriteria(
-        Criteria.where("name").regex("^P")), Genre.class);
+        Criteria.where("name").regex("^Soft")), Genre.class);
 
     var book = Book.builder()
-        .title("Pragmatic Unit Testing in Java 8 with JUnit")
+        .title("Java Core Fundamentals")
         .author(author)
         .genre(genre)
-        .date(convertStringToDate("2015-05-01")).build();
+        .date(convertStringToDate("2016-05-17")).build();
     template.save(book);
   }
 
@@ -61,16 +61,16 @@ public class BookChangelog {
   @ChangeSet(order = "003", id = "addBook03", author = "dyemelianov", runAlways = true)
   public void addBook03(MongoTemplate template) {
     Author author = template.findOne(new Query().addCriteria(
-        Criteria.where("birthday").lt(convertStringToDate("1960-11-08"))), Author.class);
+        Criteria.where("last_name").is("Langr")), Author.class);
 
     Genre genre = template.findOne(new Query().addCriteria(
-        Criteria.where("name").regex("^Soft")), Genre.class);
+        Criteria.where("name").regex("^P")), Genre.class);
 
     var book = Book.builder()
-        .title("Java Core Fundamentals")
+        .title("Pragmatic Unit Testing in Java 8 with JUnit")
         .author(author)
         .genre(genre)
-        .date(convertStringToDate("2016-05-17")).build();
+        .date(convertStringToDate("2015-05-01")).build();
     template.save(book);
   }
 

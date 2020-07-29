@@ -23,8 +23,8 @@ public class Book {
   private String title;
 
   @Field(name = "date")
-  @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-  private Date date;
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  private Date date = new Date();
 
   @Field(name = "author")
   private Author author;
