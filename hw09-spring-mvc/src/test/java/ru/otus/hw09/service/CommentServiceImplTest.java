@@ -42,7 +42,7 @@ class CommentServiceImplTest {
   }
 
   @Test
-  void read() {
+  void findCommentByCommentaryContains() {
     when(commentRepository.findCommentByCommentaryContains(oldComment.getId())).thenReturn(anyList());
 
     commentService.readCommentaryContains(oldComment.getId());
@@ -58,7 +58,7 @@ class CommentServiceImplTest {
   }
 
   @Test
-  void delete() {
+  void deleteCommentByCommentaryContains() {
     when(commentRepository.deleteCommentByCommentaryContains(oldComment.getCommentary())).thenReturn(1L);
 
     commentService.deleteCommentaryContains(oldComment.getCommentary());
@@ -66,7 +66,7 @@ class CommentServiceImplTest {
   }
 
   @Test
-  void readAllForBook() {
+  void findAllByBookId() {
     List<Comment> comments = Collections.singletonList(oldComment);
     when(commentRepository.findAllByBookId(oldComment.getBookId())).thenReturn(comments);
 

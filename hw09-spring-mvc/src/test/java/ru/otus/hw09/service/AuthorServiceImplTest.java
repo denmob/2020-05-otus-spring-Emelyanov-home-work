@@ -12,7 +12,7 @@ import static org.assertj.core.util.DateUtil.now;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest(classes = AuthorServiceImpl.class)
-class AuthorBookImplTest {
+class AuthorServiceImplTest {
 
   @MockBean
   private AuthorRepository authorRepository;
@@ -38,7 +38,7 @@ class AuthorBookImplTest {
   }
 
   @Test
-  void read() {
+  void findByLastNameEquals() {
     when(authorRepository.findByLastNameEquals(oldAuthor.getLastName())).thenReturn(any());
 
     authorService.findByLastNameEquals(oldAuthor.getLastName());
@@ -46,7 +46,7 @@ class AuthorBookImplTest {
   }
 
   @Test
-  void delete() {
+  void deleteAuthorById() {
     when(authorRepository.deleteAuthorById(newAuthor.getId())).thenReturn(1L);
 
     authorService.deleteAuthorById(newAuthor.getId());
@@ -59,5 +59,13 @@ class AuthorBookImplTest {
 
     authorService.save(newAuthor);
     verify(authorRepository,times(1)).save(newAuthor);
+  }
+
+  @Test
+  void deleteAuthorByLastNameEquals() {
+    when(authorRepository.deleteAuthorByLastNameEquals(newAuthor.getLastName())).thenReturn(1L);
+
+    authorService.deleteAuthorByLastNameEquals(newAuthor.getLastName());
+    verify(authorRepository,times(1)).deleteAuthorByLastNameEquals(newAuthor.getLastName());
   }
 }
