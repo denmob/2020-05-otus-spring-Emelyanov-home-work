@@ -6,16 +6,19 @@
   <link rel="stylesheet" th:href="@{/css/main.css}"/>
 </head>
 <body>
-<h1>Books:</h1>
+<div class="layer3"><h2><a th:href="@{/createBook}" href="createBook.html" th:text="#{listBook.CreateBook}">Create book</a></h2></div>
+<h1 th:text="#{listBook.H1message}">Books:</h1>
 
-<h2><a th:href="@{/createBook}" href="createBook.html">Create book</a></h2>
+<div class="layer1"><a th:href="@{?lang=en}"> <img th:src="@{/img/en.png}" class="img"></a></div>
+<div class="layer2"><a th:href="@{?lang=ru}"><img th:src="@{/img/ru.png}" class="img"></a></div>
+
 <table class="books">
   <thead>
   <tr>
-    <th>Title</th>
-    <th>Date</th>
-    <th>Author</th>
-    <th>Genre</th>
+    <th th:text="#{Title}">Title</th>
+    <th th:text="#{Date}">Date</th>
+    <th th:text="#{Author}">Author</th>
+    <th th:text="#{Genre}">Genre</th>
   </thead>
   <tbody>
   <tr th:each="book : ${books.content}">
@@ -24,14 +27,14 @@
     <td th:text="${book.author.firstName} +' '+ ${book.author.lastName}">author</td>
     <td th:text="${book.genre.name}">genre</td>
     <td>
-      <a th:href="@{/editBook(id=${book.id})}" href="editBook.html">Edit book</a>
+      <a th:href="@{/editBook(id=${book.id})}" href="editBook.html" th:text="#{listBook.EditBook}">Edit book</a>
     </td>
     <td>
-      <a th:href="@{/viewComment(id=${book.id},title=${book.title})}" href="listComment.html">View comments</a>
+      <a th:href="@{/viewComment(id=${book.id},title=${book.title})}"  th:text="#{listBook.ViewComments}" href="listComment.html">View comments</a>
     </td>
     <td>
       <form id="delete-form" th:action="@{/deleteBook(id=${book.id})}" th:method="post">
-        <button type="submit">Delete book</button>
+        <button type="submit" th:text="#{listBook.DeleteBook}">Delete book</button>
       </form>
     </td>
   </tr>

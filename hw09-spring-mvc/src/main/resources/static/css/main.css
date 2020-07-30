@@ -1,4 +1,5 @@
 body {
+  background: lightblue;
   padding: 50px;
 }
 
@@ -17,14 +18,42 @@ input {
 
 .row {
   margin-top: 10px;
+  border-color: black;
 }
 
 .books, .books td {
-  border: 1px solid lightgray;
+  border: 1px solid black;
   padding: 5px;
 }
 
 .comments, .comments td {
-  border: 1px solid lightgray;
+  border: 1px solid black;
   padding: 5px;
 }
+
+.layer1 {
+  position: absolute;
+  top: 15px;
+  right: 120px;
+  line-height: 1px;
+}
+
+.layer2 {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  line-height: 1px;
+}
+
+.layer3 {
+  position: absolute;
+  top: 20px;
+  left: 55px;
+  line-height: 1px;
+}
+
+.img {
+  width: 100px;
+  height: 100px;
+}
+
