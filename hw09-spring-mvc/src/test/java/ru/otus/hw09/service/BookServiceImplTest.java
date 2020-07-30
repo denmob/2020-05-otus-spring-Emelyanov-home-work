@@ -15,6 +15,8 @@ import ru.otus.hw09.model.Genre;
 import ru.otus.hw09.repository.BookRepository;
 
 
+import java.util.Optional;
+
 import static org.assertj.core.util.DateUtil.now;
 import static org.mockito.Mockito.*;
 
@@ -70,5 +72,14 @@ class BookServiceImplTest {
 
     bookService.deleteBookById(newBook.getId());
     verify(bookRepository,times(1)).deleteBookById(newBook.getId());
+  }
+
+  @Test
+  void readBookById() {
+    when(bookRepository.findById(oldBook.getId())).thenReturn(Optional.of(oldBook));
+
+    bookService.readBookById(oldBook.getId());
+
+    verify(bookRepository,times(1)).findById(oldBook.getId());
   }
 }

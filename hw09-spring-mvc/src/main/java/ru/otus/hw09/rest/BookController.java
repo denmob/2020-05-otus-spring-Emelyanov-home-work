@@ -19,8 +19,8 @@ public class BookController {
   private final GenreService genreService;
 
   @GetMapping("/")
-  public String listBookPage(Model model) {
-    Page<Book> books = bookService.getLastAddedBooks(5);
+  public String listBookPage(@RequestParam(value = "countBook", defaultValue = "5") int countBook, Model model) {
+    Page<Book> books = bookService.getLastAddedBooks(countBook);
     model.addAttribute("books", books);
     return "listBook";
   }
@@ -29,7 +29,7 @@ public class BookController {
   public String createBookPage(Model model) {
     model.addAttribute("book", new Book());
     model.addAttribute("authors", authorService.findAll());
-    model.addAttribute("genres", genreService.getAll());
+    model.addAttribute("genres", genreService.findAll());
     return "createBook";
   }
 
@@ -44,7 +44,7 @@ public class BookController {
     Book book = bookService.readBookById(id).orElseThrow(NotFoundException::new);
     model.addAttribute("book", book);
     model.addAttribute("authors", authorService.findAll());
-    model.addAttribute("genres", genreService.getAll());
+    model.addAttribute("genres", genreService.findAll());
     return "editBook";
   }
 

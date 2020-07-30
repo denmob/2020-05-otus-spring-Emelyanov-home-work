@@ -12,5 +12,5 @@ public interface GenreService {
 
   boolean deleteNameEquals(String name);
 
-  List<Genre> getAll();
+  List<Genre> findAll();
 }

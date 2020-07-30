@@ -33,7 +33,7 @@ public class GenreServiceImpl implements GenreService {
   }
 
   @Override
-  public List<Genre> getAll() {
+  public List<Genre> findAll() {
     return genreRepository.findAll();
   }
 }
