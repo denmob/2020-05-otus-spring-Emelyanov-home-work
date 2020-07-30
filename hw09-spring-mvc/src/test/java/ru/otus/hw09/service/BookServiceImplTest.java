@@ -33,11 +33,11 @@ class BookServiceImplTest {
   private Book oldBook;
 
   @BeforeEach
-  void beforeEach(){
+  void beforeEach() {
     Author newAuthor = new Author("0", "FirstName", "LastName", now());
     Genre newGenre = new Genre("0", "newGenre");
-    newBook = new Book("0","Title new",now(), newAuthor, newGenre);
-    oldBook = new Book("1","Title old",now(), newAuthor, newGenre);
+    newBook = new Book("0", "Title new", now(), newAuthor, newGenre);
+    oldBook = new Book("1", "Title old", now(), newAuthor, newGenre);
   }
 
   @Test
@@ -45,7 +45,7 @@ class BookServiceImplTest {
     when(bookRepository.save(newBook)).thenReturn(newBook);
 
     bookService.save(newBook);
-    verify(bookRepository,times(1)).save(newBook);
+    verify(bookRepository, times(1)).save(newBook);
   }
 
 
@@ -54,7 +54,7 @@ class BookServiceImplTest {
     when(bookRepository.save(newBook)).thenReturn(newBook);
 
     bookService.save(newBook);
-    verify(bookRepository,times(1)).save(newBook);
+    verify(bookRepository, times(1)).save(newBook);
   }
 
   @Test
@@ -63,7 +63,7 @@ class BookServiceImplTest {
     when(bookRepository.findAll(pageRequest)).thenReturn(any());
 
     bookService.getLastAddedBooks(pageRequest.getPageSize());
-    verify(bookRepository,times(1)).findAll(pageRequest);
+    verify(bookRepository, times(1)).findAll(pageRequest);
   }
 
   @Test
@@ -71,7 +71,7 @@ class BookServiceImplTest {
     when(bookRepository.deleteBookById(newBook.getId())).thenReturn(1L);
 
     bookService.deleteBookById(newBook.getId());
-    verify(bookRepository,times(1)).deleteBookById(newBook.getId());
+    verify(bookRepository, times(1)).deleteBookById(newBook.getId());
   }
 
   @Test
@@ -80,6 +80,6 @@ class BookServiceImplTest {
 
     bookService.readBookById(oldBook.getId());
 
-    verify(bookRepository,times(1)).findById(oldBook.getId());
+    verify(bookRepository, times(1)).findById(oldBook.getId());
   }
 }

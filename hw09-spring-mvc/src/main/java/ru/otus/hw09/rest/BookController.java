@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.otus.hw09.model.Book;
 import ru.otus.hw09.service.AuthorService;
 import ru.otus.hw09.service.BookService;
+import ru.otus.hw09.service.CommentService;
 import ru.otus.hw09.service.GenreService;
 
 @Controller
@@ -17,6 +18,7 @@ public class BookController {
   private final BookService bookService;
   private final AuthorService authorService;
   private final GenreService genreService;
+  private final CommentService commentService;
 
   @GetMapping("/")
   public String listBookPage(@RequestParam(value = "countBook", defaultValue = "5") int countBook, Model model) {
@@ -50,7 +52,9 @@ public class BookController {
 
   @PostMapping("/deleteBook")
   public String deleteBook(@RequestParam("id") String id) {
-    bookService.deleteBookById(id);
+    if (bookService.deleteBookById(id)) {
+      commentService.deleteCommentAllByBookId(id);
+    }
     return "redirect:/";
   }
 }

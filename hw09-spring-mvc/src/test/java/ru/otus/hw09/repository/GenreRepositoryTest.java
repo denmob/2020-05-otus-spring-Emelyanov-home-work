@@ -33,9 +33,9 @@ class GenreRepositoryTest {
 
   @Test
   void findByNameEqualsExistName() {
-   Optional<Genre> optionalGenre = genreRepository.findByNameEquals(existName);
-   assertTrue(optionalGenre.isPresent());
-   assertEquals(existName, optionalGenre.get().getName());
+    Optional<Genre> optionalGenre = genreRepository.findByNameEquals(existName);
+    assertTrue(optionalGenre.isPresent());
+    assertEquals(existName, optionalGenre.get().getName());
   }
 
   @Test

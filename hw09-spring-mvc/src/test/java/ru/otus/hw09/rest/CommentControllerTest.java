@@ -30,10 +30,10 @@ class CommentControllerTest {
 
     when(commentService.readAllForBook(book.getId())).thenReturn(new ArrayList<>());
 
-    commentController.viewCommentPage(book.getId(),book.getTitle(),model);
+    commentController.viewCommentPage(book.getId(), book.getTitle(), model);
 
-    assertEquals(book.getTitle(),model.getAttribute("title"));
+    assertEquals(book.getTitle(), model.getAttribute("title"));
 
-    verify(commentService,times(1)).readAllForBook(book.getId());
+    verify(commentService, times(1)).readAllForBook(book.getId());
   }
 }

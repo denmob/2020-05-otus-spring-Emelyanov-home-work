@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @Slf4j
-@SpringBootTest(classes = {BookServiceImpl.class, AuthorServiceImpl.class, GenreServiceImpl.class, BookController.class})
+@SpringBootTest(classes = {BookServiceImpl.class, AuthorServiceImpl.class, GenreServiceImpl.class, BookController.class, CommentServiceImpl.class})
 class BookControllerTest {
 
   @MockBean
@@ -32,9 +32,11 @@ class BookControllerTest {
   @MockBean
   private GenreServiceImpl genreService;
 
+  @MockBean
+  private CommentServiceImpl commentService;
+
   @Autowired
   private BookController bookController;
-
 
   @Test
   void listBookPage() {
@@ -112,9 +114,11 @@ class BookControllerTest {
     Book book = new Book();
 
     when(bookService.deleteBookById(book.getId())).thenReturn(true);
+    when(commentService.deleteCommentAllByBookId(book.getId())).thenReturn(true);
 
     assertEquals("redirect:/", bookController.deleteBook(book.getId()));
 
     verify(bookService, times(1)).deleteBookById(book.getId());
+    verify(commentService, times(1)).deleteCommentAllByBookId(book.getId());
   }
 }

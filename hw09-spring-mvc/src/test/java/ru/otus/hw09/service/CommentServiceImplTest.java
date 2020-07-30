@@ -29,8 +29,8 @@ class CommentServiceImplTest {
 
   @BeforeEach
   void beforeEach() {
-    newComment = new Comment("0", "new comment", "1",new Date());
-    oldComment = new Comment("1", "old comment", "2",new Date());
+    newComment = new Comment("0", "new comment", "1", new Date());
+    oldComment = new Comment("1", "old comment", "2", new Date());
   }
 
   @Test
