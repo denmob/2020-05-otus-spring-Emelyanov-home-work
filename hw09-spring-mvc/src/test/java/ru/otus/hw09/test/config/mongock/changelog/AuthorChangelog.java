@@ -1,4 +1,4 @@
-package ru.otus.hw09.config.mongock.changelog;
+package ru.otus.hw09.test.config.mongock.changelog;
 
 import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;

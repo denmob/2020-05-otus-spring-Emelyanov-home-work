@@ -3,12 +3,9 @@ spring:
     mongodb:
       database: hw09-test
       port: 0
-#      database: hw08-test
-#      uri: mongodb://localhost
-#      port: 27017
 
   mongock:
-    changelogs: "ru.otus.hw09.config.mongock.changelog"
+    changelogs: "ru.otus.hw09.test.config.mongock.changelog"
 
 logging:
   level:

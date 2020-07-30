@@ -1,4 +1,4 @@
-package ru.otus.hw09.config.mongock;
+package ru.otus.hw09.test.config.mongock;
 
 import com.github.cloudyrock.mongock.Mongock;
 import com.github.cloudyrock.mongock.SpringMongockBuilder;
