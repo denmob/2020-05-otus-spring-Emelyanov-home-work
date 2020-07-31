@@ -1,0 +1,13 @@
+spring:
+  data:
+    mongodb:
+      database: hw09
+      uri: mongodb://localhost
+      port: 27017
+
+  mongock:
+    changelogs: "ru.otus.hw09.config.changelog"
+
+logging:
+  level:
+    ROOT: INFO
