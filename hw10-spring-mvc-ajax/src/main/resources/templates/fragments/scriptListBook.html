@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="scriptListBook">
+
+    <script>
+      $(function() {
+        $.get('/api/books').done(function (books) {
+          books.forEach(function (book) {
+             var bookDate = new Date(book.date);
+            $('#tbodyListBook').append(`
+                    <tr>
+                        <td>${book.title}</td>
+                        <td>${bookDate.toDateString()}</td>
+                        <td>${book.author.firstName} ${book.author.lastName}</td>
+                        <td>${book.genre.name}</td>
+                        <td>
+                          <a th:href="@{/editBook(id=${book.id})}" href="editBook.html" th:text="#{listBook.EditBook}">Edit book</a>
+                        </td>
+                        <td>
+                          <a th:href="@{/viewComment(id=${book.id},title=${book.title})}" th:text="#{listBook.ViewComments}" href="listComment.html">View comments</a>
+                        </td>
+                        <td>
+                          <form id="delete-form" th:action="@{/deleteBook(id=${book.id})}" th:method="post">
+                            <button type="submit" th:text="#{listBook.DeleteBook}">Delete book</button>
+                          </form>
+                        </td>
+                    </tr>
+                      `)
+          });
+        })
+      });
+    </script>
+
+  </div>
+
+</html>
