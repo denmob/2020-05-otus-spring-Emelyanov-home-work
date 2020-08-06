@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class CommentPageController {
 
-  @GetMapping("/page/comment/list")
+  @GetMapping("/pageCommentList")
   public String commentsPage() {
-    return "page/comment/list";
+    return "pageCommentList";
   }
 }

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+  <head th:replace="fragments/head :: head(title='Home page')"><title></title></head>
+
+  <body>
+    <script th:replace="fragments/localization :: images"></script>
+
+    <div class="layer3">
+        <h2><a th:href="@{/pageBookCreate}" href="pageBookCreate.html" th:text="#{listBook.CreateBook}">Create book</a></h2>
+    </div>
+
+    <h1 th:text="#{listBook.H1message}">Books:</h1>
+
+    <table class="books">
+      <thead>
+      <th th:text="#{Title}">Title</th>
+      <th th:text="#{Date}">Date</th>
+      <th th:text="#{Author}">Author</th>
+      <th th:text="#{Genre}">Genre</th>
+      </thead>
+      <tbody id="tbodyListBook">
+      </tbody>
+    </table>
+
+    <script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/js/getBookList.js"></script>
+
+    <script type="text/javascript" th:inline="javascript">
+      function renderBookList(bookList){
+        bookList.forEach(function (book) {
+
+          $('#tbodyListBook').append(`
+               <tr>
+                   <td>${book.title}</td>
+                   <td>${new Date(book.date).toDateString()}</td>
+                   <td>${book.author.firstName} ${book.author.lastName}</td>
+                   <td>${book.genre.name}</td>
+                   <td>
+                     <a th:href="@{/pageBookEdit(bookId=${book.id})}" href="editLink" th:text="#{listBook.EditBook}">Edit book</a>
+                   </td>
+                   <td>
+                     <a th:href="@{/pageCommentList(id=${book.id},title=${book.title})}" href="pageCommentList.html" th:text="#{listBook.ViewComments}" >View comments</a>
+                   </td>
+                   <td>
+                       <button type="submit" th:text="#{listBook.DeleteBook}">Delete book</button>
+                   </td>
+               </tr>
+            `)
+        })
+      }
+    </script>
+
+
+  </body>
+</html>

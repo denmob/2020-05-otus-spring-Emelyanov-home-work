@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-  <head th:replace="fragments/head :: head(title='Create book page')"></head>
+  <head th:replace="fragments/head :: head(title='Create book page')"><title></title></head>
 
   <body>
     <h1 th:text="${title}">book title :</h1>
@@ -22,7 +22,6 @@
     <br>
     <a th:href="@{/}" href="../list.html" th:text="#{backToHome}">Back to list books page</a>
 
-    <script th:replace="fragments/scriptDependency :: jquery"></script>
   </body>
 
 </html>

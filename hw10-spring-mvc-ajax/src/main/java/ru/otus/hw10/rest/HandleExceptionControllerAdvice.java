@@ -9,7 +9,7 @@ public class HandleExceptionControllerAdvice {
 
   @ExceptionHandler(NullPointerException.class)
   public ModelAndView handleNPE(NullPointerException e) {
-    ModelAndView modelAndView = new ModelAndView("error");
+    ModelAndView modelAndView = new ModelAndView("pageGlobalError");
     modelAndView.addObject("message", e.getMessage());
     return modelAndView;
   }
