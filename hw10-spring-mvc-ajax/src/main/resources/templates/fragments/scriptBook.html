@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+  <div th:fragment="books">
+
+    <script>
+      $(function() {
+        $.get('/api/book/list').done(function (books) {
+          books.forEach(function (book) {
+            $('#tbodyListBook').append(`
+                      <tr>
+                          <td>${book.title}</td>
+                          <td>${new Date(book.date).toDateString()}</td>
+                          <td>${book.author.firstName} ${book.author.lastName}</td>
+                          <td>${book.genre.name}</td>
+                          <td>
+                            <a th:href="@{/page/book/edit(bookId=${book.id})}" href="page/book/edit.html" th:text="#{listBook.EditBook}">Edit book</a>
+                          </td>
+                          <td>
+                            <a th:href="@{/viewComment(id=${book.id},title=${book.title})}" th:text="#{listBook.ViewComments}" href="listComment.html">View comments</a>
+                          </td>
+                          <td>
+                            <form id="delete-form" th:action="@{/deleteBook(id=${book.id})}" th:method="post">
+                              <button type="submit" th:text="#{listBook.DeleteBook}">Delete book</button>
+                            </form>
+                          </td>
+                      </tr>
+                        `)
+          });
+        })
+      });
+    </script>
+  </div>
+
+  <div th:fragment="editBook" id="divEditBook">
+    <script>
+      let bookId = document.getElementById("divEditBook").getAttribute('bookId');
+      $(function getBook() {
+        $.get('/api/book/edit(bookId='+bookId+'').done(function (book) {
+          $('input-id').value(book.id);
+
+        })
+      });
+    </script>
+  </div>
+
+</html>

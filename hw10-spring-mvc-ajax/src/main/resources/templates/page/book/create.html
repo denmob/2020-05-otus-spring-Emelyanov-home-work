@@ -1,17 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-  <head th:replace="fragments/head :: head(title='Edit book page')"></head>
+  <head th:replace="fragments/head :: head(title='Create book page')"><title></title></head>
 
   <body>
-
-    <form id="edit-form" th:object="${book}" th:action="@{/saveBook(id=${book.id})}" th:method="post">
+    <form id="create-form" th:object="${book}" th:action="@{/saveBook}" th:method="post">
       <h1 th:text="#{bookInfo}">Book Info:</h1>
-
-      <div class="row">
-        <label for="id-input" th:text="#{Id}">ID:</label>
-        <input id="id-input" type="text" readonly="readonly" th:value="*{id}" value="id"/>
-      </div>
 
       <div class="row">
         <label for="holder-input-title" th:text="#{Title}">Title:</label>
@@ -20,7 +14,7 @@
 
       <div class="row">
         <label for="holder-input-date" th:text="#{Date}">Date:</label>
-        <input id="holder-input-date" name="date" type="date" th:field="*{date}" value="date"/>
+        <input id="holder-input-date" name="date" type="date" th:field="*{date}" value=""/>
       </div>
 
       <div class="row">
@@ -42,9 +36,11 @@
       </div>
     </form>
     <br>
-    <a th:href="@{/}" href="listBook.html" th:text="#{backToHome}">Back to list books page</a>
+    <a th:href="@{/}" href="list.html" th:text="#{backToHome}">Back to list books page</a>
 
-    <script th:replace="fragments/scripts :: scripts"></script>
+    <script th:replace="fragments/scriptDependency :: jquery"></script>
+
   </body>
+
 
 </html>

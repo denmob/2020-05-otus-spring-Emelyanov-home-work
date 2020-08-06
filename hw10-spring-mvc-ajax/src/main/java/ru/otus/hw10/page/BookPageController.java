@@ -17,22 +17,23 @@ public class BookPageController {
   private final GenreService genreService;
 
   @GetMapping("/")
-  public String listBookPage() {
-    return "listBook";
+  public String booksPage() {
+    return "page/book/list";
   }
 
-  @GetMapping("/createBook")
-  public String createBookPage(Model model) {
+  @GetMapping("/page/book/create")
+  public String pageBookCreate(Model model) {
     model.addAttribute("book", new Book());
     model.addAttribute("authors", authorService.findAll());
     model.addAttribute("genres", genreService.findAll());
-    return "createBook";
+    return "page/book/create";
   }
 
-  @GetMapping("/editBook")
-  public String editBookPage(Model model) {
+  @GetMapping("/page/book/edit/{bookId}")
+  public String pageBookEdit(@PathVariable("bookId") String bookId, Model model) {
+    model.addAttribute("book", Book.builder().id(bookId).build());
     model.addAttribute("authors", authorService.findAll());
     model.addAttribute("genres", genreService.findAll());
-    return "editBook";
+    return "page/book/edit";
   }
 }
