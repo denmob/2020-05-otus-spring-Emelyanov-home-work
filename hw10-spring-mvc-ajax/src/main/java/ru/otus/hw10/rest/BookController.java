@@ -5,7 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.hw10.model.Book;
 import ru.otus.hw10.rest.dto.BookDto;
+import ru.otus.hw10.service.AuthorService;
 import ru.otus.hw10.service.BookService;
+import ru.otus.hw10.service.GenreService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,6 +17,8 @@ import java.util.stream.Collectors;
 public class BookController {
 
   private final BookService bookService;
+  private final AuthorService authorService;
+  private final GenreService genreService;
 
   @GetMapping("/api/book/list")
   @ResponseStatus(HttpStatus.OK)
@@ -30,8 +34,15 @@ public class BookController {
 
   @PostMapping("/api/book/save")
   public BookDto save(@RequestBody BookDto bookDto) {
-    bookService.save(BookDto.toBook(bookDto));
-    return bookDto;
+    Book book = Book.builder()
+        .id(bookDto.getId())
+        .title(bookDto.getTitle())
+        .date(bookDto.getDate())
+        .author(authorService.findById(bookDto.getAuthor().getId()).orElseThrow(NotFoundException::new))
+        .genre(genreService.findById(bookDto.getGenre().getId()).orElseThrow(NotFoundException::new))
+        .build();
+    bookService.save(book);
+    return BookDto.toDto(book);
   }
 
   @DeleteMapping("/api/book/delete/{bookId}")

@@ -28,15 +28,13 @@ public class BookPageController {
 
   @GetMapping("/pageBookCreate")
   public String pageBookCreate(Model model) {
-    model.addAttribute("book", new Book());
     model.addAttribute("authors", authorService.findAll());
     model.addAttribute("genres", genreService.findAll());
     return "pageBookCreate";
   }
 
-  @GetMapping("/pageBookEdit")
-  public String pageBookEdit(@RequestParam("bookId") String bookId,Model model) {
-    model.addAttribute("book", Book.builder().id(bookId).build());
+  @GetMapping("/pageBookEdit/{bookId}")
+  public String pageBookEdit(@PathVariable("bookId") String bookId,Model model) {
     model.addAttribute("authors", authorService.findAll());
     model.addAttribute("genres", genreService.findAll());
     return "pageBookEdit";

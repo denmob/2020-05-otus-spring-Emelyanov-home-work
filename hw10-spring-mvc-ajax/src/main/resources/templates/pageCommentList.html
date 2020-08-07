@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-  <head th:replace="fragments/head :: head(title='Create book page')"><title></title></head>
+  <head th:replace="fragments/head :: head(title='View comments page')"><title></title></head>
 
   <body>
+    <input id="bookId-holder" type="hidden" th:value="${bookId}" >
     <h1 th:text="${title}">book title :</h1>
     <table class="comments">
       <thead>
@@ -12,16 +13,26 @@
         <th th:text="#{listComment.timestamp}">timestamp</th>
       </tr>
       </thead>
-      <tbody>
-      <tr th:each="comment : ${comments}">
-        <td th:text="${comment.commentary}">commentary</td>
-        <td th:text="${comment.timestamp}">timestamp</td>
-      </tr>
+      <tbody id="tbodyCommentList">
       </tbody>
     </table>
     <br>
-    <a th:href="@{/}" href="../list.html" th:text="#{backToHome}">Back to list books page</a>
+    <a th:href="@{/}" href="pageBookList.html" th:text="#{backToHome}">Back to list books page</a>
 
+    <script type="text/javascript">
+      getCommentList(document.getElementById('bookId-holder').value);
+
+      function renderCommentList(commentList){
+        $('#tbodyCommentList').empty();
+        commentList.forEach(function (comment) {
+          $('#tbodyCommentList').append(`
+               <tr>
+                   <td>${comment.commentary}</td>
+                   <td>${new Date(comment.timestamp).toString()}</td>
+               </tr>
+            `)
+        })
+      }
+    </script>
   </body>
-
 </html>

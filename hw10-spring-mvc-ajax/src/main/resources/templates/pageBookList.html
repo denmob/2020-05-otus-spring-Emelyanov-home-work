@@ -14,43 +14,36 @@
 
     <table class="books">
       <thead>
-      <th th:text="#{Title}">Title</th>
-      <th th:text="#{Date}">Date</th>
-      <th th:text="#{Author}">Author</th>
-      <th th:text="#{Genre}">Genre</th>
+        <tr>
+          <th th:text="#{Title}">Title</th>
+          <th th:text="#{Date}">Date</th>
+          <th th:text="#{Author}">Author</th>
+          <th th:text="#{Genre}">Genre</th>
+        </tr>
       </thead>
-      <tbody id="tbodyListBook">
+      <tbody id="tbodyBookList">
       </tbody>
     </table>
 
-    <script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
-    <script src="/js/getBookList.js"></script>
+    <script type="text/javascript">
+      getBookList();
 
-    <script type="text/javascript" th:inline="javascript">
       function renderBookList(bookList){
+        $('#tbodyBookList').empty();
         bookList.forEach(function (book) {
-
-          $('#tbodyListBook').append(`
+          $('#tbodyBookList').append(`
                <tr>
                    <td>${book.title}</td>
                    <td>${new Date(book.date).toDateString()}</td>
                    <td>${book.author.firstName} ${book.author.lastName}</td>
                    <td>${book.genre.name}</td>
-                   <td>
-                     <a th:href="@{/pageBookEdit(bookId=${book.id})}" href="editLink" th:text="#{listBook.EditBook}">Edit book</a>
-                   </td>
-                   <td>
-                     <a th:href="@{/pageCommentList(id=${book.id},title=${book.title})}" href="pageCommentList.html" th:text="#{listBook.ViewComments}" >View comments</a>
-                   </td>
-                   <td>
-                       <button type="submit" th:text="#{listBook.DeleteBook}">Delete book</button>
-                   </td>
+                   <td><a href="/pageBookEdit/bookId=${book.id}">Edit book</a></td>
+                   <td><a href="/pageCommentList/${book.id},${book.title}">View comments</a></td>
+                   <td><button onclick="deleteBook('${book.id}')">Delete book</button></td>
                </tr>
             `)
         })
       }
     </script>
-
-
   </body>
 </html>

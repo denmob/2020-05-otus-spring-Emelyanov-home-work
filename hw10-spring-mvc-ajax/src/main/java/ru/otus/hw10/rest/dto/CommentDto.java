@@ -23,8 +23,4 @@ public class CommentDto {
   public static CommentDto toDto(Comment comment) {
     return new CommentDto(comment.getId(), comment.getCommentary(), comment.getBookId(), comment.getTimestamp());
   }
-
-  public static Comment toComment(CommentDto commentDto) {
-    return new Comment(commentDto.getId(), commentDto.getCommentary(), commentDto.getBookId(), commentDto.getTimestamp());
-  }
 }

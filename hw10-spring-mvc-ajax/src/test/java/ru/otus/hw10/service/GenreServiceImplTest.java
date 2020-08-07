@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.hw10.model.Genre;
 import ru.otus.hw10.repository.GenreRepository;
-import ru.otus.hw10.service.GenreServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +44,7 @@ class GenreServiceImplTest {
   void findByNameEquals() {
     when(genreRepository.findByNameEquals(oldGenre.getName())).thenReturn(any());
 
-    genreService.readNameEquals(oldGenre.getName());
+    genreService.findByNameEquals(oldGenre.getName());
     verify(genreRepository, times(1)).findByNameEquals(oldGenre.getName());
   }
 
@@ -53,7 +52,7 @@ class GenreServiceImplTest {
   void deleteByNameEquals() {
     when(genreRepository.deleteByNameEquals(oldGenre.getName())).thenReturn(1L);
 
-    genreService.deleteNameEquals(oldGenre.getName());
+    genreService.deleteByNameEquals(oldGenre.getName());
     verify(genreRepository, times(1)).deleteByNameEquals(oldGenre.getName());
   }
 

@@ -28,6 +28,11 @@ public class AuthorServiceImpl implements AuthorService {
   }
 
   @Override
+  public Optional<Author> findById(String authorId) {
+    return authorRepository.findById(authorId);
+  }
+
+  @Override
   public boolean deleteAuthorByLastNameEquals(String authorLastName) {
     return authorRepository.deleteAuthorByLastNameEquals(authorLastName)== 1L;
   }

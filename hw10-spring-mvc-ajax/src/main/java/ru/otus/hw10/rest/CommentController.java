@@ -17,7 +17,7 @@ public class CommentController {
 
   private final CommentService commentService;
 
-  @GetMapping("/api/comments/{bookId}")
+  @GetMapping("/api/comment/list/{bookId}")
   public List<CommentDto> getComments(@PathVariable("bookId") String bookId) {
     return commentService.readAllForBook(bookId).stream().map(CommentDto::toDto).collect(Collectors.toList());
   }

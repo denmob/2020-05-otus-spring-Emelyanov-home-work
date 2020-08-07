@@ -8,9 +8,11 @@ import java.util.Optional;
 public interface GenreService {
   Genre save(Genre entity);
 
-  Optional<Genre> readNameEquals(String id);
+  Optional<Genre> findByNameEquals(String id);
 
-  boolean deleteNameEquals(String name);
+  Optional<Genre> findById(String genreId);
+
+  boolean deleteByNameEquals(String name);
 
   List<Genre> findAll();
 }

@@ -4,41 +4,38 @@
   <head th:replace="fragments/head :: head(title='Create book page')"><title></title></head>
 
   <body>
-    <form id="create-form" th:object="${book}" th:action="@{/saveBook}" th:method="post">
       <h1 th:text="#{bookInfo}">Book Info:</h1>
 
       <div class="row">
-        <label for="holder-input-title" th:text="#{Title}">Title:</label>
-        <input id="holder-input-title" name="title" type="text" th:value="*{title}" value="title"/>
+        <label for="input-title" th:text="#{Title}">Title:</label>
+        <input id="input-title" name="title" type="text" value="title"/>
       </div>
 
       <div class="row">
-        <label for="holder-input-date" th:text="#{Date}">Date:</label>
-        <input id="holder-input-date" name="date" type="date" th:field="*{date}" value=""/>
+        <label for="input-date" th:text="#{Date}">Date:</label>
+        <input id="input-date" name="date" type="date" value=""/>
       </div>
 
       <div class="row">
-        <label for="holder-input-author" th:text="#{Author}">Author:</label>
-        <select id="holder-input-author" th:field="*{author}">
-          <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.firstName} +' '+ ${author.lastName}"></option>
+        <label for="select-author" th:text="#{Author}">Author:</label>
+        <select id="select-author">
+          <option id="option-author" th:each="author : ${authors}"  th:value="${author.id}" th:text="${author.firstName} +' '+ ${author.lastName}"></option>
         </select>
       </div>
 
       <div class="row">
-        <label for="holder-input-genre" th:text="#{Genre}">Genre:</label>
-        <select id="holder-input-genre" th:field="*{genre}">
-          <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}"></option>
+        <label for="select-genre" th:text="#{Genre}">Genre:</label>
+        <select id="select-genre">
+          <option id="option-genre" th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}"></option>
         </select>
       </div>
 
       <div class="row">
-        <button type="submit" th:text="#{save}">Save</button>
+        <button onclick="saveBook('',$('#input-title').val(),$('#input-date').val(),$('#select-author').val(),$('#select-genre').val())"
+                th:text="#{save}">Save book</button>
       </div>
-    </form>
+
     <br>
     <a th:href="@{/}" href="pageBookList.html" th:text="#{backToHome}">Back to list books page</a>
-
   </body>
-
-
 </html>
