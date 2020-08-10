@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
 @EnableConfigurationProperties
-@ComponentScan({"ru.otus.hw09.test.config.mongock", "ru.otus.hw09.repository"})
+@ComponentScan({"ru.otus.hw10.test.config.mongock", "ru.otus.hw10.repository"})
 class GenreRepositoryTest {
 
   @Autowired

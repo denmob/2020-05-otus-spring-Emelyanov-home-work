@@ -33,7 +33,7 @@ class GenreServiceImplTest {
   }
 
   @Test
-  void create() {
+  void save() {
     when(genreRepository.save(newGenre)).thenReturn(newGenre);
 
     genreService.save(newGenre);
@@ -75,5 +75,13 @@ class GenreServiceImplTest {
     assertEquals(genres, actual);
 
     verify(genreRepository, times(1)).findAll();
+  }
+
+  @Test
+  void findById() {
+    when(genreRepository.findById(oldGenre.getName())).thenReturn(any());
+
+    genreService.findById(oldGenre.getName());
+    verify(genreRepository, times(1)).findById(oldGenre.getName());
   }
 }

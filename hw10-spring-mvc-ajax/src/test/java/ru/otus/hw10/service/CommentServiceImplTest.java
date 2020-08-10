@@ -43,7 +43,7 @@ class CommentServiceImplTest {
   }
 
   @Test
-  void findCommentByCommentaryContains() {
+  void readCommentaryContains() {
     when(commentRepository.findCommentByCommentaryContains(oldComment.getId())).thenReturn(anyList());
 
     commentService.readCommentaryContains(oldComment.getId());
@@ -59,7 +59,7 @@ class CommentServiceImplTest {
   }
 
   @Test
-  void deleteCommentByCommentaryContains() {
+  void deleteCommentaryContains() {
     when(commentRepository.deleteCommentByCommentaryContains(oldComment.getCommentary())).thenReturn(1L);
 
     commentService.deleteCommentaryContains(oldComment.getCommentary());
@@ -72,5 +72,14 @@ class CommentServiceImplTest {
     when(commentRepository.findAllByBookId(oldComment.getBookId())).thenReturn(comments);
 
     Assertions.assertEquals(comments, commentService.readAllForBook(oldComment.getBookId()));
+  }
+
+  @Test
+  void deleteCommentAllByBookId() {
+    String bookId = "1232";
+    when(commentRepository.deleteCommentAllByBookId(bookId)).thenReturn(1L);
+
+    commentService.deleteCommentAllByBookId(bookId);
+    verify(commentRepository, times(1)).deleteCommentAllByBookId(bookId);
   }
 }

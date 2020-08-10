@@ -21,9 +21,8 @@ public class BookController {
   private final GenreService genreService;
 
   @GetMapping("/api/book/list")
-  @ResponseStatus(HttpStatus.OK)
-  public List<BookDto> getBooks() {
-    return bookService.getLastAddedBooks(5).stream().map(BookDto::toDto).collect(Collectors.toList());
+  public List<BookDto> getBooks(@RequestParam(value = "countBook", defaultValue = "5") int countBook) {
+    return bookService.getLastAddedBooks(countBook).stream().map(BookDto::toDto).collect(Collectors.toList());
   }
 
   @GetMapping("/api/book/edit/{bookId}")

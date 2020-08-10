@@ -35,7 +35,7 @@ class AuthorServiceImplTest {
   }
 
   @Test
-  void create() {
+  void save() {
     when(authorRepository.save(newAuthor)).thenReturn(newAuthor);
 
     authorService.save(newAuthor);
@@ -85,5 +85,13 @@ class AuthorServiceImplTest {
     assertEquals(authors, actual);
 
     verify(authorRepository, times(1)).findAll();
+  }
+
+  @Test
+  void findById() {
+    when(authorRepository.findById(oldAuthor.getId())).thenReturn(any());
+
+    authorService.findById(oldAuthor.getId());
+    verify(authorRepository, times(1)).findById(oldAuthor.getId());
   }
 }
