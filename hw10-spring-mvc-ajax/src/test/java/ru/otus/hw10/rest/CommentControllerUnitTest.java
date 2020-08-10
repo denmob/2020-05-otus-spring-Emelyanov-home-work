@@ -10,7 +10,6 @@ import ru.otus.hw10.model.Book;
 import ru.otus.hw10.model.Comment;
 import ru.otus.hw10.model.Genre;
 import ru.otus.hw10.rest.dto.CommentDto;
-import ru.otus.hw10.service.CommentService;
 import ru.otus.hw10.service.CommentServiceImpl;
 
 import java.util.ArrayList;

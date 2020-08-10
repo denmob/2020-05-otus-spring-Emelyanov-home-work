@@ -54,6 +54,4 @@ class GenreRepositoryTest {
   void deleteAllByNameEqualsNonExistName() {
     assertEquals(0L, (long) genreRepository.deleteByNameEquals(nonExistName));
   }
-
-
 }

@@ -14,13 +14,10 @@ import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoCo
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
-import org.springframework.test.context.ActiveProfiles;
 import ru.otus.hw10.model.Book;
 import ru.otus.hw10.model.Comment;
 import ru.otus.hw10.service.CommentServiceImpl;
-
 
 import java.util.*;
 
@@ -72,6 +69,4 @@ class CommentControllerRestTest {
 
     verify(commentService, times(1)).readAllForBook(book.getId());
   }
-
-
 }

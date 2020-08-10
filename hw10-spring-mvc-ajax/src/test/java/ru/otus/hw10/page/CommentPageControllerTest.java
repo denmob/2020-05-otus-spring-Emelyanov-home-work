@@ -65,6 +65,4 @@ class CommentPageControllerTest {
     mockMvc.perform(MockMvcRequestBuilders.get("/pageCommentList/"))
         .andExpect(status().is(404));
   }
-
-
 }
