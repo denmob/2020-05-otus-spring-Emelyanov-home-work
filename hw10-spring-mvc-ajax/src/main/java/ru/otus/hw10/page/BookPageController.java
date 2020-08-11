@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.otus.hw10.model.Book;
 import ru.otus.hw10.service.AuthorService;
 import ru.otus.hw10.service.GenreService;
 

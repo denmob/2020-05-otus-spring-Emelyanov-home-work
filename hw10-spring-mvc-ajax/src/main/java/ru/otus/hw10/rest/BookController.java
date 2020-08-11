@@ -1,7 +1,7 @@
 package ru.otus.hw10.rest;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.hw10.model.Book;
 import ru.otus.hw10.rest.dto.BookDto;
@@ -31,7 +31,8 @@ public class BookController {
     return BookDto.toDto(book);
   }
 
-  @PostMapping("/api/book/save")
+  @PostMapping(value = "/api/book/save",consumes = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseBody
   public BookDto save(@RequestBody BookDto bookDto) {
     Book book = Book.builder()
         .id(bookDto.getId())
@@ -40,8 +41,7 @@ public class BookController {
         .author(authorService.findById(bookDto.getAuthor().getId()).orElseThrow(NotFoundException::new))
         .genre(genreService.findById(bookDto.getGenre().getId()).orElseThrow(NotFoundException::new))
         .build();
-    bookService.save(book);
-    return BookDto.toDto(book);
+    return BookDto.toDto(bookService.save(book));
   }
 
   @DeleteMapping("/api/book/delete/{bookId}")

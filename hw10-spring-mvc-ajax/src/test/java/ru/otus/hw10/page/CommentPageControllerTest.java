@@ -39,9 +39,7 @@ class CommentPageControllerTest {
   @Test
   @SneakyThrows
   void commentsPage() {
-    mockMvc.perform(MockMvcRequestBuilders.get("/pageCommentList/{bookId},{title}", book.getId(), book.getTitle())
-        .param("id", book.getId())
-        .param("title", book.getTitle()))
+    mockMvc.perform(MockMvcRequestBuilders.get("/pageCommentList/{bookId},{title}", book.getId(), book.getTitle()))
         .andExpect(status().isOk())
         .andExpect(MockMvcResultMatchers.content().string(containsString(book.getId())))
         .andExpect(MockMvcResultMatchers.content().string(containsString(book.getTitle())));
