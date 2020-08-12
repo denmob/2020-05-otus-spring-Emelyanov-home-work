@@ -1,13 +1,7 @@
 const urlGetCommentList = '/api/comments/?';
 
-
 function getCommentList(bookId) {
-  $.ajax({
-    async: true,
-    type: 'GET',
-    url: urlGetCommentList.replace('?', bookId),
-    success: function (commentList) {
-      renderCommentList(commentList);
-    }
+  sendGetRequest(urlGetCommentList.replace('?', bookId)).then((comments) => {
+    renderCommentList(comments);
   });
 }

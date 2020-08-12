@@ -4,37 +4,22 @@ const urlDeleteBook = '/api/book/?';
 const urlSaveBook = '/api/book';
 
 function getBookList() {
-  $.ajax({
-    async: true,
-    type: 'GET',
-    url: urlGetBookList,
-    success: function (books) {
-      renderBookList(books);
-    }
+  sendGetRequest(urlGetBookList).then((books) => {
+    renderBookList(books);
   });
 }
 
 function getBook(bookId) {
-  $.ajax({
-    async: true,
-    type: 'GET',
-    url: urlGetBook.replace('?', bookId),
-    success: function (book) {
-      renderBook(book);
-    }
+  sendGetRequest(urlGetBook.replace('?', bookId)).then((book) => {
+    renderBook(book);
   });
 }
 
 function deleteBook(bookId) {
-  $.ajax({
-    type: "DELETE",
-    url: urlDeleteBook.replace('?', bookId),
-    success: function () {
-      getBookList();
-    }
+  sendDeleteRequest(urlDeleteBook.replace('?', bookId)).then(() => {
+    getBookList();
   });
 }
-
 
 function saveBook(type, bookId, bookTitle, bookDate, authorId, genreId) {
   const book = {};
@@ -49,16 +34,9 @@ function saveBook(type, bookId, bookTitle, bookDate, authorId, genreId) {
   genre.id = genreId;
   book.genre = genre;
 
-  $.ajax({
-    type: type,
-    url: urlSaveBook,
-    data: JSON.stringify(book),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    success: function () {
-      location.href = '/';
-      getBookList();
-    }
+  sendSaveObject(urlSaveBook, type, book).then(() => {
+    location.href = '/';
+    getBookList();
   });
 }
 
@@ -75,3 +53,4 @@ function formatDate(date) {
 
   return [year, month, day].join('-');
 }
+

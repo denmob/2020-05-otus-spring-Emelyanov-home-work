@@ -1,7 +1,9 @@
 package ru.otus.hw10.rest;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.hw10.model.Book;
 import ru.otus.hw10.rest.dto.BookDto;
@@ -43,8 +45,9 @@ public class BookController {
   }
 
   @DeleteMapping("/api/book/{bookId}")
-  public void delete(@PathVariable("bookId") String bookId) {
+  public ResponseEntity<Void> delete(@PathVariable("bookId") String bookId) {
     bookService.deleteBookById(bookId);
+    return ResponseEntity.ok().build();
   }
 
   private Book buildBookFromDto(BookDto bookDto) {
