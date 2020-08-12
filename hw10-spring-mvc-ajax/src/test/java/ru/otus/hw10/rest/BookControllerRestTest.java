@@ -73,7 +73,7 @@ class BookControllerRestTest {
     Page<Book> bookPage = new PageImpl<>(books);
     when(bookService.getLastAddedBooks(countBook)).thenReturn(bookPage);
 
-    UriComponentsBuilder builder = UriComponentsBuilder.fromPath("/api/book/list").queryParam("countBook", countBook);
+    UriComponentsBuilder builder = UriComponentsBuilder.fromPath("/api/books").queryParam("countBook", countBook);
 
     ResponseEntity<String> responseEntity = testRestTemplate.exchange(builder.build().encode().toUri(), HttpMethod.GET, httpEntity, String.class);
 
@@ -92,7 +92,7 @@ class BookControllerRestTest {
     Map<String, String> urlParams = new HashMap<>();
     urlParams.put("bookId", book.getId());
 
-    ResponseEntity<String> responseEntity = testRestTemplate.exchange("/api/book/edit/{bookId}", HttpMethod.GET, httpEntity, String.class, urlParams);
+    ResponseEntity<String> responseEntity = testRestTemplate.exchange("/api/book/{bookId}", HttpMethod.GET, httpEntity, String.class, urlParams);
 
     BookDto actualBook = new ObjectMapper().readValue(responseEntity.getBody(), BookDto.class);
     assertEquals(book.getTitle(), actualBook.getTitle());
@@ -113,7 +113,7 @@ class BookControllerRestTest {
     String bookDtoJson = new ObjectMapper().writeValueAsString(bookDto);
     httpEntity = new HttpEntity<>(bookDtoJson, httpHeaders);
 
-    ResponseEntity<String> responseEntity = testRestTemplate.exchange("/api/book/save", HttpMethod.POST, httpEntity, String.class);
+    ResponseEntity<String> responseEntity = testRestTemplate.exchange("/api/book", HttpMethod.POST, httpEntity, String.class);
     BookDto actualBook = new ObjectMapper().readValue(responseEntity.getBody(), BookDto.class);
     assertEquals(book.getTitle(), actualBook.getTitle());
     assertEquals(book.getId(), actualBook.getId());
@@ -130,7 +130,7 @@ class BookControllerRestTest {
     Map<String, String> urlParams = new HashMap<>();
     urlParams.put("bookId", book.getId());
 
-    ResponseEntity<String> responseEntity = testRestTemplate.exchange("/api/book/delete/{bookId}", HttpMethod.DELETE, httpEntity, String.class, urlParams);
+    ResponseEntity<String> responseEntity = testRestTemplate.exchange("/api/book/{bookId}", HttpMethod.DELETE, httpEntity, String.class, urlParams);
 
     verify(bookService, times(1)).deleteBookById(book.getId());
   }

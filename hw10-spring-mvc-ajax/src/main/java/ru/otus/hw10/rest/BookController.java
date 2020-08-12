@@ -20,32 +20,40 @@ public class BookController {
   private final AuthorService authorService;
   private final GenreService genreService;
 
-  @GetMapping("/api/book/list")
+  @GetMapping("/api/books")
   public List<BookDto> getBooks(@RequestParam(value = "countBook", defaultValue = "5") int countBook) {
     return bookService.getLastAddedBooks(countBook).stream().map(BookDto::toDto).collect(Collectors.toList());
   }
 
-  @GetMapping("/api/book/edit/{bookId}")
+  @GetMapping("/api/book/{bookId}")
   public BookDto edit(@PathVariable("bookId") String bookId) {
     Book book = bookService.readBookById(bookId).orElseThrow(NotFoundException::new);
     return BookDto.toDto(book);
   }
 
-  @PostMapping(value = "/api/book/save",consumes = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(value = "/api/book", consumes = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
-  public BookDto save(@RequestBody BookDto bookDto) {
-    Book book = Book.builder()
+  public BookDto post(@RequestBody BookDto bookDto) {
+    return BookDto.toDto(bookService.save(buildBookFromDto(bookDto)));
+  }
+
+  @PutMapping(value = "/api/book", consumes = MediaType.APPLICATION_JSON_VALUE)
+  public BookDto put(@RequestBody BookDto bookDto) {
+    return BookDto.toDto(bookService.save(buildBookFromDto(bookDto)));
+  }
+
+  @DeleteMapping("/api/book/{bookId}")
+  public void delete(@PathVariable("bookId") String bookId) {
+    bookService.deleteBookById(bookId);
+  }
+
+  private Book buildBookFromDto(BookDto bookDto) {
+    return Book.builder()
         .id(bookDto.getId())
         .title(bookDto.getTitle())
         .date(bookDto.getDate())
         .author(authorService.findById(bookDto.getAuthor().getId()).orElseThrow(NotFoundException::new))
         .genre(genreService.findById(bookDto.getGenre().getId()).orElseThrow(NotFoundException::new))
         .build();
-    return BookDto.toDto(bookService.save(book));
-  }
-
-  @DeleteMapping("/api/book/delete/{bookId}")
-  public void delete(@PathVariable("bookId") String bookId) {
-    bookService.deleteBookById(bookId);
   }
 }

@@ -75,7 +75,7 @@ class BookControllerMvcTest {
     Page<Book> bookPage = new PageImpl<>(books);
     when(bookService.getLastAddedBooks(countBook)).thenReturn(bookPage);
 
-    MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/book/list/").param("countBook", String.valueOf(countBook))).andExpect(status().isOk()).andReturn();
+    MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/books").param("countBook", String.valueOf(countBook))).andExpect(status().isOk()).andReturn();
 
     Book actualBook = JsonPath.parse(mvcResult.getResponse().getContentAsString()).read("$[0]", Book.class);
     assertEquals(book.getTitle(), actualBook.getTitle());
@@ -89,7 +89,7 @@ class BookControllerMvcTest {
   void edit() {
     when(bookService.readBookById(book.getId())).thenReturn(Optional.ofNullable(book));
 
-    MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/book/edit/{bookId}", book.getId())).andExpect(status().isOk()).andReturn();
+    MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/book/{bookId}", book.getId())).andExpect(status().isOk()).andReturn();
 
     BookDto actualBook = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), BookDto.class);
     assertEquals(book.getTitle(), actualBook.getTitle());
@@ -109,7 +109,7 @@ class BookControllerMvcTest {
 
     String bookDtoJson = new ObjectMapper().writeValueAsString(bookDto);
 
-    MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/book/save").contentType(MediaType.APPLICATION_JSON).content(bookDtoJson)).andExpect(status().isOk()).andReturn();
+    MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/book").contentType(MediaType.APPLICATION_JSON).content(bookDtoJson)).andExpect(status().isOk()).andReturn();
 
     BookDto actualBook = new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), BookDto.class);
     assertEquals(book.getTitle(), actualBook.getTitle());
@@ -125,7 +125,7 @@ class BookControllerMvcTest {
   void delete() {
     when(bookService.deleteBookById(book.getId())).thenReturn(true);
 
-    MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/book/delete/{bookId}", book.getId())).andExpect(status().isOk()).andReturn();
+    MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/book/{bookId}", book.getId())).andExpect(status().isOk()).andReturn();
 
     verify(bookService, times(1)).deleteBookById(book.getId());
   }

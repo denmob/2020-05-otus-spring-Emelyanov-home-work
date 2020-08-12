@@ -59,7 +59,7 @@ class CommentControllerMvcTest {
 
     when(commentService.readAllForBook(book.getId())).thenReturn(comments);
 
-    MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/comment/list/{bookId}", book.getId())).andExpect(status().isOk()).andReturn();
+    MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/comments/{bookId}", book.getId())).andExpect(status().isOk()).andReturn();
     MockHttpServletResponse response = mvcResult.getResponse();
     String actualCommentary = JsonPath.parse(response.getContentAsString()).read("$[0].commentary");
     assertEquals(expectComment.getCommentary(),actualCommentary);
@@ -71,7 +71,7 @@ class CommentControllerMvcTest {
   @SneakyThrows
   @DisplayName("PathVariable is empty")
   void getCommentsWithEmptyVariable() {
-    mockMvc.perform(MockMvcRequestBuilders.get("/api/comment/list/{bookId}",""))
+    mockMvc.perform(MockMvcRequestBuilders.get("/api/comments/{bookId}",""))
         .andExpect(status().is(404));
   }
 
@@ -79,7 +79,7 @@ class CommentControllerMvcTest {
   @SneakyThrows
   @DisplayName("PathVariable parameter is not present")
   void getCommentsWithoutVariable() {
-    mockMvc.perform(MockMvcRequestBuilders.get("/api/comment/list/"))
+    mockMvc.perform(MockMvcRequestBuilders.get("/api/comments/"))
         .andExpect(status().is(404));
   }
 }

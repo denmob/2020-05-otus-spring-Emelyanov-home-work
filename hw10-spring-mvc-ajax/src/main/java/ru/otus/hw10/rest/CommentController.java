@@ -21,7 +21,7 @@ public class CommentController {
 
   private final CommentService commentService;
 
-  @GetMapping(value = "/api/comment/list/{bookId}", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(value = "/api/comments/{bookId}", produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public List<CommentDto> getComments(@PathVariable("bookId") String bookId) {
     return commentService.readAllForBook(bookId).stream().map(CommentDto::toDto).collect(Collectors.toList());

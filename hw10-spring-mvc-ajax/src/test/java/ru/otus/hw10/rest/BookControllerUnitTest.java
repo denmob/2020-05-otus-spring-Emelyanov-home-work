@@ -7,9 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import ru.otus.hw10.model.Author;
 import ru.otus.hw10.model.Book;
 import ru.otus.hw10.model.Genre;
@@ -90,7 +87,7 @@ class BookControllerUnitTest {
     when(genreService.findById(bookDto.getGenre().getId())).thenReturn(Optional.ofNullable(bookDto.getGenre()));
     when(bookService.save(book)).thenReturn(book);
 
-    BookDto bookDtoActual =  bookController.save(bookDto);
+    BookDto bookDtoActual =  bookController.post(bookDto);
 
     assertEquals(bookDto,bookDtoActual);
 

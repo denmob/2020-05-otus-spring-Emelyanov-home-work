@@ -1,7 +1,7 @@
-const urlGetBookList = '/api/book/list';
-const urlGetBook = '/api/book/edit/?';
-const urlDeleteBook = '/api/book/delete/?';
-const urlSaveBook = '/api/book/save';
+const urlGetBookList = '/api/books';
+const urlGetBook = '/api/book/?';
+const urlDeleteBook = '/api/book/?';
+const urlSaveBook = '/api/book';
 
 function getBookList() {
   $.ajax({
@@ -35,7 +35,8 @@ function deleteBook(bookId) {
   });
 }
 
-function saveBook(bookId, bookTitle, bookDate, authorId, genreId) {
+
+function saveBook(type, bookId, bookTitle, bookDate, authorId, genreId) {
   const book = {};
   const author = {};
   const genre = {};
@@ -49,7 +50,7 @@ function saveBook(bookId, bookTitle, bookDate, authorId, genreId) {
   book.genre = genre;
 
   $.ajax({
-    type: "POST",
+    type: type,
     url: urlSaveBook,
     data: JSON.stringify(book),
     contentType: "application/json; charset=utf-8",

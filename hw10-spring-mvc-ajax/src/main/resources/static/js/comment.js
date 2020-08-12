@@ -1,4 +1,4 @@
-const urlGetCommentList = '/api/comment/list/?';
+const urlGetCommentList = '/api/comments/?';
 
 
 function getCommentList(bookId) {
