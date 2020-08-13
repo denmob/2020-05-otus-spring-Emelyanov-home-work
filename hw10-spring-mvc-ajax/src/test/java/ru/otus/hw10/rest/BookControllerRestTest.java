@@ -8,8 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
-import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -31,8 +29,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @Slf4j
-@EnableAutoConfiguration(exclude = {MongoAutoConfiguration.class, MongoDataAutoConfiguration.class, EmbeddedMongoAutoConfiguration.class})
-@SpringBootTest(classes = {BookServiceImpl.class, AuthorServiceImpl.class, GenreServiceImpl.class, BookController.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@EnableAutoConfiguration(exclude = {EmbeddedMongoAutoConfiguration.class})
+@SpringBootTest(classes = {BookServiceImpl.class, AuthorServiceImpl.class, GenreServiceImpl.class, BookController.class},
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class BookControllerRestTest {
 
   @Autowired
@@ -130,7 +129,7 @@ class BookControllerRestTest {
     Map<String, String> urlParams = new HashMap<>();
     urlParams.put("bookId", book.getId());
 
-    ResponseEntity<String> responseEntity = testRestTemplate.exchange("/api/book/{bookId}", HttpMethod.DELETE, httpEntity, String.class, urlParams);
+    testRestTemplate.exchange("/api/book/{bookId}", HttpMethod.DELETE, httpEntity, String.class, urlParams);
 
     verify(bookService, times(1)).deleteBookById(book.getId());
   }

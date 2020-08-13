@@ -7,21 +7,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
-import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
-import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.*;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.util.UriComponentsBuilder;
 import ru.otus.hw10.model.Author;
 import ru.otus.hw10.model.Book;
 import ru.otus.hw10.model.Genre;
@@ -38,10 +33,8 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
-@AutoConfigureWebMvc
-@AutoConfigureMockMvc
-@EnableAutoConfiguration(exclude = {MongoAutoConfiguration.class, MongoDataAutoConfiguration.class, EmbeddedMongoAutoConfiguration.class})
-@SpringBootTest(classes = {BookServiceImpl.class, AuthorServiceImpl.class, GenreServiceImpl.class, BookController.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Import({BookServiceImpl.class, AuthorServiceImpl.class, GenreServiceImpl.class, BookController.class})
+@WebMvcTest(controllers = BookController.class)
 class BookControllerMvcTest {
 
   @Autowired
@@ -125,8 +118,12 @@ class BookControllerMvcTest {
   void delete() {
     when(bookService.deleteBookById(book.getId())).thenReturn(true);
 
-    MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/book/{bookId}", book.getId())).andExpect(status().isOk()).andReturn();
+    mockMvc.perform(MockMvcRequestBuilders.delete("/api/book/{bookId}", book.getId())).andExpect(status().isOk()).andReturn();
 
     verify(bookService, times(1)).deleteBookById(book.getId());
+  }
+
+  @SpringBootConfiguration
+  public static class StopWebMvcScan {
   }
 }

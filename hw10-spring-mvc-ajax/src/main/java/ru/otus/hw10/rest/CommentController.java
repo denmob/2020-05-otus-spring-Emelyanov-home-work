@@ -14,7 +14,6 @@ import ru.otus.hw10.service.CommentService;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @RestController
 @RequiredArgsConstructor
 public class CommentController {

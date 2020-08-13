@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.hw10.model.Comment;
 import ru.otus.hw10.repository.CommentRepository;
-import ru.otus.hw10.service.CommentServiceImpl;
 
 import java.util.Collections;
 import java.util.Date;

@@ -7,14 +7,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
-import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
-import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -31,10 +27,8 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
-@AutoConfigureWebMvc
-@AutoConfigureMockMvc
-@EnableAutoConfiguration(exclude = {MongoAutoConfiguration.class, MongoDataAutoConfiguration.class, EmbeddedMongoAutoConfiguration.class})
-@SpringBootTest(classes = {CommentServiceImpl.class, CommentController.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Import({CommentServiceImpl.class, CommentController.class})
+@WebMvcTest(controllers = CommentController.class)
 class CommentControllerMvcTest {
 
   @Autowired
@@ -46,7 +40,7 @@ class CommentControllerMvcTest {
   private Book book;
 
   @BeforeEach
-  void beforeEach(){
+  void beforeEach() {
     book = Book.builder().id("123").title("title").build();
   }
 
@@ -62,16 +56,16 @@ class CommentControllerMvcTest {
     MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/comments/{bookId}", book.getId())).andExpect(status().isOk()).andReturn();
     MockHttpServletResponse response = mvcResult.getResponse();
     String actualCommentary = JsonPath.parse(response.getContentAsString()).read("$[0].commentary");
-    assertEquals(expectComment.getCommentary(),actualCommentary);
+    assertEquals(expectComment.getCommentary(), actualCommentary);
 
-    verify(commentService,times(1)).readAllForBook(book.getId());
+    verify(commentService, times(1)).readAllForBook(book.getId());
   }
 
   @Test
   @SneakyThrows
   @DisplayName("PathVariable is empty")
   void getCommentsWithEmptyVariable() {
-    mockMvc.perform(MockMvcRequestBuilders.get("/api/comments/{bookId}",""))
+    mockMvc.perform(MockMvcRequestBuilders.get("/api/comments/{bookId}", ""))
         .andExpect(status().is(404));
   }
 
@@ -81,5 +75,9 @@ class CommentControllerMvcTest {
   void getCommentsWithoutVariable() {
     mockMvc.perform(MockMvcRequestBuilders.get("/api/comments/"))
         .andExpect(status().is(404));
+  }
+
+  @SpringBootConfiguration
+  public static class StopWebMvcScan {
   }
 }

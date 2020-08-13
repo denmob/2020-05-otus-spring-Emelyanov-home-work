@@ -13,7 +13,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.otus.hw10.model.Comment;
-import ru.otus.hw10.repository.CommentRepository;
 
 import java.util.List;
 

@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.otus.hw10.service.AuthorService;
 import ru.otus.hw10.service.GenreService;
 
-
 @Controller
 @RequiredArgsConstructor
 public class BookPageController {

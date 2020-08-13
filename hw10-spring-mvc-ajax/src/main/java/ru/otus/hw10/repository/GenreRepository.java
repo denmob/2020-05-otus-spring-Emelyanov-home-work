@@ -10,6 +10,4 @@ public interface GenreRepository extends MongoRepository<Genre,String>{
   Optional<Genre> findByNameEquals(String genreName);
 
   Long deleteByNameEquals(String genreName);
-
-  Long deleteGenreById(String genreId);
 }

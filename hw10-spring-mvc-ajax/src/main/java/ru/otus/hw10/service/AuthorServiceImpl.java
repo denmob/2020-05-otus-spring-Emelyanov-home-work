@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw10.model.Author;
 import ru.otus.hw10.repository.AuthorRepository;
 
-
 import java.util.List;
 import java.util.Optional;
 
