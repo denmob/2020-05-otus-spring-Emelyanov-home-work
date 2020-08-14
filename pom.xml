@@ -19,8 +19,8 @@
   <modules>
     <module>hw01-testing</module>
     <module>hw02-testing</module>
-    <module>hw03-testing-sping-boot</module>
-    <module>hw04-testing-sping-shell</module>
+    <module>hw03-testing-spring-boot</module>
+    <module>hw04-testing-spring-shell</module>
     <module>hw05-spring-jdbc</module>
     <module>hw06-spring-jpa</module>
     <module>hw07-spring-data-jpa</module>
