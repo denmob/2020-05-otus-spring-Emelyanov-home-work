@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+  <head th:replace="fragments/head :: head(title='Edit book page')"><title></title></head>
+
+  <body>
+    <h1 th:text="#{bookInfo}">Book Info:</h1>
+
+          <div class="row">
+            <label for="input-id" th:text="#{Id}">ID:</label>
+            <input id="input-id" type="text" readonly="readonly" value=""/>
+          </div>
+
+          <div class="row">
+            <label for="input-title" th:text="#{Title}">Title:</label>
+            <input id="input-title" name="title" type="text" value=""/>
+          </div>
+
+          <div class="row">
+            <label for="input-date" th:text="#{Date}">Date:</label>
+            <input id="input-date" name="date" type="date" value=""/>
+          </div>
+
+          <div class="row">
+            <label for="select-author" th:text="#{Author}">Author:</label>
+            <select id="select-author">
+              <option id="option-author" th:each="author : ${authors}"  th:value="${author.id}" th:text="${author.firstName} +' '+ ${author.lastName}"></option>
+            </select>
+          </div>
+
+          <div class="row">
+            <label for="select-genre" th:text="#{Genre}">Genre:</label>
+            <select id="select-genre">
+              <option id="option-genre" th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}"></option>
+            </select>
+          </div>
+
+          <div class="row">
+            <button onclick="saveBook('PUT',$('#input-id').val(),$('#input-title').val(),$('#input-date').val(),$('#select-author').val(),$('#select-genre').val())"
+                    th:text="#{save}">Save book</button>
+          </div>
+        <br>
+
+    <a th:href="@{/}" href="pageBookList.html" th:text="#{backToHome}">Back to list books page</a>
+
+    <script type="text/javascript">
+      getBook(location.pathname.split('bookId=')[1]);
+
+      function renderBook(book){
+        document.getElementById('input-id').value = book.id;
+        document.getElementById('input-title').value = book.title;
+        document.getElementById('input-date').value = formatDate(book.date);
+        document.getElementById('select-author').value = book.author.id;
+        document.getElementById('select-genre').value = book.genre.id;
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+  <head th:replace="fragments/head :: head(title='Home page')"><title></title></head>
+
+  <body>
+    <script th:replace="fragments/localization :: images"></script>
+
+    <div class="layer3">
+        <h2><a th:href="@{/pageBookCreate}" href="pageBookCreate.html" th:text="#{listBook.CreateBook}">Create book</a></h2>
+    </div>
+
+    <h1 th:text="#{listBook.H1message}">Books:</h1>
+
+    <table class="books">
+      <thead>
+        <tr>
+          <th th:text="#{Title}">Title</th>
+          <th th:text="#{Date}">Date</th>
+          <th th:text="#{Author}">Author</th>
+          <th th:text="#{Genre}">Genre</th>
+        </tr>
+      </thead>
+      <tbody id="tbodyBookList">
+      </tbody>
+    </table>
+
+    <script type="text/javascript">
+      getBookList();
+
+      function renderBookList(bookList){
+        $('#tbodyBookList').empty();
+        bookList.forEach(function (book) {
+          $('#tbodyBookList').append(`
+               <tr>
+                   <td>${book.title}</td>
+                   <td>${new Date(book.date).toDateString()}</td>
+                   <td>${book.author.firstName} ${book.author.lastName}</td>
+                   <td>${book.genre.name}</td>
+                   <td><a href="/pageBookEdit/bookId=${book.id}">Edit book</a></td>
+                   <td><a href="/pageCommentList/${book.id},${book.title}">View comments</a></td>
+                   <td><button onclick="deleteBook('${book.id}')">Delete book</button></td>
+               </tr>
+            `)
+        })
+      }
+    </script>
+  </body>
+</html>

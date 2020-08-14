@@ -26,6 +26,7 @@
     <module>hw07-spring-data-jpa</module>
     <module>hw08-spring-data-mongo</module>
     <module>hw09-spring-mvc</module>
+    <module>hw10-spring-mvc-ajax</module>
   </modules>
 
   <parent>
