@@ -72,7 +72,7 @@ class BookControllerRestTest {
     Page<Book> bookPage = new PageImpl<>(books);
     when(bookService.getLastAddedBooks(countBook)).thenReturn(bookPage);
 
-    UriComponentsBuilder builder = UriComponentsBuilder.fromPath("/api/books").queryParam("countBook", countBook);
+    UriComponentsBuilder builder = UriComponentsBuilder.fromPath("/api/book").queryParam("countBook", countBook);
 
     ResponseEntity<String> responseEntity = testRestTemplate.exchange(builder.build().encode().toUri(), HttpMethod.GET, httpEntity, String.class);
 

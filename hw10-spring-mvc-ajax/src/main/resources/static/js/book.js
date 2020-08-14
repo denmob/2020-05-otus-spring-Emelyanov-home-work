@@ -1,4 +1,4 @@
-const urlGetBookList = '/api/books';
+const urlGetBookList = '/api/book';
 const urlGetBook = '/api/book/?';
 const urlDeleteBook = '/api/book/?';
 const urlSaveBook = '/api/book';

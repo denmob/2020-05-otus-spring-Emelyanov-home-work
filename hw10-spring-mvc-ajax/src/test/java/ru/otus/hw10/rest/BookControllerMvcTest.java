@@ -68,7 +68,7 @@ class BookControllerMvcTest {
     Page<Book> bookPage = new PageImpl<>(books);
     when(bookService.getLastAddedBooks(countBook)).thenReturn(bookPage);
 
-    MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/books").param("countBook", String.valueOf(countBook))).andExpect(status().isOk()).andReturn();
+    MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/book").param("countBook", String.valueOf(countBook))).andExpect(status().isOk()).andReturn();
 
     Book actualBook = JsonPath.parse(mvcResult.getResponse().getContentAsString()).read("$[0]", Book.class);
     assertEquals(book.getTitle(), actualBook.getTitle());
