@@ -1,0 +1,12 @@
+spring:
+  data:
+    mongodb:
+      database: hw010-test
+      port: 0
+
+  mongock:
+    changelogs: "ru.otus.hw11.test.config.mongock.changelog"
+
+logging:
+  level:
+    ROOT: INFO

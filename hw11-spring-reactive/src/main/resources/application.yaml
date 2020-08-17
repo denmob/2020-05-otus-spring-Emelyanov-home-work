@@ -1,0 +1,19 @@
+spring:
+  data:
+    mongodb:
+      database: hw11
+      uri: mongodb://localhost
+      port: 27017
+
+  mongock:
+    changelogs: "ru.otus.hw11.config.changelog"
+
+
+  thymeleaf:
+    reactive:
+      max-chunk-size: 8192
+
+logging:
+  level:
+    ROOT: INFO
+
