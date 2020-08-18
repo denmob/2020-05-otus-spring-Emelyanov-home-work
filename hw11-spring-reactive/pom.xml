@@ -16,7 +16,7 @@
   <name>hw11-spring-reactive</name>
 
   <properties>
-    <java.version>14</java.version>
+    <java.version>11</java.version>
     <mongock-spring.version>3.2.8</mongock-spring.version>
     <jquery.version>3.5.1</jquery.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -98,6 +98,15 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>13</source>
+          <target>13</target>
+          <compilerArgs>--enable-preview</compilerArgs>
+        </configuration>
       </plugin>
     </plugins>
   </build>

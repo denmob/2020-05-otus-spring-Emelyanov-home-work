@@ -23,16 +23,12 @@
 
 <div class="row">
   <label for="select-author">Author:</label>
-  <select id="select-author">
-    <option id="option-author" th:each="author : ${authors}" th:value="${author.id}" th:text="${author.firstName} +' '+ ${author.lastName}"></option>
-  </select>
+  <select id="select-author"></select>
 </div>
 
 <div class="row">
   <label for="select-genre">Genre:</label>
-  <select id="select-genre">
-    <option id="option-genre" th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}"></option>
-  </select>
+  <select id="select-genre"></select>
 </div>
 
 <div class="row">
@@ -46,6 +42,8 @@
 <a th:href="@{/}" href="pageBookList.html">Back to list books page</a>
 
 <script type="text/javascript">
+  getAuthorList();
+  getGenreList();
   getBook(location.pathname.split('bookId=')[1]);
 
   function renderBook(book) {

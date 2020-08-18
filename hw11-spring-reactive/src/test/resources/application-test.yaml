@@ -1,7 +1,7 @@
 spring:
   data:
     mongodb:
-      database: hw010-test
+      database: hw011-test
       port: 0
 
   mongock:

@@ -18,26 +18,26 @@
 
 <div class="row">
   <label for="select-author">Author:</label>
-  <select id="select-author">
-    <option id="option-author" th:data="getAuthorList()" th:each="author : ${authors}" th:value="${author.id}"
-            th:text="${author.firstName} +' '+ ${author.lastName}"></option>
-  </select>
+  <select id="select-author"></select>
 </div>
 
 <div class="row">
   <label for="select-genre">Genre:</label>
-  <select id="select-genre">
-    <option id="option-genre" th:data="getGenreList()" th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}"></option>
-  </select>
+  <select id="select-genre"></select>
 </div>
 
 <div class="row">
-  <button onclick="saveBook('POST','',$('#input-title').val(),$('#input-date').val(),$('#select-author').val(),$('#select-genre').val())"
-  >Save book
+  <button onclick="saveBook('POST','',$('#input-title').val(),$('#input-date').val(),$('#select-author').val(),$('#select-genre').val())">Save book
   </button>
 </div>
 
 <br>
 <a th:href="@{/}" href="pageBookList.html">Back to list books page</a>
+
+<script type="text/javascript">
+  getAuthorList();
+  getGenreList();
+</script>
+
 </body>
 </html>
