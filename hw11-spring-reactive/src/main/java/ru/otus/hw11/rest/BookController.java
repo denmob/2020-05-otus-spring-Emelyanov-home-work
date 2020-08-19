@@ -26,8 +26,7 @@ public class BookController {
   @GetMapping("/api/book")
   public Flux<BookDto> getBooks(@RequestParam(value = "page", defaultValue = "0") long page,
                                 @RequestParam(value = "size", defaultValue = "5") long size) {
-    return bookRepository
-        .findAll()
+    return bookRepository.findAll()
         .sort(Comparator.comparing(Book::getId).reversed())
         .skip(page * size)
         .take(size)
@@ -35,7 +34,6 @@ public class BookController {
   }
 
   @PostMapping(value = "/api/book", consumes = MediaType.APPLICATION_JSON_VALUE)
-  @ResponseBody
   public Mono<BookDto> post(@RequestBody BookDto bookDto) {
     return saveBook(bookDto);
   }
@@ -57,12 +55,6 @@ public class BookController {
   }
 
   private Book buildBookFromDto(BookDto bookDto, Author author, Genre genre) {
-    return Book.builder()
-        .id(bookDto.getId())
-        .title(bookDto.getTitle())
-        .date(bookDto.getDate())
-        .author(author)
-        .genre(genre)
-        .build();
+    return Book.builder().id(bookDto.getId()).title(bookDto.getTitle()).date(bookDto.getDate()).author(author).genre(genre).build();
   }
 }

@@ -36,7 +36,7 @@ public class RouterFunctionConfig {
   }
 
   @Bean
-   RouterFunction<ServerResponse> composedRoutes() {
+  RouterFunction<ServerResponse> composedRoutes() {
     return route()
         .GET(("/api/author"), (ServerRequest request) -> authorHandler.listAuthor())
         .GET(("/api/genre"), (ServerRequest request) -> genreHandler.listGenre())

@@ -9,6 +9,7 @@ import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import static com.mongodb.MongoClient.getDefaultCodecRegistry;
@@ -16,7 +17,7 @@ import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 @Data
-@Component
+@Configuration
 @ConfigurationProperties("spring.data.mongodb")
 public class MongoConfig {
 

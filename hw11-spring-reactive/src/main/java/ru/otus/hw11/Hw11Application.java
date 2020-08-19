@@ -3,13 +3,12 @@ package ru.otus.hw11;
 import lombok.SneakyThrows;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
 
 @SpringBootApplication
 @EnableReactiveMongoRepositories
-@EnableConfigurationProperties(ThymeleafProperties.class)
+@EnableConfigurationProperties
 public class Hw11Application {
 
   @SneakyThrows
