@@ -54,3 +54,28 @@ function formatDate(date) {
   return [year, month, day].join('-');
 }
 
+function renderBook(book) {
+  document.getElementById('input-id').value = book.id;
+  document.getElementById('input-title').value = book.title;
+  document.getElementById('input-date').value = formatDate(book.date);
+  document.getElementById('select-author').value = book.author.id;
+  document.getElementById('select-genre').value = book.genre.id;
+}
+
+function renderBookList(bookList) {
+  $('#tbodyBookList').empty();
+  bookList.forEach(function (book) {
+    $('#tbodyBookList').append(`
+               <tr>
+                   <td>${book.title}</td>
+                   <td>${new Date(book.date).toDateString()}</td>
+                   <td>${book.author.firstName} ${book.author.lastName}</td>
+                   <td>${book.genre.name}</td>
+                   <td><a href="/pageBookEdit/bookId=${book.id}">Edit book</a></td>
+                   <td><a href="/pageCommentList/${book.id},${book.title}">View comments</a></td>
+                   <td><button onclick="deleteBook('${book.id}')">Delete book</button></td>
+               </tr>
+            `)
+  })
+}
+

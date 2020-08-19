@@ -1,4 +1,4 @@
-package ru.otus.hw11.rest.dto;
+package ru.otus.hw11.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

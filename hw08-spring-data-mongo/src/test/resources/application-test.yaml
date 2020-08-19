@@ -12,7 +12,7 @@ spring:
       enabled: false
 
   mongock:
-    changelogs: "ru.otus.hw08.config.mongock.changelogs"
+    changelogs: "ru.otus.hw08.functional.mongock.changelogs"
 
 logging:
   level:

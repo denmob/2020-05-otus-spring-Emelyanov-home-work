@@ -6,7 +6,7 @@ spring:
       port: 27017
 
   mongock:
-    changelogs: "ru.otus.hw10.config.changelog"
+    changelogs: "ru.otus.hw10.functional.changelog"
 
 logging:
   level:

@@ -6,14 +6,8 @@ spring:
       port: 27017
 
   mongock:
-    changelogs: "ru.otus.hw11.config.changelog"
-
-
-  thymeleaf:
-    reactive:
-      max-chunk-size: 8192
+    changelogs: "ru.otus.hw11.functional.changelog"
 
 logging:
   level:
     ROOT: INFO
-

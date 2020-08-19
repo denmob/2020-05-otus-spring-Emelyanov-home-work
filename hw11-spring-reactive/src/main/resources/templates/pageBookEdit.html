@@ -45,14 +45,6 @@
   getAuthorList();
   getGenreList();
   getBook(location.pathname.split('bookId=')[1]);
-
-  function renderBook(book) {
-    document.getElementById('input-id').value = book.id;
-    document.getElementById('input-title').value = book.title;
-    document.getElementById('input-date').value = formatDate(book.date);
-    document.getElementById('select-author').value = book.author.id;
-    document.getElementById('select-genre').value = book.genre.id;
-  }
 </script>
 </body>
 </html>
