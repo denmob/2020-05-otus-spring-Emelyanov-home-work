@@ -1,6 +1,7 @@
 package ru.otus.hw11.rest;
 
 import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -161,5 +162,22 @@ class RouterFunctionConfigTest {
 
     assertNotNull(entityExchangeResult.getResponseBodyContent());
     assertTrue(new String(entityExchangeResult.getResponseBodyContent()).contains("100"));
+  }
+
+  @Test
+  @DisplayName("put /api/book with result 404")
+  void putBook() {
+    Book book = Book.builder().id("2").title("new book").build();
+    Mono<Book> bookMono = Mono.just(book);
+    when(bookRepository.save(book)).thenReturn(bookMono);
+
+    webTestClient.put()
+        .uri("/api/book")
+        .contentType(MediaType.APPLICATION_JSON)
+        .accept(MediaType.APPLICATION_JSON)
+        .body(Mono.just(book), Book.class)
+        .exchange()
+        .expectStatus()
+        .isNotFound();
   }
 }
