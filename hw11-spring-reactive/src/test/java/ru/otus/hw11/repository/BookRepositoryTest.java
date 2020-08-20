@@ -9,8 +9,6 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import reactor.test.StepVerifier;
 import ru.otus.hw11.model.Book;
 
@@ -23,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataMongoTest
 @ActiveProfiles("test")
 @ComponentScan({"ru.otus.hw11.test.config.mongock", "ru.otus.hw11.repository"})
-@Transactional(propagation = Propagation.NOT_SUPPORTED)
 class BookRepositoryTest {
 
   @Autowired
@@ -32,7 +29,7 @@ class BookRepositoryTest {
   private Book lastBook;
 
   @BeforeEach
-  void beforeEach(){
+  void beforeEach() {
     lastBook = bookRepository.findAll().blockLast();
   }
 
@@ -119,7 +116,7 @@ class BookRepositoryTest {
 
     StepVerifier
         .create(bookRepository.save(lastBook))
-        .assertNext(book -> assertEquals(lastBook.getTitle(),book.getTitle()))
+        .assertNext(book -> assertEquals(lastBook.getTitle(), book.getTitle()))
         .expectComplete()
         .verify();
   }

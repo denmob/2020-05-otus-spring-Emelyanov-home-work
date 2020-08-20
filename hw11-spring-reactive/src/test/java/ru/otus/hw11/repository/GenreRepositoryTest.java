@@ -8,8 +8,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import reactor.test.StepVerifier;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @Slf4j
 @DataMongoTest
 @ActiveProfiles("test")

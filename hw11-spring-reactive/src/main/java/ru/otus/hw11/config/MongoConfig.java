@@ -10,7 +10,6 @@ import org.bson.codecs.pojo.PojoCodecProvider;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 
 import static com.mongodb.MongoClient.getDefaultCodecRegistry;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
@@ -33,11 +32,6 @@ public class MongoConfig {
   @Bean
   public MongoDatabase mongoDatabase(MongoClient mongoClient) {
     return mongoClient.getDatabase(database);
-  }
-
-  @Bean
-  public ReactiveMongoTemplate reactiveMongoTemplate(MongoClient mongoClient) {
-    return new ReactiveMongoTemplate(mongoClient, database);
   }
 
   private MongoClientSettings createMongoClientSettings() {
