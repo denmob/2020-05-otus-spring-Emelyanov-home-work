@@ -11,5 +11,5 @@ public interface BookRepository extends ReactiveMongoRepository<Book, String> {
 
   Flux<Book> findAll();
 
-  Mono<Void> deleteBookById(String bookId);
+  Mono<Long> deleteBookById(String bookId);
 }

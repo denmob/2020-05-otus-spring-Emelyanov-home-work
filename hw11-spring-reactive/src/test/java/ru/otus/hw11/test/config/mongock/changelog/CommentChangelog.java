@@ -47,7 +47,7 @@ public class CommentChangelog {
   @ChangeSet(order = "003", id = "addComments03", author = "dyemelianov", runAlways = true)
   public void addComments03(MongoTemplate template) {
     Book book = template.findOne(new Query().addCriteria(
-        Criteria.where("title").is("Effective Java(test)")), Book.class);
+        Criteria.where("title").is("Java Core Fundamentals(test)")), Book.class);
 
     var comment = Comment.builder()
         .bookId(book.getId())
