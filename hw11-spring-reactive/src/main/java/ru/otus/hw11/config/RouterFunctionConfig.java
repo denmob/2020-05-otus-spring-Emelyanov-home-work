@@ -40,7 +40,7 @@ public class RouterFunctionConfig {
     return route()
         .GET(("/api/author"), (ServerRequest request) -> authorHandler.listAuthor())
         .GET(("/api/genre"), (ServerRequest request) -> genreHandler.listGenre())
-        .GET(("/api/comments/{bookId}"), (ServerRequest serverRequest) -> commentHandler.findAllByBookId(Objects.requireNonNull(serverRequest)))
+        .GET(("/api/comment/book/{bookId}"), (ServerRequest serverRequest) -> commentHandler.findAllByBookId(Objects.requireNonNull(serverRequest)))
         .build();
   }
 }
