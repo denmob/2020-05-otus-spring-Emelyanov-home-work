@@ -1,12 +1,12 @@
 spring:
   data:
     mongodb:
-      database: hw09
+      database: hw11
       uri: mongodb://localhost
       port: 27017
 
   mongock:
-    changelogs: "ru.otus.hw09.functional.changelog"
+    changelogs: "ru.otus.hw11.config.changelog"
 
 logging:
   level:

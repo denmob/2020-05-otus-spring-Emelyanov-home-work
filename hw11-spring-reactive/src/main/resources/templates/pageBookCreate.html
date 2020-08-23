@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head(title='Create book page')"><title></title></head>
+
+<body>
+<h1>Book Info:</h1>
+
+<div class="row">
+  <label for="input-title">Title:</label>
+  <input id="input-title" name="title" type="text" value="title"/>
+</div>
+
+<div class="row">
+  <label for="input-date">Date:</label>
+  <input id="input-date" name="date" type="date" value=""/>
+</div>
+
+<div class="row">
+  <label for="select-author">Author:</label>
+  <select id="select-author"></select>
+</div>
+
+<div class="row">
+  <label for="select-genre">Genre:</label>
+  <select id="select-genre"></select>
+</div>
+
+<div class="row">
+  <button onclick="saveBook('POST','',$('#input-title').val(),$('#input-date').val(),$('#select-author').val(),$('#select-genre').val())">Save book
+  </button>
+</div>
+
+<br>
+<a th:href="@{/}" href="pageBookList.html">Back to list books page</a>
+
+<script type="text/javascript">
+  getAuthorList();
+  getGenreList();
+</script>
+
+</body>
+</html>
