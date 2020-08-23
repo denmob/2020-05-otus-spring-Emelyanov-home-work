@@ -45,11 +45,7 @@ public class BookController {
 
   private Mono<BookDto> saveBook(BookDto bookDto) {
     return Mono.zip(authorRepository.findById(bookDto.getAuthor().getId()), genreRepository.findById(bookDto.getGenre().getId()))
-        .flatMap(data -> {
-          data.getT1();
-          data.getT2();
-          return Mono.just(buildBookFromDto(bookDto, data.getT1(), data.getT2()));
-        })
+        .map(data -> buildBookFromDto(bookDto, data.getT1(), data.getT2()))
         .flatMap(bookRepository::save)
         .map(BookDto::toDto);
   }
