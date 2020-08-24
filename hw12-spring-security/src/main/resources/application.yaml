@@ -10,4 +10,4 @@ spring:
 
 logging:
   level:
-    ROOT: INFO
+    ROOT: info
