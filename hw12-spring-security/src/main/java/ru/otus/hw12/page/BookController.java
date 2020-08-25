@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.otus.hw12.error.NotFoundException;
 import ru.otus.hw12.model.Book;
 import ru.otus.hw12.service.AuthorService;
 import ru.otus.hw12.service.BookService;
@@ -24,7 +25,7 @@ public class BookController {
   public String listBookPage(@RequestParam(value = "countBook", defaultValue = "5") int countBook, Model model) {
     Page<Book> books = bookService.getLastAddedBooks(countBook);
     model.addAttribute("books", books);
-    return "listBook";
+    return "book/list";
   }
 
   @GetMapping("/createBook")
@@ -32,7 +33,7 @@ public class BookController {
     model.addAttribute("book", new Book());
     model.addAttribute("authors", authorService.findAll());
     model.addAttribute("genres", genreService.findAll());
-    return "createBook";
+    return "book/create";
   }
 
   @GetMapping("/editBook")
@@ -41,7 +42,7 @@ public class BookController {
     model.addAttribute("book", book);
     model.addAttribute("authors", authorService.findAll());
     model.addAttribute("genres", genreService.findAll());
-    return "editBook";
+    return "book/edit";
   }
 
   @PostMapping("/saveBook")
@@ -50,7 +51,7 @@ public class BookController {
     return "redirect:/listBook";
   }
 
-  @DeleteMapping("/deleteBook")
+  @PostMapping("/deleteBook")
   public String deleteBook(@RequestParam("id") String id) {
     if (bookService.deleteBookById(id)) {
       commentService.deleteCommentAllByBookId(id);

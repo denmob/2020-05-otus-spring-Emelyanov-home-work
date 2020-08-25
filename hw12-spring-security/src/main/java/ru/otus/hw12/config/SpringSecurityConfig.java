@@ -1,6 +1,5 @@
-package ru.otus.hw12.security.config;
+package ru.otus.hw12.config;
 
-import com.google.common.collect.ImmutableList;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -23,31 +23,30 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
   private final UserDetailsService userDetailsServiceImpl;
-
-  @Override
-  public void configure( WebSecurity web ) {
-    web.ignoring().antMatchers( "/" );
-  }
+  private final AccessDeniedHandler accessDeniedHandler;
 
   @Override
   @SneakyThrows
   protected void configure(HttpSecurity http) {
     http.csrf().disable()
-        .httpBasic()
+        .authorizeRequests()
+        .antMatchers("/", "/login","/error").permitAll()
+        .antMatchers(  "/comment/**").access("hasRole('ROLE_USER')")
+        .antMatchers( "/createBook/**", "/editBook/**","/saveBook/**","/deleteBook/**").access("hasRole('ROLE_ADMIN')")
+        .anyRequest().authenticated()
         .and()
         .formLogin()
         .loginPage("/login")
+        .permitAll()
         .failureForwardUrl("/error")
-        .successForwardUrl("/listBook")
+        .defaultSuccessUrl("/listBook")
         .usernameParameter("username")
         .passwordParameter("password")
         .and()
-        .authorizeRequests()
-        .antMatchers("/login").anonymous()
-        .antMatchers(HttpMethod.GET, "/listBook").authenticated()
-        .antMatchers(HttpMethod.GET, "/createBook", "/editBook", "/comment/book").hasRole("user")
-        .antMatchers(HttpMethod.POST, "/saveBook").hasRole("admin")
-        .antMatchers(HttpMethod.DELETE, "/deleteBook").hasRole("admin");
+        .logout()
+        .permitAll()
+        .and()
+        .exceptionHandling().accessDeniedHandler(accessDeniedHandler);
   }
 
   @Autowired
@@ -67,5 +66,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
+  }
+
+  @Override
+  public void configure(WebSecurity web) {
+    web.ignoring()
+        .antMatchers("/")
+        .antMatchers( "/static/**");
   }
 }

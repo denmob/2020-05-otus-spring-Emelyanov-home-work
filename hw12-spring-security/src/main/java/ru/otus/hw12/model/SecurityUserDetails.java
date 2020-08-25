@@ -1,10 +1,9 @@
-package ru.otus.hw12.security.service;
+package ru.otus.hw12.model;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ru.otus.hw12.model.User;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,13 +11,13 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
-public class MyUserDetails implements UserDetails, Serializable {
+public class SecurityUserDetails implements UserDetails, Serializable {
 
   private static final long serialVersionUID = 1L;
 
   private final transient User user;
 
-  MyUserDetails(User user) {
+  public SecurityUserDetails(User user) {
     this.user = user;
   }
 
@@ -58,5 +57,4 @@ public class MyUserDetails implements UserDetails, Serializable {
   public boolean isEnabled() {
     return true;
   }
-
 }

@@ -6,7 +6,7 @@
   <link rel="stylesheet" th:href="@{/css/main.css}"/>
 </head>
 <body>
-<div class="layer3"><h2><a th:href="@{/createBook}" href="createBook.html" th:text="#{listBook.CreateBook}">Create book</a></h2></div>
+<div class="layer3"><h2><a th:href="@{/createBook}" href="create.html" th:text="#{listBook.CreateBook}">Create book</a></h2></div>
 <h1 th:text="#{listBook.H1message}">Books:</h1>
 
 <div class="layer1"><a th:href="@{?lang=en}"> <img th:src="@{/img/en.png}" class="img"></a></div>
@@ -27,10 +27,10 @@
     <td th:text="${book.author.firstName} +' '+ ${book.author.lastName}">author</td>
     <td th:text="${book.genre.name}">genre</td>
     <td>
-      <a th:href="@{/editBook(id=${book.id})}" href="editBook.html" th:text="#{listBook.EditBook}">Edit book</a>
+      <a th:href="@{/editBook(id=${book.id})}" th:text="#{listBook.EditBook}">Edit book</a>
     </td>
     <td>
-      <a th:href="@{/viewComment(id=${book.id},title=${book.title})}"  th:text="#{listBook.ViewComments}" href="listComment.html">View comments</a>
+      <a th:href="@{/viewComment(id=${book.id},title=${book.title})}" th:text="#{listBook.ViewComments}">View comments</a>
     </td>
     <td>
       <form id="delete-form" th:action="@{/deleteBook(id=${book.id})}" th:method="post">
@@ -40,5 +40,7 @@
   </tr>
   </tbody>
 </table>
+<br>
+<a th:href="@{/logout}" th:text="#{logout}">Logout</a>
 </body>
 </html>

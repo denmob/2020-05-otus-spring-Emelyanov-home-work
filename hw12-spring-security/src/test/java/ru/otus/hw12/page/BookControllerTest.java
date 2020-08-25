@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
+import ru.otus.hw12.error.NotFoundException;
 import ru.otus.hw12.model.Book;
 import ru.otus.hw12.service.AuthorServiceImpl;
 import ru.otus.hw12.service.BookServiceImpl;

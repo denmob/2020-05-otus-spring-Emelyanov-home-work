@@ -18,13 +18,13 @@ public class UserChangelog {
 
   @ChangeSet(order = "001", id = "addUser", author = "dyemelianov", runAlways = true)
   public void addUser(MongoTemplate template) {
-    var user = User.builder().username("user").password(bCryptPasswordEncoder.encode("12345")).role("USER_ROLE").build();
+    var user = User.builder().username("user").password(bCryptPasswordEncoder.encode("12345")).role("ROLE_USER").build();
     template.save(user);
   }
 
   @ChangeSet(order = "002", id = "addAdmin", author = "dyemelianov", runAlways = true)
   public void addAdmin(MongoTemplate template) {
-    var genre = User.builder().username("admin").password(bCryptPasswordEncoder.encode("67890")).role("ADMIN_ROLE").build();
+    var genre = User.builder().username("admin").password(bCryptPasswordEncoder.encode("67890")).role("ROLE_ADMIN").build();
     template.save(genre);
   }
 }

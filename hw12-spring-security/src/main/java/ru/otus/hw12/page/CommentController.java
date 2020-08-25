@@ -15,11 +15,11 @@ public class CommentController {
 
   private final CommentService commentService;
 
-  @GetMapping("/comment/book")
+  @GetMapping("/viewComment")
   public String viewCommentPage(@RequestParam("id") String id, @RequestParam("title") String title, Model model) {
     List<Comment> comments = commentService.readAllForBook(id);
     model.addAttribute("comments", comments);
     model.addAttribute("title", title);
-    return "listComment";
+    return "comment/list";
   }
 }
