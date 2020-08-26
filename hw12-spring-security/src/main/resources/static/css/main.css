@@ -1,3 +1,7 @@
+h2{
+  color:#FF0000;
+}
+
 body {
   background: lightblue;
   padding: 50px;
@@ -12,48 +16,20 @@ input {
   width: 300px;
 }
 
-.createButton {
-  background-color: #008CBA;
-}
-
 .row {
   margin-top: 10px;
   border-color: black;
 }
 
-.books, .books td {
-  border: 1px solid black;
-  padding: 5px;
+div#div1{
+  height:45px;width:200px;
+  float:right;
+  padding-bottom: 20px;
 }
 
-.comments, .comments td {
-  border: 1px solid black;
-  padding: 5px;
-}
-
-.layer1 {
-  position: absolute;
-  top: 15px;
-  right: 120px;
-  line-height: 1px;
-}
-
-.layer2 {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  line-height: 1px;
-}
-
-.layer3 {
-  position: absolute;
-  top: 20px;
-  left: 55px;
-  line-height: 1px;
-}
-
-.img {
-  width: 100px;
-  height: 100px;
+div#div2{
+  height:45px;width:600px;
+  float:left;
+  padding-bottom: 100px;
 }
 

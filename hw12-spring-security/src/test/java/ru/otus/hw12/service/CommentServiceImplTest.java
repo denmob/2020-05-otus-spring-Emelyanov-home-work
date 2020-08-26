@@ -43,27 +43,11 @@ class CommentServiceImplTest {
   }
 
   @Test
-  void findCommentByCommentaryContains() {
-    when(commentRepository.findCommentByCommentaryContains(oldComment.getId())).thenReturn(anyList());
-
-    commentService.readCommentaryContains(oldComment.getId());
-    verify(commentRepository, times(1)).findCommentByCommentaryContains(oldComment.getId());
-  }
-
-  @Test
   void update() {
     when(commentRepository.save(newComment)).thenReturn(newComment);
 
     commentService.save(newComment);
     verify(commentRepository, times(1)).save(newComment);
-  }
-
-  @Test
-  void deleteCommentByCommentaryContains() {
-    when(commentRepository.deleteCommentByCommentaryContains(oldComment.getCommentary())).thenReturn(1L);
-
-    commentService.deleteCommentaryContains(oldComment.getCommentary());
-    verify(commentRepository, times(1)).deleteCommentByCommentaryContains(oldComment.getCommentary());
   }
 
   @Test

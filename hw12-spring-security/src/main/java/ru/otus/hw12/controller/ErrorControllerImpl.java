@@ -1,6 +1,5 @@
-package ru.otus.hw12.error;
+package ru.otus.hw12.controller;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,7 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-public class AppErrorController implements ErrorController {
+public class ErrorControllerImpl implements ErrorController {
 
   private static final String ERROR_PATH = "/error";
   private static final String ERROR_TEMPLATE = "error/error";
@@ -23,7 +22,7 @@ public class AppErrorController implements ErrorController {
   public ModelAndView error(HttpServletRequest request) {
     ModelAndView modelAndView = new ModelAndView(ERROR_TEMPLATE);
 
-    modelAndView.addObject("code","Status code: "+ request.getAttribute("javax.servlet.error.status_code"));
+    modelAndView.addObject("head","Status code: "+ request.getAttribute("javax.servlet.error.status_code"));
     modelAndView.addObject("uri", "Request uri: "+request.getAttribute("javax.servlet.error.request_uri"));
     modelAndView.addObject("message","Message: "+ request.getAttribute("javax.servlet.error.message"));
 

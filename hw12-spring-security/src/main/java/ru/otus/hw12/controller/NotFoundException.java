@@ -1,4 +1,4 @@
-package ru.otus.hw12.error;
+package ru.otus.hw12.controller;
 
 public class NotFoundException extends RuntimeException {
 

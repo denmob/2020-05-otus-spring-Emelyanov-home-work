@@ -1,4 +1,4 @@
-package ru.otus.hw12.config;
+package ru.otus.hw12.security.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -30,15 +30,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) {
     http.csrf().disable()
         .authorizeRequests()
-        .antMatchers("/", "/login","/error").permitAll()
-        .antMatchers(  "/comment/**").access("hasRole('ROLE_USER')")
-        .antMatchers( "/createBook/**", "/editBook/**","/saveBook/**","/deleteBook/**").access("hasRole('ROLE_ADMIN')")
-        .anyRequest().authenticated()
+        .antMatchers("/", "/login","/error/**").permitAll()
+        .antMatchers("/comment/**").hasRole("USER")
+        .antMatchers("/createBook/**", "/editBook/**", "/saveBook/**", "/deleteBook/**").hasRole("ADMIN")
         .and()
         .formLogin()
         .loginPage("/login")
         .permitAll()
-        .failureForwardUrl("/error")
         .defaultSuccessUrl("/listBook")
         .usernameParameter("username")
         .passwordParameter("password")
@@ -70,8 +68,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   public void configure(WebSecurity web) {
-    web.ignoring()
-        .antMatchers("/")
-        .antMatchers( "/static/**");
+    web
+        .ignoring()
+        .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
   }
 }

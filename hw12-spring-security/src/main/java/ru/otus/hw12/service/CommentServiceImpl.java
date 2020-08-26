@@ -22,19 +22,8 @@ public class CommentServiceImpl implements CommentService {
   }
 
   @Override
-  public List<Comment> readCommentaryContains(String partComment) {
-    return commentRepository.findCommentByCommentaryContains(partComment);
-  }
-
-  @Override
   public List<Comment> readAllForBook(String bookId) {
     return commentRepository.findAllByBookId(bookId);
-  }
-
-  @Override
-  @Transactional
-  public boolean deleteCommentaryContains(String partComment) {
-    return (commentRepository.deleteCommentByCommentaryContains(partComment)==1L);
   }
 
   @Override

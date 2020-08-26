@@ -42,22 +42,6 @@ class GenreServiceImplTest {
   }
 
   @Test
-  void findByNameEquals() {
-    when(genreRepository.findByNameEquals(oldGenre.getName())).thenReturn(any());
-
-    genreService.readNameEquals(oldGenre.getName());
-    verify(genreRepository, times(1)).findByNameEquals(oldGenre.getName());
-  }
-
-  @Test
-  void deleteByNameEquals() {
-    when(genreRepository.deleteByNameEquals(oldGenre.getName())).thenReturn(1L);
-
-    genreService.deleteNameEquals(oldGenre.getName());
-    verify(genreRepository, times(1)).deleteByNameEquals(oldGenre.getName());
-  }
-
-  @Test
   void update() {
     when(genreRepository.save(newGenre)).thenReturn(newGenre);
 

@@ -1,4 +1,4 @@
-package ru.otus.hw12.page;
+package ru.otus.hw12.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -16,5 +16,10 @@ public class DefaultController {
   @GetMapping(value = {"/error"})
   public String error() {
     return "error/error";
+  }
+
+  @GetMapping(value = {"/403"})
+  public String error403() {
+    return "error/403";
   }
 }

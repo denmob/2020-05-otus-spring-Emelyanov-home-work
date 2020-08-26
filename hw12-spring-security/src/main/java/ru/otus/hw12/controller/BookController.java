@@ -1,11 +1,10 @@
-package ru.otus.hw12.page;
+package ru.otus.hw12.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.otus.hw12.error.NotFoundException;
 import ru.otus.hw12.model.Book;
 import ru.otus.hw12.service.AuthorService;
 import ru.otus.hw12.service.BookService;

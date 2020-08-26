@@ -22,17 +22,6 @@ public class GenreServiceImpl implements GenreService {
   }
 
   @Override
-  public Optional<Genre> readNameEquals(String name) {
-    return genreRepository.findByNameEquals(name);
-  }
-
-  @Override
-  @Transactional
-  public boolean deleteNameEquals(String name) {
-    return genreRepository.deleteByNameEquals(name) == 1L;
-  }
-
-  @Override
   public List<Genre> findAll() {
     return genreRepository.findAll();
   }

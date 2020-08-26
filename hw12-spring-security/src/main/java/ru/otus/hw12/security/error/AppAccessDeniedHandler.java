@@ -1,4 +1,4 @@
-package ru.otus.hw12.error;
+package ru.otus.hw12.security.error;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
@@ -25,7 +25,7 @@ public class AppAccessDeniedHandler implements AccessDeniedHandler {
     if (auth != null) {
       String message = String.format("User %s attempted to access the protected URL: %s", auth.getName(), httpServletRequest.getRequestURI());
       log.error(message);
-      httpServletResponse.sendError(403, message);
     }
+    httpServletResponse.sendRedirect( "/403");
   }
 }

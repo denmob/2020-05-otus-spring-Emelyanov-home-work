@@ -1,28 +1,33 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8"/>
-  <title>View comments</title>
-  <link rel="stylesheet" th:href="@{/css/main.css}"/>
+  <div th:replace="fragments/header :: header-css"></div>
+  <title>List comment</title>
 </head>
 <body>
 
-<h1 th:text="${title}">book title :</h1>
-<table class="comments">
-  <thead>
-  <tr>
-    <th th:text="#{listComment.commentary}">commentary</th>
-    <th th:text="#{listComment.timestamp}">timestamp</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="comment : ${comments}">
-    <td th:text="${comment.commentary}">commentary</td>
-    <td th:text="${comment.timestamp}">timestamp</td>
-  </tr>
-  </tbody>
-</table>
-<br>
-<a th:href="@{/listBook}" th:text="#{backToHome}">Back to list books page</a>
+<div th:replace="fragments/header :: header"></div>
+<div class="container">
+
+  <div id="div2"><h2 th:text="${title}">book title :</h2></div>
+
+  <table class="table table-striped">
+    <thead class="thead-dark">
+    <tr>
+      <th scope="col">Commentary</th>
+      <th scope="col">Timestamp</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="comment : ${comments}">
+      <td th:text="${comment.commentary}">commentary</td>
+      <td th:text="${comment.timestamp}">timestamp</td>
+    </tr>
+    </tbody>
+  </table>
+  <br>
+</div>
+<div th:replace="fragments/footer :: footer"></div>
+
 </body>
 </html>

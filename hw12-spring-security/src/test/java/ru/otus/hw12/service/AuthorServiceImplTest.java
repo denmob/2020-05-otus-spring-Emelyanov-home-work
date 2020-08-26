@@ -43,35 +43,11 @@ class AuthorServiceImplTest {
   }
 
   @Test
-  void findByLastNameEquals() {
-    when(authorRepository.findByLastNameEquals(oldAuthor.getLastName())).thenReturn(any());
-
-    authorService.findByLastNameEquals(oldAuthor.getLastName());
-    verify(authorRepository, times(1)).findByLastNameEquals(oldAuthor.getLastName());
-  }
-
-  @Test
-  void deleteAuthorById() {
-    when(authorRepository.deleteAuthorById(newAuthor.getId())).thenReturn(1L);
-
-    authorService.deleteAuthorById(newAuthor.getId());
-    verify(authorRepository, times(1)).deleteAuthorById(newAuthor.getId());
-  }
-
-  @Test
   void update() {
     when(authorRepository.save(newAuthor)).thenReturn(newAuthor);
 
     authorService.save(newAuthor);
     verify(authorRepository, times(1)).save(newAuthor);
-  }
-
-  @Test
-  void deleteAuthorByLastNameEquals() {
-    when(authorRepository.deleteAuthorByLastNameEquals(newAuthor.getLastName())).thenReturn(1L);
-
-    authorService.deleteAuthorByLastNameEquals(newAuthor.getLastName());
-    verify(authorRepository, times(1)).deleteAuthorByLastNameEquals(newAuthor.getLastName());
   }
 
   @Test
