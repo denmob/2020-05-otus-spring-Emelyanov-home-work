@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.otus.hw12.model.Genre;
 import ru.otus.hw12.repository.GenreRepository;
@@ -20,8 +21,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @Slf4j
 @DataMongoTest
 @ActiveProfiles("test")
-@ExtendWith(SpringExtension.class)
-@EnableConfigurationProperties
 @ComponentScan({"ru.otus.hw12.test.config.mongock", "ru.otus.hw12.repository"})
 class GenreRepositoryTest {
 

@@ -22,8 +22,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @Slf4j
 @DataMongoTest
 @ActiveProfiles("test")
-@ExtendWith(SpringExtension.class)
-@EnableConfigurationProperties
 @ComponentScan({"ru.otus.hw12.test.config.mongock", "ru.otus.hw12.repository"})
 class CommentRepositoryTest {
 

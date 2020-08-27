@@ -1,4 +1,4 @@
-package ru.otus.hw12.page;
+package ru.otus.hw12.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -30,13 +30,10 @@ class BookControllerTest {
 
   @MockBean
   private BookServiceImpl bookService;
-
   @MockBean
   private AuthorServiceImpl authorService;
-
   @MockBean
   private GenreServiceImpl genreService;
-
   @MockBean
   private CommentServiceImpl commentService;
 
@@ -55,7 +52,7 @@ class BookControllerTest {
     when(bookService.getLastAddedBooks(countBook)).thenReturn(books);
 
     assertNull(model.getAttribute("books"));
-    assertEquals("listBook", bookController.listBookPage(countBook, model));
+    assertEquals("book/list", bookController.listBookPage(countBook, model));
     assertNotNull(model.getAttribute("books"));
     assertEquals(books, model.getAttribute("books"));
 
@@ -69,7 +66,7 @@ class BookControllerTest {
     when(genreService.findAll()).thenReturn(new ArrayList<>());
     when(authorService.findAll()).thenReturn(new ArrayList<>());
 
-    assertEquals("createBook", bookController.createBookPage(model));
+    assertEquals("book/create", bookController.createBookPage(model));
 
     assertNotNull(model.getAttribute("book"));
     assertNotNull(model.getAttribute("authors"));
@@ -85,7 +82,7 @@ class BookControllerTest {
 
     when(bookService.save(book)).thenReturn(book);
 
-    assertEquals("redirect:/", bookController.saveBook(book));
+    assertEquals("redirect:/listBook", bookController.saveBook(book));
 
     verify(bookService, times(1)).save(book);
   }
@@ -99,7 +96,7 @@ class BookControllerTest {
     when(authorService.findAll()).thenReturn(new ArrayList<>());
     when(bookService.readBookById(book.getId())).thenReturn(Optional.of(book));
 
-    assertEquals("editBook", bookController.editBookPage(book.getId(), model));
+    assertEquals("book/edit", bookController.editBookPage(book.getId(), model));
 
     verify(bookService, times(1)).readBookById(book.getId());
   }
@@ -121,7 +118,7 @@ class BookControllerTest {
     when(bookService.deleteBookById(book.getId())).thenReturn(true);
     when(commentService.deleteCommentAllByBookId(book.getId())).thenReturn(true);
 
-    assertEquals("redirect:/", bookController.deleteBook(book.getId()));
+    assertEquals("redirect:/listBook", bookController.deleteBook(book.getId()));
 
     verify(bookService, times(1)).deleteBookById(book.getId());
     verify(commentService, times(1)).deleteCommentAllByBookId(book.getId());

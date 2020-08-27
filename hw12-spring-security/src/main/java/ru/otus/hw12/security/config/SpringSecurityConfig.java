@@ -5,7 +5,6 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -30,9 +29,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) {
     http.csrf().disable()
         .authorizeRequests()
-        .antMatchers("/", "/login","/error/**").permitAll()
-        .antMatchers("/comment/**").hasRole("USER")
-        .antMatchers("/createBook/**", "/editBook/**", "/saveBook/**", "/deleteBook/**").hasRole("ADMIN")
+        .antMatchers("/", "/login", "/error").permitAll()
+        .antMatchers("/viewComment").hasRole("USER")
+        .antMatchers("/createBook", "/editBook", "/saveBook", "/deleteBook").hasRole("ADMIN")
+        .antMatchers("/listBook").authenticated()
         .and()
         .formLogin()
         .loginPage("/login")
@@ -70,6 +70,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
   public void configure(WebSecurity web) {
     web
         .ignoring()
-        .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
+        .antMatchers("/static/**");
   }
 }
