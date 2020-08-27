@@ -7,7 +7,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.hw12.model.User;
 import ru.otus.hw12.repository.UserRepository;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;

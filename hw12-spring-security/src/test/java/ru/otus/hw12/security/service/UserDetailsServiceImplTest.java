@@ -2,12 +2,10 @@ package ru.otus.hw12.security.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.hw12.model.User;
 import ru.otus.hw12.security.model.SecurityUserDetails;
-import ru.otus.hw12.service.UserService;
 import ru.otus.hw12.service.UserServiceImpl;
 
 import java.util.Optional;
