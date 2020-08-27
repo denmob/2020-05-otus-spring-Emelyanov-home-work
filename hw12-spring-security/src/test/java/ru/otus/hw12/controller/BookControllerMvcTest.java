@@ -29,11 +29,15 @@ import ru.otus.hw12.test.config.security.UserDetailsServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.util.DateUtil.now;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Import({BookController.class,
@@ -56,13 +60,20 @@ class BookControllerMvcTest {
 
   private Book book1;
   private Book book2;
+  private List<Author> authors;
+  private List<Genre> genres;
 
   @BeforeEach
   void beforeEach() {
-    Author newAuthor = new Author("0", "FirstName", "LastName", now());
-    Genre newGenre = new Genre("0", "newGenre");
-    book1 = new Book("0", "Title new", now(), newAuthor, newGenre);
-    book2 = new Book("1", "Title old", now(), newAuthor, newGenre);
+    Author author = new Author("0", "FirstName", "LastName", now());
+    Genre genre = new Genre("0", "newGenre");
+    book1 = new Book("0", "Title new", now(), author, genre);
+    book2 = new Book("1", "Title old", now(), author, genre);
+
+    authors = new ArrayList<>();
+    authors.add(book1.getAuthor());
+    genres = new ArrayList<>();
+    genres.add(book1.getGenre());
   }
 
   @Test
@@ -76,7 +87,7 @@ class BookControllerMvcTest {
     Page<Book> books = new PageImpl<>(list);
     when(bookService.getLastAddedBooks(countBook)).thenReturn(books);
 
-    MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/listBook").param("countBook", String.valueOf(countBook)))
+    MvcResult mvcResult = mockMvc.perform(get("/listBook").param("countBook", String.valueOf(countBook)))
         .andExpect(status().is(200))
         .andExpect(MockMvcResultMatchers.content().string(containsString("<title>List book</title>")))
         .andReturn();
@@ -85,19 +96,105 @@ class BookControllerMvcTest {
   }
 
   @Test
+  @SneakyThrows
+  @WithMockUser(authorities = {"ROLE_ADMIN"})
   void createBookPage() {
+    when(authorService.findAll()).thenReturn(authors);
+    when(genreService.findAll()).thenReturn(genres);
+
+    MvcResult mvcResult = mockMvc.perform(get("/createBook"))
+        .andExpect(status().is(200))
+        .andExpect(MockMvcResultMatchers.content().string(containsString("<title>Create book</title>")))
+        .andReturn();
+
+    assertEquals("text/html;charset=UTF-8", mvcResult.getResponse().getContentType());
   }
 
   @Test
+  @SneakyThrows
+  @WithMockUser(authorities = {"ROLE_TEST"})
+  void createBookPage_403() {
+    mockMvc.perform(get("/createBook"))
+        .andExpect(status().is(302))
+        .andExpect(redirectedUrl("/403"));
+  }
+
+
+  @Test
+  @SneakyThrows
+  @WithMockUser(username = "admin", password = "456", roles = {"ADMIN"})
+  void editBookPage_400() {
+    MvcResult mvcResult = mockMvc.perform(get("/editBook"))
+        .andExpect(status().is(400))
+        .andReturn();
+
+    assertEquals("Required String parameter 'id' is not present", mvcResult.getResponse().getErrorMessage());
+  }
+
+  @Test
+  @SneakyThrows
+  @WithMockUser(username = "admin", roles = {"ADMIN"})
   void editBookPage() {
+    when(bookService.readBookById(book1.getId())).thenReturn(Optional.ofNullable(book2));
+    when(authorService.findAll()).thenReturn(authors);
+    when(genreService.findAll()).thenReturn(genres);
+
+    MvcResult mvcResult = mockMvc.perform(get("/editBook").param("id", book1.getId()))
+        .andExpect(status().is(200))
+        .andExpect(MockMvcResultMatchers.content().string(containsString("<title>Edit book</title>")))
+        .andReturn();
+
+    assertEquals("text/html;charset=UTF-8", mvcResult.getResponse().getContentType());
   }
 
   @Test
+  @SneakyThrows
+  @WithMockUser(authorities = {"ROLE_TEST"})
+  void editBookPage_403() {
+    mockMvc.perform(get("/editBook"))
+        .andExpect(status().is(302))
+        .andExpect(redirectedUrl("/403"));
+  }
+
+  @Test
+  @SneakyThrows
+  @WithMockUser(username = "admin", roles = {"ADMIN"})
   void saveBook() {
+    when(bookService.save(book1)).thenReturn(book1);
+
+    mockMvc.perform(post("/saveBook").requestAttr("book", book1))
+        .andExpect(status().is(302))
+        .andExpect(redirectedUrl("/listBook"));
   }
 
   @Test
+  @SneakyThrows
+  @WithMockUser
+  void saveBook_403() {
+    mockMvc.perform(post("/saveBook").requestAttr("book", book1))
+        .andExpect(status().is(302))
+        .andExpect(redirectedUrl("/403"));
+  }
+
+  @Test
+  @SneakyThrows
+  @WithMockUser(username = "admin", roles = {"ADMIN"})
   void deleteBook() {
+    when(bookService.deleteBookById(book1.getId())).thenReturn(true);
+    when(commentService.deleteCommentAllByBookId(book1.getId())).thenReturn(true);
+
+    mockMvc.perform(post("/deleteBook").param("id", book1.getId()))
+        .andExpect(status().is(302))
+        .andExpect(redirectedUrl("/listBook"));
+  }
+
+  @Test
+  @SneakyThrows
+  @WithMockUser(authorities = {"USER_ROLE"})
+  void deleteBook_403() {
+    mockMvc.perform(post("/deleteBook").param("id", book1.getId()))
+        .andExpect(status().is(302))
+        .andExpect(redirectedUrl("/403"));
   }
 
   @SpringBootConfiguration

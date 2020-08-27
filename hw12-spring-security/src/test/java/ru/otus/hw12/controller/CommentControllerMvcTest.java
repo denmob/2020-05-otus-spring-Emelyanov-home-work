@@ -69,14 +69,9 @@ class CommentControllerMvcTest {
   @WithMockUser(username = "test", authorities = {"ROLE_TEST"})
   @DisplayName("viewCommentPage security user with ROLE_TEST")
   void viewCommentPage_403() {
-    Book book = Book.builder().id("123").title("title").build();
-
-    mockMvc.perform(get("/viewComment")
-        .param("id", book.getId())
-        .param("title", book.getTitle()))
+    mockMvc.perform(get("/viewComment"))
         .andExpect(status().is3xxRedirection())
-        .andExpect(redirectedUrl("/403"))
-        .andDo(print());
+        .andExpect(redirectedUrl("/403"));
   }
 
   @Test
@@ -85,6 +80,7 @@ class CommentControllerMvcTest {
   @DisplayName("Required parameter is not present")
   void viewCommentPage_400() {
     Book book = Book.builder().id("123").title("title").build();
+
     mockMvc.perform(get("/viewComment")
         .param("id", book.getId()))
         .andExpect(status().is(400));
