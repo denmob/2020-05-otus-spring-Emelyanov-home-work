@@ -9,7 +9,7 @@
 
 <div th:replace="fragments/header :: header"></div>
 <div class="container">
-  <form id="create-form" th:object="${book}" th:action="@{/saveBook}" th:method="post">
+  <form id="create-form" th:object="${book}" th:action="@{/book/save}" th:method="post">
 
     <div class="row"><h2>Book Info:</h2></div>
 

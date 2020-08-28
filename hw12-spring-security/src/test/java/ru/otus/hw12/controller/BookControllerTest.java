@@ -80,7 +80,7 @@ class BookControllerTest {
 
     when(bookService.save(book)).thenReturn(book);
 
-    assertEquals("redirect:/listBook", bookController.saveBook(book));
+    assertEquals("redirect:/book/list", bookController.saveBook(book));
 
     verify(bookService, times(1)).save(book);
   }
@@ -116,7 +116,7 @@ class BookControllerTest {
     when(bookService.deleteBookById(book.getId())).thenReturn(true);
     when(commentService.deleteCommentAllByBookId(book.getId())).thenReturn(true);
 
-    assertEquals("redirect:/listBook", bookController.deleteBook(book.getId()));
+    assertEquals("redirect:/book/list", bookController.deleteBook(book.getId()));
 
     verify(bookService, times(1)).deleteBookById(book.getId());
     verify(commentService, times(1)).deleteCommentAllByBookId(book.getId());

@@ -26,7 +26,6 @@ import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.Mockito.when;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -56,7 +55,7 @@ class CommentControllerMvcTest {
     when(commentService.readAllForBook(book.getId())).thenReturn(comments);
 
     mockMvc.perform(
-        get("/viewComment")
+        get("/comment/list")
             .param("id", book.getId())
             .param("title", book.getTitle()
             ))
@@ -69,7 +68,7 @@ class CommentControllerMvcTest {
   @WithMockUser(username = "test", authorities = {"ROLE_TEST"})
   @DisplayName("viewCommentPage security user with ROLE_TEST")
   void viewCommentPage_403() {
-    mockMvc.perform(get("/viewComment"))
+    mockMvc.perform(get("/comment/list"))
         .andExpect(status().is3xxRedirection())
         .andExpect(redirectedUrl("/403"));
   }
@@ -81,7 +80,7 @@ class CommentControllerMvcTest {
   void viewCommentPage_400() {
     Book book = Book.builder().id("123").title("title").build();
 
-    mockMvc.perform(get("/viewComment")
+    mockMvc.perform(get("/comment/list")
         .param("id", book.getId()))
         .andExpect(status().is(400));
   }

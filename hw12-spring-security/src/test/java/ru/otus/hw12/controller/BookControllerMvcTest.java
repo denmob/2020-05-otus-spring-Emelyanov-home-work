@@ -10,15 +10,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.ui.ConcurrentModel;
-import org.springframework.ui.Model;
 import ru.otus.hw12.model.Author;
 import ru.otus.hw12.model.Book;
 import ru.otus.hw12.model.Genre;
@@ -87,7 +82,7 @@ class BookControllerMvcTest {
     Page<Book> books = new PageImpl<>(list);
     when(bookService.getLastAddedBooks(countBook)).thenReturn(books);
 
-    MvcResult mvcResult = mockMvc.perform(get("/listBook").param("countBook", String.valueOf(countBook)))
+    MvcResult mvcResult = mockMvc.perform(get("/book/list").param("countBook", String.valueOf(countBook)))
         .andExpect(status().is(200))
         .andExpect(MockMvcResultMatchers.content().string(containsString("<title>List book</title>")))
         .andReturn();
@@ -102,7 +97,7 @@ class BookControllerMvcTest {
     when(authorService.findAll()).thenReturn(authors);
     when(genreService.findAll()).thenReturn(genres);
 
-    MvcResult mvcResult = mockMvc.perform(get("/createBook"))
+    MvcResult mvcResult = mockMvc.perform(get("/book/create"))
         .andExpect(status().is(200))
         .andExpect(MockMvcResultMatchers.content().string(containsString("<title>Create book</title>")))
         .andReturn();
@@ -114,7 +109,7 @@ class BookControllerMvcTest {
   @SneakyThrows
   @WithMockUser(authorities = {"ROLE_TEST"})
   void createBookPage_403() {
-    mockMvc.perform(get("/createBook"))
+    mockMvc.perform(get("/book/create"))
         .andExpect(status().is(302))
         .andExpect(redirectedUrl("/403"));
   }
@@ -124,7 +119,7 @@ class BookControllerMvcTest {
   @SneakyThrows
   @WithMockUser(username = "admin", password = "456", roles = {"ADMIN"})
   void editBookPage_400() {
-    MvcResult mvcResult = mockMvc.perform(get("/editBook"))
+    MvcResult mvcResult = mockMvc.perform(get("/book/edit"))
         .andExpect(status().is(400))
         .andReturn();
 
@@ -139,7 +134,7 @@ class BookControllerMvcTest {
     when(authorService.findAll()).thenReturn(authors);
     when(genreService.findAll()).thenReturn(genres);
 
-    MvcResult mvcResult = mockMvc.perform(get("/editBook").param("id", book1.getId()))
+    MvcResult mvcResult = mockMvc.perform(get("/book/edit").param("id", book1.getId()))
         .andExpect(status().is(200))
         .andExpect(MockMvcResultMatchers.content().string(containsString("<title>Edit book</title>")))
         .andReturn();
@@ -151,7 +146,7 @@ class BookControllerMvcTest {
   @SneakyThrows
   @WithMockUser(authorities = {"ROLE_TEST"})
   void editBookPage_403() {
-    mockMvc.perform(get("/editBook"))
+    mockMvc.perform(get("/book/edit"))
         .andExpect(status().is(302))
         .andExpect(redirectedUrl("/403"));
   }
@@ -162,16 +157,16 @@ class BookControllerMvcTest {
   void saveBook() {
     when(bookService.save(book1)).thenReturn(book1);
 
-    mockMvc.perform(post("/saveBook").requestAttr("book", book1))
+    mockMvc.perform(post("/book/save").requestAttr("book", book1))
         .andExpect(status().is(302))
-        .andExpect(redirectedUrl("/listBook"));
+        .andExpect(redirectedUrl("/book/list"));
   }
 
   @Test
   @SneakyThrows
   @WithMockUser
   void saveBook_403() {
-    mockMvc.perform(post("/saveBook").requestAttr("book", book1))
+    mockMvc.perform(post("/book/save").requestAttr("book", book1))
         .andExpect(status().is(302))
         .andExpect(redirectedUrl("/403"));
   }
@@ -183,16 +178,16 @@ class BookControllerMvcTest {
     when(bookService.deleteBookById(book1.getId())).thenReturn(true);
     when(commentService.deleteCommentAllByBookId(book1.getId())).thenReturn(true);
 
-    mockMvc.perform(post("/deleteBook").param("id", book1.getId()))
+    mockMvc.perform(post("/book/delete").param("id", book1.getId()))
         .andExpect(status().is(302))
-        .andExpect(redirectedUrl("/listBook"));
+        .andExpect(redirectedUrl("/book/list"));
   }
 
   @Test
   @SneakyThrows
   @WithMockUser(authorities = {"USER_ROLE"})
   void deleteBook_403() {
-    mockMvc.perform(post("/deleteBook").param("id", book1.getId()))
+    mockMvc.perform(post("/book/delete").param("id", book1.getId()))
         .andExpect(status().is(302))
         .andExpect(redirectedUrl("/403"));
   }

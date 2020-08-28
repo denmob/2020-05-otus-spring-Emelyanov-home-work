@@ -10,7 +10,7 @@
 <div th:replace="fragments/header :: header"></div>
 <div class="container">
 
-  <div id="div1"><h2><a th:href="@{/createBook}">Create book</a></h2></div>
+  <div id="div1"><h2><a th:href="@{/book/create}">Create book</a></h2></div>
   <div id="div2"><h2>Books:</h2></div>
 
   <table class="table table-striped">
@@ -30,13 +30,13 @@
       <td th:text="${book.author.firstName} +' '+ ${book.author.lastName}">author</td>
       <td th:text="${book.genre.name}">genre</td>
       <td>
-        <a th:href="@{/editBook(id=${book.id})}">Edit book</a>
+        <a th:href="@{/book/edit(id=${book.id})}">Edit book</a>
       </td>
       <td>
-        <a th:href="@{/viewComment(id=${book.id},title=${book.title})}">View comments</a>
+        <a th:href="@{/comment/list/(id=${book.id},title=${book.title})}">View comments</a>
       </td>
       <td>
-        <form id="delete-form" th:action="@{/deleteBook(id=${book.id})}" th:method="post">
+        <form id="delete-form" th:action="@{/book/delete(id=${book.id})}" th:method="post">
           <button type="submit">Delete book</button>
         </form>
       </td>

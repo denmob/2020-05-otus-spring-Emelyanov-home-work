@@ -20,14 +20,14 @@ public class BookController {
   private final GenreService genreService;
   private final CommentService commentService;
 
-  @GetMapping("/listBook")
+  @GetMapping("/book/list")
   public String listBookPage(@RequestParam(value = "countBook", defaultValue = "5") int countBook, Model model) {
     Page<Book> books = bookService.getLastAddedBooks(countBook);
     model.addAttribute("books", books);
     return "book/list";
   }
 
-  @GetMapping("/createBook")
+  @GetMapping("/book/create")
   public String createBookPage(Model model) {
     model.addAttribute("book", new Book());
     model.addAttribute("authors", authorService.findAll());
@@ -35,7 +35,7 @@ public class BookController {
     return "book/create";
   }
 
-  @GetMapping("/editBook")
+  @GetMapping("/book/edit")
   public String editBookPage(@RequestParam("id") String id, Model model) {
     Book book = bookService.readBookById(id).orElseThrow(NotFoundException::new);
     model.addAttribute("book", book);
@@ -44,17 +44,17 @@ public class BookController {
     return "book/edit";
   }
 
-  @PostMapping("/saveBook")
+  @PostMapping("/book/save")
   public String saveBook(@ModelAttribute Book book) {
     bookService.save(book);
-    return "redirect:/listBook";
+    return "redirect:/book/list";
   }
 
-  @PostMapping("/deleteBook")
+  @PostMapping("/book/delete")
   public String deleteBook(@RequestParam("id") String id) {
     if (bookService.deleteBookById(id)) {
       commentService.deleteCommentAllByBookId(id);
     }
-    return "redirect:/listBook";
+    return "redirect:/book/list";
   }
 }
