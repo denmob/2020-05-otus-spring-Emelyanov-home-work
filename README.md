@@ -15,4 +15,5 @@
 >* hw09-spring-mvc/
 >* hw10-spring-mvc-ajax/
 >* hw11-spring-reactive/
+>* hw12-spring-security
 
