@@ -1,7 +1,6 @@
 package ru.otus.hw12.security.config;
 
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,17 +20,16 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 @RequiredArgsConstructor
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-  private final UserDetailsService userDetailsServiceImpl;
+  private final UserDetailsService userDetailsService;
   private final AccessDeniedHandler accessDeniedHandler;
 
   @Override
-  @SneakyThrows
-  protected void configure(HttpSecurity http) {
+  protected void configure(HttpSecurity http) throws Exception {
     http.csrf().disable()
         .authorizeRequests()
         .antMatchers("/", "/login", "/error").permitAll()
         .antMatchers("/comment/list").hasRole("USER")
-        .antMatchers("/book/create", "/book/edit","/book/save","/book/delete").hasRole("ADMIN")
+        .antMatchers("/book/create", "/book/edit", "/book/save", "/book/delete").hasRole("ADMIN")
         .antMatchers("/book/list").authenticated()
         .and()
         .formLogin()
@@ -48,7 +46,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
   }
 
   @Autowired
-  @SneakyThrows
   public void configureAuthenticationProvider(AuthenticationManagerBuilder auth) {
     auth.authenticationProvider(authProvider());
   }
@@ -56,7 +53,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
   @Bean
   public DaoAuthenticationProvider authProvider() {
     DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-    authProvider.setUserDetailsService(userDetailsServiceImpl);
+    authProvider.setUserDetailsService(userDetailsService);
     authProvider.setPasswordEncoder(passwordEncoder());
     return authProvider;
   }

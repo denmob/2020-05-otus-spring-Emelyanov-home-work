@@ -20,7 +20,7 @@ import ru.otus.hw12.model.Genre;
 import ru.otus.hw12.security.config.SpringSecurityConfig;
 import ru.otus.hw12.security.error.AppAccessDeniedHandler;
 import ru.otus.hw12.service.*;
-import ru.otus.hw12.test.config.security.UserDetailsServiceImpl;
+import ru.otus.hw12.test.config.security.SpringSecurityAuxConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Import({BookController.class,
     BookServiceImpl.class, AuthorServiceImpl.class, GenreServiceImpl.class, CommentServiceImpl.class,
-    SpringSecurityConfig.class, UserDetailsServiceImpl.class, AppAccessDeniedHandler.class})
+    SpringSecurityConfig.class, SpringSecurityAuxConfig.class, AppAccessDeniedHandler.class})
 @WebMvcTest(controllers = BookController.class)
 class BookControllerMvcTest {
 
