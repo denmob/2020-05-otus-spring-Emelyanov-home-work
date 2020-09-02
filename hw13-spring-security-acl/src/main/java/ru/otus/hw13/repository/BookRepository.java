@@ -9,8 +9,6 @@ import java.util.Optional;
 
 public interface BookRepository extends MongoRepository<Book,String>{
 
-  Optional<Book> findByTitleContains(String bookTitle);
-
   Optional<Book> findByAuthorLastNameEquals(String authorLastName);
 
   List<Book> findByTitleContainsOrDateEquals(String bookTitle, Date bookDate);

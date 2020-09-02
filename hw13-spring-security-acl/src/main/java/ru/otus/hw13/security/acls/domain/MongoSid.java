@@ -1,15 +1,15 @@
 package ru.otus.hw13.security.acls.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.*;
+import org.springframework.security.acls.model.Sid;
 
 @Data
+@Builder
 @AllArgsConstructor
 @RequiredArgsConstructor
-@Document(collection = "sid")
-public class MongoSid {
+public class MongoSid implements Sid {
+
+  private String id;
 
   private String name;
 

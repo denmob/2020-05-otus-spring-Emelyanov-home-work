@@ -15,7 +15,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @RequiredArgsConstructor
-@Document(collection = "acl")
+@Document(collection = "acl_object_identity")
 public class MongoAcl{
 
   @Id

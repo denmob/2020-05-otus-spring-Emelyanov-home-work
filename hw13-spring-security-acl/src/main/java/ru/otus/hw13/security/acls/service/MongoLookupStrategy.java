@@ -1,30 +1,27 @@
 package ru.otus.hw13.security.acls.service;
 
 
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.security.acls.domain.*;
 import org.springframework.security.acls.jdbc.LookupStrategy;
 import org.springframework.security.acls.model.*;
+import org.springframework.security.util.FieldUtils;
 import org.springframework.stereotype.Service;
 import ru.otus.hw13.security.acls.domain.MongoAcl;
 import ru.otus.hw13.security.acls.domain.MongoEntry;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.*;
 
 import static org.springframework.data.mongodb.core.query.Query.query;
 
 @Service
-@RequiredArgsConstructor
 public class MongoLookupStrategy implements LookupStrategy {
 
-  @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
-  @Autowired
-  private MongoTemplate mongoTemplate;
+  private final MongoTemplate mongoTemplate;
 
   private final AclAuthorizationStrategy aclAuthorizationStrategy;
 
@@ -32,47 +29,67 @@ public class MongoLookupStrategy implements LookupStrategy {
 
   private final PermissionFactory permissionFactory = new DefaultPermissionFactory();
 
+  private final AclCache aclCache;
+
+  private final Field fieldAces = FieldUtils.getField(AclImpl.class, "aces");
+
+  public MongoLookupStrategy(MongoTemplate mongoTemplate, AclAuthorizationStrategy aclAuthorizationStrategy, PermissionGrantingStrategy grantingStrategy, AclCache aclCache) {
+    this.mongoTemplate = mongoTemplate;
+    this.aclAuthorizationStrategy = aclAuthorizationStrategy;
+    this.grantingStrategy = grantingStrategy;
+    this.aclCache = aclCache;
+    fieldAces.setAccessible(true);
+  }
+
   @Override
   @SneakyThrows
   public Map<ObjectIdentity, Acl> readAclsById(List<ObjectIdentity> objectIdentities, List<Sid> sids) {
     Map<ObjectIdentity, Acl> resultMap = new HashMap<>();
+    Set<ObjectIdentity> currentBatchToLoad = new HashSet<>();
 
-    List<MongoAcl> mongoAcls = findMongoAncls(objectIdentities);
-    for (final MongoAcl mongoAcl : mongoAcls) {
+    for (final ObjectIdentity objectIdentity : objectIdentities) {
+      boolean aclFound = false;
 
-      ObjectIdentity objectIdentity = new ObjectIdentityImpl(Class.forName(mongoAcl.getClassName()), mongoAcl.getInstanceId());
-      Sid owner;
-      if (mongoAcl.getOwner().isPrincipal()) {
-        owner = new PrincipalSid(mongoAcl.getOwner().getName());
-      } else {
-        owner = new GrantedAuthoritySid(mongoAcl.getOwner().getName());
+      if (resultMap.containsKey(objectIdentity)) {
+        aclFound = true;
       }
-      AclImpl acl = new AclImpl(objectIdentity, mongoAcl.getId(), aclAuthorizationStrategy, grantingStrategy, null,
-          null, mongoAcl.isInheritPermissions(), owner);
 
-      for (MongoEntry permission : mongoAcl.getPermissions()) {
-        Sid sid;
-        if (permission.getSid().isPrincipal()) {
-          sid = new PrincipalSid(permission.getSid().getName());
-        } else {
-          sid = new GrantedAuthoritySid(permission.getSid().getName());
+      if (!aclFound) {
+        Acl acl = aclCache.getFromCache(objectIdentity);
+
+        if (acl != null && acl.isSidLoaded(sids) && definesAccessPermissionsForSids(acl, sids)) {
+          resultMap.put(acl.getObjectIdentity(), acl);
+          aclFound = true;
         }
-        Permission permissions = permissionFactory.buildFromMask(permission.getPermission());
-        AccessControlEntryImpl ace =
-            new AccessControlEntryImpl(permission.getId(), acl, sid, permissions,
-                permission.isGranting(), permission.isAuditSuccess(), permission.isAuditFailure());
-
-        acl.getEntries().add(ace);
       }
+
+      if (!aclFound) {
+        currentBatchToLoad.add(objectIdentity);
+        Map<ObjectIdentity, Acl> loadedBatch = lookupObjectIdentities(currentBatchToLoad, sids);
+        resultMap.putAll(loadedBatch);
+        currentBatchToLoad.clear();
+      }
+    }
+    return resultMap;
+  }
+
+  @SneakyThrows
+  private Map<ObjectIdentity, Acl> lookupObjectIdentities(final Set<ObjectIdentity> objectIdentities, List<Sid> sids) {
+
+    List<MongoAcl> foundAcls = findMongoAncls(objectIdentities);
+    Map<ObjectIdentity, Acl> resultMap = new HashMap<>();
+
+    for (MongoAcl foundAcl : foundAcls) {
+      Acl acl = convertToAcl(foundAcl);
+
       if (definesAccessPermissionsForSids(acl, sids)) {
         resultMap.put(acl.getObjectIdentity(), acl);
       }
     }
-
     return resultMap;
   }
 
-  private List<MongoAcl> findMongoAncls(List<ObjectIdentity> objectIdentities) {
+  private List<MongoAcl> findMongoAncls(Set<ObjectIdentity> objectIdentities) {
     Set<Serializable> objectIds = new LinkedHashSet<>();
     Set<String> types = new LinkedHashSet<>();
     for (ObjectIdentity domainObject : objectIdentities) {
@@ -81,6 +98,51 @@ public class MongoLookupStrategy implements LookupStrategy {
     }
     Criteria where = Criteria.where("instanceId").in(objectIds).and("className").in(types);
     return mongoTemplate.find(query(where), MongoAcl.class);
+  }
+
+  private Acl convertToAcl(MongoAcl mongoAcl) throws ClassNotFoundException {
+
+    ObjectIdentity objectIdentity = new ObjectIdentityImpl(Class.forName(mongoAcl.getClassName()), mongoAcl.getInstanceId());
+
+    Sid owner;
+    if (mongoAcl.getOwner().isPrincipal()) {
+      owner = new PrincipalSid(mongoAcl.getOwner().getName());
+    } else {
+      owner = new GrantedAuthoritySid(mongoAcl.getOwner().getName());
+    }
+
+    AclImpl acl = new AclImpl(objectIdentity, mongoAcl.getId(), aclAuthorizationStrategy, grantingStrategy, null,
+        null, mongoAcl.isInheritPermissions(), owner);
+
+    for (MongoEntry permission : mongoAcl.getPermissions()) {
+
+      Sid sid;
+      if (permission.getSid().isPrincipal()) {
+        sid = new PrincipalSid(permission.getSid().getName());
+      } else {
+        sid = new GrantedAuthoritySid(permission.getSid().getName());
+      }
+
+      Permission permissions = permissionFactory.buildFromMask(permission.getPermission());
+      AccessControlEntryImpl ace = new AccessControlEntryImpl(permission.getId(), acl, sid, permissions,
+          permission.isGranting(), permission.isAuditSuccess(), permission.isAuditFailure());
+      List<AccessControlEntryImpl> aces = readAces(acl);
+      aces.add(ace);
+    }
+
+    aclCache.putInCache(acl);
+
+    return acl;
+  }
+
+  private List<AccessControlEntryImpl> readAces(AclImpl acl) {
+    try {
+      @SuppressWarnings("unchecked")
+      List<AccessControlEntryImpl> ret = (List<AccessControlEntryImpl>) fieldAces.get(acl);
+      return ret;
+    } catch (IllegalAccessException e) {
+      throw new IllegalStateException("Could not obtain AclImpl.aces field", e);
+    }
   }
 
   private boolean definesAccessPermissionsForSids(Acl acl, List<Sid> sids) {
@@ -94,7 +156,6 @@ public class MongoLookupStrategy implements LookupStrategy {
       if (definesAccessPermissionsForSids(acl.getParentAcl(), sids)) {
         return true;
       }
-
       return hasPermissionsForSids(acl.getParentAcl(), sids);
     }
     return false;

@@ -5,14 +5,7 @@ import org.springframework.security.acls.domain.AccessControlEntryImpl;
 import org.springframework.security.acls.domain.GrantedAuthoritySid;
 import org.springframework.security.acls.domain.PrincipalSid;
 import org.springframework.security.acls.jdbc.LookupStrategy;
-import org.springframework.security.acls.model.AccessControlEntry;
-import org.springframework.security.acls.model.Acl;
-import org.springframework.security.acls.model.AlreadyExistsException;
-import org.springframework.security.acls.model.ChildrenExistException;
-import org.springframework.security.acls.model.MutableAcl;
-import org.springframework.security.acls.model.MutableAclService;
-import org.springframework.security.acls.model.NotFoundException;
-import org.springframework.security.acls.model.ObjectIdentity;
+import org.springframework.security.acls.model.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -27,8 +20,11 @@ import java.util.UUID;
 @Service
 public class MongoDBMutableAclService extends MongoDBAclService implements MutableAclService {
 
-  public MongoDBMutableAclService(AclRepository repository, LookupStrategy lookupStrategy) {
+  private final AclCache aclCache;
+
+  public MongoDBMutableAclService(AclRepository repository, LookupStrategy lookupStrategy,AclCache aclCache) {
     super(repository, lookupStrategy);
+    this.aclCache = aclCache;
   }
 
   @Override
@@ -48,13 +44,10 @@ public class MongoDBMutableAclService extends MongoDBAclService implements Mutab
         .id(objectIdentity.getIdentifier())
         .className(objectIdentity.getType())
         .instanceId(UUID.randomUUID().toString())
-        .owner(new MongoSid(sid.getPrincipal(), true))
+        .owner(MongoSid.builder().name(sid.getPrincipal()).isPrincipal(true).build())
         .inheritPermissions(true).build();
 
-    aclRepository.save(mongoAcl);
-
-    Acl acl = readAclById(objectIdentity);
-    return (MutableAcl) acl;
+    return (MutableAcl) aclRepository.save(mongoAcl);
   }
 
   @Override
@@ -71,6 +64,7 @@ public class MongoDBMutableAclService extends MongoDBAclService implements Mutab
       throw new ChildrenExistException("Cannot delete '" + objectIdentity + "' (has " + children.size() + " children)");
     }
     aclRepository.deleteByInstanceId(objectIdentity.getIdentifier());
+    aclCache.evictFromCache(objectIdentity);
   }
 
   @Override
@@ -81,8 +75,8 @@ public class MongoDBMutableAclService extends MongoDBAclService implements Mutab
 
     mongoAcl.getPermissions().clear();
 
-    for (AccessControlEntry _ace : acl.getEntries()) {
-      AccessControlEntryImpl ace = (AccessControlEntryImpl) _ace;
+    for (AccessControlEntry accessControlEntry : acl.getEntries()) {
+      AccessControlEntryImpl ace = (AccessControlEntryImpl) accessControlEntry;
       MongoSid sid = null;
       String aceId = (String) ace.getId();
       if (null == aceId) {
@@ -90,16 +84,27 @@ public class MongoDBMutableAclService extends MongoDBAclService implements Mutab
       }
       if (ace.getSid() instanceof PrincipalSid) {
         PrincipalSid principal = (PrincipalSid) ace.getSid();
-        sid = new MongoSid(principal.getPrincipal(), true);
+        sid = MongoSid.builder().name(principal.getPrincipal()).isPrincipal(true).build();
       } else if (ace.getSid() instanceof GrantedAuthoritySid) {
         GrantedAuthoritySid grantedAuthority = (GrantedAuthoritySid) ace.getSid();
-        sid = new MongoSid(grantedAuthority.getGrantedAuthority(), false);
+        sid = MongoSid.builder().name(grantedAuthority.getGrantedAuthority()).isPrincipal(false).build();
       }
       MongoEntry permission = new MongoEntry(aceId, sid, ace.getPermission().getMask(), ace.isGranting(), ace.isAuditSuccess(), ace.isAuditFailure());
       mongoAcl.getPermissions().add(permission);
     }
 
     aclRepository.save(mongoAcl);
+    clearCacheIncludingChildren(acl.getObjectIdentity());
     return (MutableAcl) readAclById(acl.getObjectIdentity());
+  }
+
+  private void clearCacheIncludingChildren(ObjectIdentity objectIdentity) {
+    List<ObjectIdentity> children = findChildren(objectIdentity);
+    if (children != null) {
+      for (ObjectIdentity child : children) {
+        clearCacheIncludingChildren(child);
+      }
+    }
+    aclCache.evictFromCache(objectIdentity);
   }
 }

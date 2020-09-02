@@ -1,20 +1,24 @@
 package ru.otus.hw13.security.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.acls.AclPermissionCacheOptimizer;
 import org.springframework.security.acls.AclPermissionEvaluator;
 import org.springframework.security.acls.domain.*;
 import org.springframework.security.acls.jdbc.LookupStrategy;
+import org.springframework.security.acls.model.AclCache;
 import org.springframework.security.acls.model.PermissionGrantingStrategy;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import ru.otus.hw13.security.acls.dao.AclRepository;
 import ru.otus.hw13.security.acls.service.MongoDBMutableAclService;
 import ru.otus.hw13.security.acls.service.MongoLookupStrategy;
-
 
 @Configuration
 @RequiredArgsConstructor
@@ -22,14 +26,17 @@ public class AclConfig {
 
   private final AclRepository aclRepository;
 
-  @Bean
-  public PermissionGrantingStrategy permissionGrantingStrategy() {
-    return new DefaultPermissionGrantingStrategy(new ConsoleAuditLogger());
-  }
+  private final MongoTemplate mongoTemplate;
 
   @Bean
   public AclAuthorizationStrategy aclAuthorizationStrategy() {
-    return new AclAuthorizationStrategyImpl(new SimpleGrantedAuthority("ROLE_USER"));
+    return new AclAuthorizationStrategyImpl(new SimpleGrantedAuthority("ROLE_ACL"));
+  }
+
+  @Bean
+  public PermissionGrantingStrategy permissionGrantingStrategy() {
+    ConsoleAuditLogger consoleAuditLogger = new ConsoleAuditLogger();
+    return new DefaultPermissionGrantingStrategy(consoleAuditLogger);
   }
 
   @Bean
@@ -42,12 +49,23 @@ public class AclConfig {
   }
 
   @Bean
-  public LookupStrategy lookupStrategy() {
-    return new MongoLookupStrategy(aclAuthorizationStrategy(), permissionGrantingStrategy());
+  public LookupStrategy lookupStrategy(){
+    return new MongoLookupStrategy(mongoTemplate, aclAuthorizationStrategy(), permissionGrantingStrategy(),aclCache());
+  }
+
+  @Bean
+  public CacheManager cacheManager() {
+    return new ConcurrentMapCacheManager("test");
+  }
+
+  @Bean
+  public AclCache aclCache() {
+    Cache springCache = cacheManager().getCache("test");
+    return new SpringCacheBasedAclCache(springCache, permissionGrantingStrategy(), aclAuthorizationStrategy());
   }
 
   @Bean
   public MongoDBMutableAclService aclService() {
-    return new MongoDBMutableAclService(aclRepository, lookupStrategy());
+    return new MongoDBMutableAclService(aclRepository, lookupStrategy(), aclCache());
   }
 }

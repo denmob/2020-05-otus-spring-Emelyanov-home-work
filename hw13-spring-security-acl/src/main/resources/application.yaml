@@ -5,8 +5,10 @@ spring:
       uri: mongodb://localhost
       port: 27017
 
-  mongock:
-    changelogs: "ru.otus.hw13.config.changelog"
+mongock:
+  runner-type: InitializingBean
+  change-logs-scan-package:
+    - ru.otus.hw13.config.changelog
 
 logging:
   level:

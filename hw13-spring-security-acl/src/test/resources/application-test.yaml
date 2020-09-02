@@ -4,8 +4,10 @@ spring:
       database: hw13-test
       port: 0
 
-  mongock:
-    changelogs: "ru.otus.hw13.test.config.mongock.changelog"
+mongock:
+  runner-type: InitializingBean
+  change-logs-scan-package:
+    - ru.otus.hw13.test.config.mongock.changelog
 
 logging:
   level:
