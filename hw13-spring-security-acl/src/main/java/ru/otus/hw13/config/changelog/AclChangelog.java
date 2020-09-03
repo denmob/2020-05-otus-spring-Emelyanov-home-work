@@ -11,10 +11,12 @@ import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
 import org.springframework.security.acls.model.ObjectIdentity;
 import org.springframework.security.acls.model.Permission;
+import ru.otus.hw13.model.Book;
 import ru.otus.hw13.model.Comment;
 import ru.otus.hw13.security.acls.domain.MongoAcl;
 import ru.otus.hw13.security.acls.domain.MongoEntry;
 import ru.otus.hw13.security.acls.domain.MongoSid;
+import ru.otus.hw13.security.config.CustomBasePermission;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +26,9 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AclChangelog {
 
-  private final MongoSid alcSid = MongoSid.builder().name("test").isPrincipal(true).build();
-  private final MongoSid userSid = MongoSid.builder().name("ROLE_USER").isPrincipal(false).build();
-  private final MongoSid adminSid = MongoSid.builder().name("ROLE_ADMIN").isPrincipal(false).build();
+  private final MongoSid alcSid = new MongoSid("test",true);
+  private final MongoSid userSid = new MongoSid("ROLE_USER",false);
+  private final MongoSid adminSid = new MongoSid("ROLE_ADMIN",false);
 
   @ChangeSet(order = "000", id = "dropAcls", author = "dyemelianov", runAlways = true)
   public void dropAcls(MongockTemplate template) {
@@ -54,7 +56,7 @@ public class AclChangelog {
     mongoEntryList.add(createMongoEntry(alcSid, BasePermission.READ));
     mongoEntryList.add(createMongoEntry(adminSid, BasePermission.WRITE));
 
-    template.save(createMongoAcl(comment.getClass().getName(), comment.getId(), mongoEntryList));
+    template.save(createMongoAcl(Comment.class.getName(), comment.getId(), mongoEntryList));
   }
 
   @ChangeSet(order = "003", id = "addAlcComment03", author = "dyemelianov", runAlways = true)
@@ -66,10 +68,10 @@ public class AclChangelog {
     mongoEntryList.add(createMongoEntry(alcSid, BasePermission.READ));
     mongoEntryList.add(createMongoEntry(adminSid, BasePermission.WRITE));
 
-    template.save(createMongoAcl(comment.getClass().getName(), comment.getId(), mongoEntryList));
+    template.save(createMongoAcl(Comment.class.getName(), comment.getId(), mongoEntryList));
   }
 
-  @ChangeSet(order = "003", id = "addAlcComment04", author = "dyemelianov", runAlways = true)
+  @ChangeSet(order = "004", id = "addAlcComment04", author = "dyemelianov", runAlways = true)
   public void addAlcComment04(MongockTemplate template) {
     Comment comment = template.findOne(new Query().addCriteria(Criteria.where("commentary").is("addComments04")), Comment.class);
 
@@ -78,8 +80,22 @@ public class AclChangelog {
     mongoEntryList.add(createMongoEntry(alcSid, BasePermission.WRITE));
     mongoEntryList.add(createMongoEntry(adminSid, BasePermission.WRITE));
 
-    template.save(createMongoAcl(comment.getClass().getName(), comment.getId(), mongoEntryList));
+    template.save(createMongoAcl(Comment.class.getName(), comment.getId(), mongoEntryList));
   }
+
+  @ChangeSet(order = "005", id = "addAlcBookId", author = "dyemelianov", runAlways = true)
+  public void addAlcBookId(MongockTemplate template) {
+    Book book = template.findOne(new Query().addCriteria(Criteria.where("title").is("Pragmatic Unit Testing in Java 8 with JUnit")), Book.class);
+
+    List<MongoEntry> mongoEntryList = new ArrayList<>();
+ //   mongoEntryList.add(createMongoEntry(userSid, BasePermission.READ ));
+ //   mongoEntryList.add(createMongoEntry(userSid, BasePermission.WRITE ));
+    mongoEntryList.add(createMongoEntry(userSid, CustomBasePermission.CUSTOM ));
+    mongoEntryList.add(createMongoEntry(alcSid, BasePermission.READ));
+
+    template.save(createMongoAcl(Book.class.getName(), book.getId(), mongoEntryList));
+  }
+
 
   private MongoEntry createMongoEntry(MongoSid entrySid, Permission permission) {
     return new MongoEntry(UUID.randomUUID().toString(), entrySid, permission.getMask(), true, true, true);

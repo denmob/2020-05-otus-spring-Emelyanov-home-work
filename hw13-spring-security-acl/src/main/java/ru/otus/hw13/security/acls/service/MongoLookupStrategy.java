@@ -1,6 +1,5 @@
 package ru.otus.hw13.security.acls.service;
 
-
 import lombok.SneakyThrows;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -27,7 +26,7 @@ public class MongoLookupStrategy implements LookupStrategy {
 
   private final PermissionGrantingStrategy grantingStrategy;
 
-  private final PermissionFactory permissionFactory = new DefaultPermissionFactory();
+  private PermissionFactory permissionFactory = new DefaultPermissionFactory();
 
   private final AclCache aclCache;
 
@@ -79,8 +78,8 @@ public class MongoLookupStrategy implements LookupStrategy {
     List<MongoAcl> foundAcls = findMongoAncls(objectIdentities);
     Map<ObjectIdentity, Acl> resultMap = new HashMap<>();
 
-    for (MongoAcl foundAcl : foundAcls) {
-      Acl acl = convertToAcl(foundAcl);
+    for (MongoAcl foundAcl : new ArrayList<>(foundAcls)) {
+      Acl acl = convertToAcl(foundAcl, foundAcls);
 
       if (definesAccessPermissionsForSids(acl, sids)) {
         resultMap.put(acl.getObjectIdentity(), acl);
@@ -100,7 +99,34 @@ public class MongoLookupStrategy implements LookupStrategy {
     return mongoTemplate.find(query(where), MongoAcl.class);
   }
 
-  private Acl convertToAcl(MongoAcl mongoAcl) throws ClassNotFoundException {
+  private Acl convertToAcl(MongoAcl mongoAcl, List<MongoAcl> foundAcls) throws ClassNotFoundException {
+    Acl parent = null;
+    if (mongoAcl.getParentId() != null) {
+      MongoAcl parentAcl = null;
+
+      for (MongoAcl found : foundAcls) {
+        if (found.getId().equals(mongoAcl.getParentId())) {
+          parentAcl = found;
+          break;
+        }
+      }
+
+      if (null == parentAcl) {
+        parentAcl = mongoTemplate.findById(mongoAcl.getParentId(), MongoAcl.class);
+      }
+      if (parentAcl != null) {
+        if (!foundAcls.contains(parentAcl)) {
+          foundAcls.add(parentAcl);
+        }
+        Acl cachedParent = aclCache.getFromCache(new ObjectIdentityImpl(parentAcl.getClassName(), parentAcl.getInstanceId()));
+        if (null == cachedParent) {
+          parent = convertToAcl(parentAcl, foundAcls);
+          aclCache.putInCache((MutableAcl) parent);
+        } else {
+          parent = cachedParent;
+        }
+      }
+    }
 
     ObjectIdentity objectIdentity = new ObjectIdentityImpl(Class.forName(mongoAcl.getClassName()), mongoAcl.getInstanceId());
 
@@ -111,7 +137,7 @@ public class MongoLookupStrategy implements LookupStrategy {
       owner = new GrantedAuthoritySid(mongoAcl.getOwner().getName());
     }
 
-    AclImpl acl = new AclImpl(objectIdentity, mongoAcl.getId(), aclAuthorizationStrategy, grantingStrategy, null,
+    AclImpl acl = new AclImpl(objectIdentity, mongoAcl.getId(), aclAuthorizationStrategy, grantingStrategy, parent,
         null, mongoAcl.isInheritPermissions(), owner);
 
     for (MongoEntry permission : mongoAcl.getPermissions()) {
@@ -168,5 +194,9 @@ public class MongoLookupStrategy implements LookupStrategy {
       }
     }
     return false;
+  }
+
+  public final void setPermissionFactory(PermissionFactory permissionFactory) {
+    this.permissionFactory = permissionFactory;
   }
 }

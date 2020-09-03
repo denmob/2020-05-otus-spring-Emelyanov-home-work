@@ -2,6 +2,7 @@ package ru.otus.hw13.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import ru.otus.hw13.service.GenreService;
 
 @Controller
 @RequiredArgsConstructor
+@PreAuthorize("isAuthenticated()")
 public class BookController {
 
   private final BookService bookService;
@@ -27,6 +29,7 @@ public class BookController {
     return "book/list";
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/book/create")
   public String createBookPage(Model model) {
     model.addAttribute("book", new Book());
@@ -35,6 +38,7 @@ public class BookController {
     return "book/create";
   }
 
+  @PreAuthorize("hasAnyRole('USER','ADMIN')")
   @GetMapping("/book/edit")
   public String editBookPage(@RequestParam("id") String id, Model model) {
     Book book = bookService.readBookById(id).orElseThrow(NotFoundException::new);
@@ -44,6 +48,7 @@ public class BookController {
     return "book/edit";
   }
 
+  @PreAuthorize("hasPermission(#book, 'CUSTOM') or hasRole('ADMIN')")
   @PostMapping("/book/save")
   public String saveBook(@ModelAttribute Book book) {
     bookService.save(book);

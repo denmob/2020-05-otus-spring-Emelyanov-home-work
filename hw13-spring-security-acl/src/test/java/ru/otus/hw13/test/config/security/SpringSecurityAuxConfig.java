@@ -8,6 +8,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import ru.otus.hw13.model.User;
 import ru.otus.hw13.security.model.SecurityUserDetails;
 
+
 import java.util.Arrays;
 
 @TestConfiguration

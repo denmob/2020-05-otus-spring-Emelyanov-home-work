@@ -9,8 +9,6 @@ import org.springframework.security.acls.model.Sid;
 @RequiredArgsConstructor
 public class MongoSid implements Sid {
 
-  private String id;
-
   private String name;
 
   private boolean isPrincipal;

@@ -16,6 +16,7 @@ import org.springframework.security.acls.jdbc.LookupStrategy;
 import org.springframework.security.acls.model.AclCache;
 import org.springframework.security.acls.model.PermissionGrantingStrategy;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import ru.otus.hw13.config.changelog.AclChangelog;
 import ru.otus.hw13.security.acls.dao.AclRepository;
 import ru.otus.hw13.security.acls.service.MongoDBMutableAclService;
 import ru.otus.hw13.security.acls.service.MongoLookupStrategy;
@@ -34,6 +35,11 @@ public class AclConfig {
   }
 
   @Bean
+  public PermissionFactory permissionFactory() {
+    return new DefaultPermissionFactory(CustomBasePermission.class);
+  }
+
+  @Bean
   public PermissionGrantingStrategy permissionGrantingStrategy() {
     ConsoleAuditLogger consoleAuditLogger = new ConsoleAuditLogger();
     return new DefaultPermissionGrantingStrategy(consoleAuditLogger);
@@ -43,6 +49,7 @@ public class AclConfig {
   public MethodSecurityExpressionHandler defaultMethodSecurityExpressionHandler() {
     DefaultMethodSecurityExpressionHandler expressionHandler = new DefaultMethodSecurityExpressionHandler();
     AclPermissionEvaluator permissionEvaluator = new AclPermissionEvaluator(aclService());
+    permissionEvaluator.setPermissionFactory(permissionFactory());
     expressionHandler.setPermissionEvaluator(permissionEvaluator);
     expressionHandler.setPermissionCacheOptimizer(new AclPermissionCacheOptimizer(aclService()));
     return expressionHandler;
@@ -50,7 +57,9 @@ public class AclConfig {
 
   @Bean
   public LookupStrategy lookupStrategy(){
-    return new MongoLookupStrategy(mongoTemplate, aclAuthorizationStrategy(), permissionGrantingStrategy(),aclCache());
+    MongoLookupStrategy lookupStrategy = new MongoLookupStrategy(mongoTemplate, aclAuthorizationStrategy(), permissionGrantingStrategy(),aclCache());
+    lookupStrategy.setPermissionFactory(permissionFactory());
+    return lookupStrategy;
   }
 
   @Bean
