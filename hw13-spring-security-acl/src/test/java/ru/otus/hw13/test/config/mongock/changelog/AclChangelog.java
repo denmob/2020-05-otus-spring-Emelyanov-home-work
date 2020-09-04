@@ -101,14 +101,6 @@ public class AclChangelog {
   @SneakyThrows
   private MongoAcl createMongoAcl(String className, String id, List<MongoEntry> mongoEntryList) {
     ObjectIdentity objectIdentity = new ObjectIdentityImpl(Class.forName(className), id);
-
-    return MongoAcl.builder()
-        .id(UUID.randomUUID().toString())
-        .className(objectIdentity.getType())
-        .instanceId(objectIdentity.getIdentifier())
-        .owner(alcSid)
-        .inheritPermissions(false)
-        .permissions(mongoEntryList)
-        .build();
+    return new MongoAcl(UUID.randomUUID().toString(), objectIdentity.getType(), objectIdentity.getIdentifier(), alcSid,null, false, mongoEntryList);
   }
 }

@@ -40,12 +40,9 @@ public class MongoDBMutableAclService extends MongoDBAclService implements Mutab
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     PrincipalSid sid = new PrincipalSid(auth);
 
-    MongoAcl mongoAcl = MongoAcl.builder()
-        .id(objectIdentity.getIdentifier())
-        .className(objectIdentity.getType())
-        .instanceId(UUID.randomUUID().toString())
-        .owner(MongoSid.builder().name(sid.getPrincipal()).isPrincipal(true).build())
-        .inheritPermissions(true).build();
+
+    MongoAcl mongoAcl = new MongoAcl(UUID.randomUUID().toString(), objectIdentity.getType(), objectIdentity.getIdentifier(),
+        MongoSid.builder().name(sid.getPrincipal()).isPrincipal(true).build(),null, true);
 
     return (MutableAcl) aclRepository.save(mongoAcl);
   }
