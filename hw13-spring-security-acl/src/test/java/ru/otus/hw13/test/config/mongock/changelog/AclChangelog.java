@@ -1,4 +1,4 @@
-package ru.otus.hw13.config.changelog;
+package ru.otus.hw13.test.config.mongock.changelog;
 
 import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;
@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
 import org.springframework.security.acls.model.ObjectIdentity;
 import org.springframework.security.acls.model.Permission;
@@ -40,9 +39,9 @@ public class AclChangelog {
     Comment comment = template.findOne(new Query().addCriteria(Criteria.where("commentary").is("addComments01")), Comment.class);
 
     List<MongoEntry> mongoEntryList = new ArrayList<>();
-    mongoEntryList.add(createMongoEntry(userSid, BasePermission.READ));
-    mongoEntryList.add(createMongoEntry(alcSid, BasePermission.ADMINISTRATION));
-    mongoEntryList.add(createMongoEntry(adminSid, BasePermission.WRITE));
+    mongoEntryList.add(createMongoEntry(userSid, CustomBasePermission.READ));
+    mongoEntryList.add(createMongoEntry(alcSid, CustomBasePermission.ADMINISTRATION));
+    mongoEntryList.add(createMongoEntry(adminSid, CustomBasePermission.WRITE));
 
     template.save(createMongoAcl(Comment.class.getName(), comment.getId(), mongoEntryList));
   }
@@ -52,9 +51,9 @@ public class AclChangelog {
     Comment comment = template.findOne(new Query().addCriteria(Criteria.where("commentary").is("addComments02")), Comment.class);
 
     List<MongoEntry> mongoEntryList = new ArrayList<>();
-    mongoEntryList.add(createMongoEntry(userSid, BasePermission.DELETE));
-    mongoEntryList.add(createMongoEntry(alcSid, BasePermission.READ));
-    mongoEntryList.add(createMongoEntry(adminSid, BasePermission.WRITE));
+    mongoEntryList.add(createMongoEntry(userSid, CustomBasePermission.DELETE));
+    mongoEntryList.add(createMongoEntry(alcSid, CustomBasePermission.READ));
+    mongoEntryList.add(createMongoEntry(adminSid, CustomBasePermission.WRITE));
 
     template.save(createMongoAcl(Comment.class.getName(), comment.getId(), mongoEntryList));
   }
@@ -64,9 +63,9 @@ public class AclChangelog {
     Comment comment = template.findOne(new Query().addCriteria(Criteria.where("commentary").is("addComments03")), Comment.class);
 
     List<MongoEntry> mongoEntryList = new ArrayList<>();
-    mongoEntryList.add(createMongoEntry(userSid, BasePermission.READ));
-    mongoEntryList.add(createMongoEntry(alcSid, BasePermission.READ));
-    mongoEntryList.add(createMongoEntry(adminSid, BasePermission.WRITE));
+    mongoEntryList.add(createMongoEntry(userSid, CustomBasePermission.READ));
+    mongoEntryList.add(createMongoEntry(alcSid, CustomBasePermission.READ));
+    mongoEntryList.add(createMongoEntry(adminSid, CustomBasePermission.WRITE));
 
     template.save(createMongoAcl(Comment.class.getName(), comment.getId(), mongoEntryList));
   }
@@ -76,20 +75,20 @@ public class AclChangelog {
     Comment comment = template.findOne(new Query().addCriteria(Criteria.where("commentary").is("addComments04")), Comment.class);
 
     List<MongoEntry> mongoEntryList = new ArrayList<>();
-    mongoEntryList.add(createMongoEntry(userSid, BasePermission.READ));
-    mongoEntryList.add(createMongoEntry(alcSid, BasePermission.WRITE));
-    mongoEntryList.add(createMongoEntry(adminSid, BasePermission.WRITE));
+    mongoEntryList.add(createMongoEntry(userSid, CustomBasePermission.READ));
+    mongoEntryList.add(createMongoEntry(alcSid, CustomBasePermission.WRITE));
+    mongoEntryList.add(createMongoEntry(adminSid, CustomBasePermission.WRITE));
 
     template.save(createMongoAcl(Comment.class.getName(), comment.getId(), mongoEntryList));
   }
 
   @ChangeSet(order = "005", id = "addAlcBookId", author = "dyemelianov", runAlways = true)
   public void addAlcBookId(MongockTemplate template) {
-    Book book = template.findOne(new Query().addCriteria(Criteria.where("title").is("Pragmatic Unit Testing in Java 8 with JUnit")), Book.class);
+    Book book = template.findOne(new Query().addCriteria(Criteria.where("title").is("Pragmatic Unit Testing in Java 8 with JUnit(test)")), Book.class);
 
     List<MongoEntry> mongoEntryList = new ArrayList<>();
     mongoEntryList.add(createMongoEntry(userSid, CustomBasePermission.CUSTOM ));
-    mongoEntryList.add(createMongoEntry(alcSid, BasePermission.READ));
+    mongoEntryList.add(createMongoEntry(alcSid, CustomBasePermission.READ));
 
     template.save(createMongoAcl(Book.class.getName(), book.getId(), mongoEntryList));
   }

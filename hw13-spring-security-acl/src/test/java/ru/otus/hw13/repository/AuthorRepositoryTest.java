@@ -9,7 +9,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import ru.otus.hw13.model.Author;
-import ru.otus.hw13.repository.AuthorRepository;
 
 import java.util.Optional;
 
@@ -18,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Slf4j
 @DataMongoTest
 @ActiveProfiles("test")
-@ComponentScan({"ru.otus.hw13.test.config.mongock", "ru.otus.hw13.repository"})
+@ComponentScan({"ru.otus.hw13.config", "ru.otus.hw13.repository"})
 class AuthorRepositoryTest {
 
   @Autowired

@@ -11,7 +11,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import ru.otus.hw13.model.Book;
-import ru.otus.hw13.repository.BookRepository;
 
 import java.util.Date;
 import java.util.List;
@@ -22,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Slf4j
 @DataMongoTest
 @ActiveProfiles("test")
-@ComponentScan({"ru.otus.hw13.test.config.mongock", "ru.otus.hw13.repository"})
+@ComponentScan({"ru.otus.hw13.config", "ru.otus.hw13.repository"})
 class BookRepositoryTest {
 
   @Autowired

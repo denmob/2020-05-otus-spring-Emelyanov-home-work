@@ -6,7 +6,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
-import ru.otus.hw13.controller.CommentController;
 import ru.otus.hw13.model.Book;
 import ru.otus.hw13.service.CommentServiceImpl;
 

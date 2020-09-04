@@ -22,7 +22,7 @@ public class MongoDBMutableAclService extends MongoDBAclService implements Mutab
 
   private final AclCache aclCache;
 
-  public MongoDBMutableAclService(AclRepository repository, LookupStrategy lookupStrategy,AclCache aclCache) {
+  public MongoDBMutableAclService(AclRepository repository, LookupStrategy lookupStrategy, AclCache aclCache) {
     super(repository, lookupStrategy);
     this.aclCache = aclCache;
   }

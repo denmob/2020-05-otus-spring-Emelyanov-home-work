@@ -6,7 +6,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.hw13.model.User;
 import ru.otus.hw13.security.model.SecurityUserDetails;
-import ru.otus.hw13.security.service.UserDetailsServiceImpl;
 import ru.otus.hw13.service.UserServiceImpl;
 
 import java.util.Optional;

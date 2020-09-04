@@ -18,8 +18,8 @@ public class SpringSecurityAuxConfig {
   @Primary
   public UserDetailsService userDetailsServiceImpl() {
     User user = User.builder().username("user").password("123").role("ROLE_USER").build();
-    User test = User.builder().username("test").password("9999").role("ROLE_TEST").build();
     User admin = User.builder().username("admin").password("456").role("ROLE_ADMIN").build();
+    User test = User.builder().username("test").password("789").role("ROLE_ACL").build();
     return new InMemoryUserDetailsManager(Arrays.asList(new SecurityUserDetails(user), new SecurityUserDetails(admin), new SecurityUserDetails(test)));
   }
 }

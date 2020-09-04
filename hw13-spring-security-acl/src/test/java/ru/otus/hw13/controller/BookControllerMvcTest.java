@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -38,10 +40,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Import({BookController.class,
-    BookServiceImpl.class, AuthorServiceImpl.class, GenreServiceImpl.class, CommentServiceImpl.class,
+@Import({BookController.class, BookServiceImpl.class, AuthorServiceImpl.class, GenreServiceImpl.class, CommentServiceImpl.class,
     SpringSecurityConfig.class, SpringSecurityAuxConfig.class, AppAccessDeniedHandler.class})
-@WebMvcTest(controllers = BookController.class)
+@WebMvcTest(controllers = BookController.class, useDefaultFilters = false)
 class BookControllerMvcTest {
 
   @MockBean
@@ -65,8 +66,8 @@ class BookControllerMvcTest {
   void beforeEach() {
     Author author = new Author("0", "FirstName", "LastName", now());
     Genre genre = new Genre("0", "newGenre");
-    book1 = new Book("0", "Title new", now(), author, genre);
-    book2 = new Book("1", "Title old", now(), author, genre);
+    book1 = new Book("77", "Title new", now(), author, genre);
+    book2 = new Book("88", "Title old", now(), author, genre);
 
     authors = new ArrayList<>();
     authors.add(book1.getAuthor());
@@ -110,7 +111,7 @@ class BookControllerMvcTest {
 
   @Test
   @SneakyThrows
-  @WithMockUser(authorities = {"ROLE_TEST"})
+  @WithMockUser(authorities = {"ROLE_ACL"})
   void createBookPage_403() {
     mockMvc.perform(get("/book/create"))
         .andExpect(status().is(302))
@@ -147,9 +148,9 @@ class BookControllerMvcTest {
 
   @Test
   @SneakyThrows
-  @WithMockUser(authorities = {"ROLE_TEST"})
+  @WithMockUser(username = "test", authorities = "ROLE_ACL")
   void editBookPage_403() {
-    mockMvc.perform(get("/book/edit"))
+    mockMvc.perform(get("/book/edit").param("id", book1.getId()))
         .andExpect(status().is(302))
         .andExpect(redirectedUrl("/403"));
   }
@@ -167,7 +168,7 @@ class BookControllerMvcTest {
 
   @Test
   @SneakyThrows
-  @WithMockUser
+  @WithMockUser()
   void saveBook_403() {
     mockMvc.perform(post("/book/save").requestAttr("book", book1))
         .andExpect(status().is(302))

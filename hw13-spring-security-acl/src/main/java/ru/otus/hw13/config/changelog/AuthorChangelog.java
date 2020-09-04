@@ -5,7 +5,6 @@ import com.github.cloudyrock.mongock.ChangeSet;
 import com.github.cloudyrock.mongock.driver.mongodb.springdata.v3.decorator.impl.MongockTemplate;
 import lombok.SneakyThrows;
 
-import org.springframework.data.mongodb.core.MongoTemplate;
 import ru.otus.hw13.model.Author;
 
 import java.text.SimpleDateFormat;

@@ -4,7 +4,6 @@ import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;
 import com.github.cloudyrock.mongock.driver.mongodb.springdata.v3.decorator.impl.MongockTemplate;
 import lombok.SneakyThrows;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import ru.otus.hw13.model.Author;
@@ -13,8 +12,6 @@ import ru.otus.hw13.model.Genre;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import static com.mongodb.client.model.Filters.eq;
 
 @ChangeLog(order = "003")
 public class BookChangelog {

@@ -9,7 +9,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.hw13.model.Book;
 import ru.otus.hw13.model.Comment;
 import ru.otus.hw13.repository.CommentRepository;
-import ru.otus.hw13.service.CommentServiceImpl;
 
 import java.util.Collections;
 import java.util.Date;

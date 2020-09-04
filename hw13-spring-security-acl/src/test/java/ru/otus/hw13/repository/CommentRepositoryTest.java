@@ -10,7 +10,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import ru.otus.hw13.model.Comment;
-import ru.otus.hw13.repository.CommentRepository;
 
 import java.util.List;
 
@@ -19,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Slf4j
 @DataMongoTest
 @ActiveProfiles("test")
-@ComponentScan({"ru.otus.hw13.test.config.mongock", "ru.otus.hw13.repository"})
+@ComponentScan({"ru.otus.hw13.config", "ru.otus.hw13.repository"})
 class CommentRepositoryTest {
 
   @Autowired
@@ -35,7 +34,7 @@ class CommentRepositoryTest {
   @Test
   void findAllByBookId() {
     String bookId = comments.get(0).getBookId();
-    assertEquals(2, commentRepository.findAllByBookId(bookId).size());
+    assertEquals(3, commentRepository.findAllByBookId(bookId).size());
   }
 
   @Test

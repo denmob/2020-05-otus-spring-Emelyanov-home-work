@@ -1,8 +1,9 @@
 spring:
   data:
     mongodb:
-      database: hw13-test
+      host: localhost
       port: 0
+      database: hw13-test
 
 mongock:
   runner-type: InitializingBean
@@ -11,5 +12,5 @@ mongock:
 
 logging:
   level:
-    ROOT: DEBUG
+    ROOT: INFO
 

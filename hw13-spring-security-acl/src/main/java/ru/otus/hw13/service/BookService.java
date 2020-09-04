@@ -3,7 +3,6 @@ package ru.otus.hw13.service;
 import org.springframework.data.domain.Page;
 import ru.otus.hw13.model.Book;
 
-
 import java.util.Optional;
 
 public interface BookService {

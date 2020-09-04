@@ -11,7 +11,6 @@ import ru.otus.hw13.model.Author;
 import ru.otus.hw13.model.Book;
 import ru.otus.hw13.model.Genre;
 import ru.otus.hw13.repository.BookRepository;
-import ru.otus.hw13.service.BookServiceImpl;
 
 import java.util.Optional;
 

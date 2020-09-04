@@ -16,7 +16,6 @@ import org.springframework.security.acls.jdbc.LookupStrategy;
 import org.springframework.security.acls.model.AclCache;
 import org.springframework.security.acls.model.PermissionGrantingStrategy;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import ru.otus.hw13.config.changelog.AclChangelog;
 import ru.otus.hw13.security.acls.dao.AclRepository;
 import ru.otus.hw13.security.acls.service.MongoDBMutableAclService;
 import ru.otus.hw13.security.acls.service.MongoLookupStrategy;
@@ -26,7 +25,6 @@ import ru.otus.hw13.security.acls.service.MongoLookupStrategy;
 public class AclConfig {
 
   private final AclRepository aclRepository;
-
   private final MongoTemplate mongoTemplate;
 
   @Bean
@@ -56,8 +54,8 @@ public class AclConfig {
   }
 
   @Bean
-  public LookupStrategy lookupStrategy(){
-    MongoLookupStrategy lookupStrategy = new MongoLookupStrategy(mongoTemplate, aclAuthorizationStrategy(), permissionGrantingStrategy(),aclCache());
+  public LookupStrategy lookupStrategy() {
+    MongoLookupStrategy lookupStrategy = new MongoLookupStrategy(mongoTemplate, aclAuthorizationStrategy(), permissionGrantingStrategy(), aclCache());
     lookupStrategy.setPermissionFactory(permissionFactory());
     return lookupStrategy;
   }

@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.hw13.model.Genre;
 import ru.otus.hw13.repository.GenreRepository;
-import ru.otus.hw13.service.GenreServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
