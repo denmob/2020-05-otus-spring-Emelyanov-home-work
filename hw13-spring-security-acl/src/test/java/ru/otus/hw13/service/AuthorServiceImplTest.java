@@ -25,12 +25,10 @@ class AuthorServiceImplTest {
   private AuthorServiceImpl authorService;
 
   private Author newAuthor;
-  private Author oldAuthor;
 
   @BeforeEach
   void beforeEach() {
     newAuthor = new Author("0", "new FirstName", "new LastName", now());
-    oldAuthor = new Author("1", "old FirstName", "old LastName", now());
   }
 
   @Test

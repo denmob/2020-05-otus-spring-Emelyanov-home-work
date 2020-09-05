@@ -7,12 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -196,6 +193,23 @@ class BookControllerMvcTest {
         .andExpect(status().is(302))
         .andExpect(redirectedUrl("/403"));
   }
+
+//  @Test
+//  @SneakyThrows
+//  @WithMockUser
+//  void editBookPage_acl_user() {
+//    when(bookService.readBookById(book1.getId())).thenReturn(Optional.ofNullable(book2));
+//    when(authorService.findAll()).thenReturn(authors);
+//    when(genreService.findAll()).thenReturn(genres);
+//
+//    MvcResult mvcResult = mockMvc.perform(get("/book/edit").param("id", book1.getId()))
+//        .andExpect(status().is(200))
+//        .andExpect(MockMvcResultMatchers.content().string(containsString("<title>Edit book</title>")))
+//        .andReturn();
+//
+//    assertEquals("text/html;charset=UTF-8", mvcResult.getResponse().getContentType());
+//  }
+
 
   @SpringBootConfiguration
   public static class StopWebMvcScan {

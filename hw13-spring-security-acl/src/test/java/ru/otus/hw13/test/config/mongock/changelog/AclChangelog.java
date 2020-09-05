@@ -40,7 +40,7 @@ public class AclChangelog {
 
     List<MongoEntry> mongoEntryList = new ArrayList<>();
     mongoEntryList.add(createMongoEntry(userSid, CustomBasePermission.READ));
-    mongoEntryList.add(createMongoEntry(alcSid, CustomBasePermission.ADMINISTRATION));
+    mongoEntryList.add(createMongoEntry(alcSid, CustomBasePermission.CREATE));
     mongoEntryList.add(createMongoEntry(adminSid, CustomBasePermission.WRITE));
 
     template.save(createMongoAcl(Comment.class.getName(), comment.getId(), mongoEntryList));
@@ -52,7 +52,7 @@ public class AclChangelog {
 
     List<MongoEntry> mongoEntryList = new ArrayList<>();
     mongoEntryList.add(createMongoEntry(userSid, CustomBasePermission.DELETE));
-    mongoEntryList.add(createMongoEntry(alcSid, CustomBasePermission.READ));
+    mongoEntryList.add(createMongoEntry(alcSid, CustomBasePermission.DELETE));
     mongoEntryList.add(createMongoEntry(adminSid, CustomBasePermission.WRITE));
 
     template.save(createMongoAcl(Comment.class.getName(), comment.getId(), mongoEntryList));

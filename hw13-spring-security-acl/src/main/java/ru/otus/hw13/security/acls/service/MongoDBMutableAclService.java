@@ -42,9 +42,10 @@ public class MongoDBMutableAclService extends MongoDBAclService implements Mutab
 
 
     MongoAcl mongoAcl = new MongoAcl(UUID.randomUUID().toString(), objectIdentity.getType(), objectIdentity.getIdentifier(),
-        MongoSid.builder().name(sid.getPrincipal()).isPrincipal(true).build(),null, true);
+        MongoSid.builder().name(sid.getPrincipal()).isPrincipal(true).build(), null, true);
 
-    return (MutableAcl) aclRepository.save(mongoAcl);
+    aclRepository.save(mongoAcl);
+    return (MutableAcl) readAclById(objectIdentity);
   }
 
   @Override
