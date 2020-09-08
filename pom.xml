@@ -29,6 +29,7 @@
     <module>hw10-spring-mvc-ajax</module>
     <module>hw11-spring-reactive</module>
     <module>hw12-spring-security</module>
+    <module>hw13-spring-security-acl</module>
   </modules>
 
   <parent>

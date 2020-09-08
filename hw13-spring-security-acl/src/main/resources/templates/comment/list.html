@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <div th:replace="fragments/header :: header-css"></div>
+  <title>List comment</title>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+<div class="container">
+
+  <div id="div2"><h2 th:text="${title}">book title :</h2></div>
+
+  <table class="table table-striped">
+    <thead class="thead-dark">
+    <tr>
+      <th scope="col">Commentary</th>
+      <th scope="col">Timestamp</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="comment : ${comments}">
+      <td th:text="${comment.commentary}">commentary</td>
+      <td th:text="${comment.timestamp}">timestamp</td>
+    </tr>
+    </tbody>
+  </table>
+  <br>
+</div>
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

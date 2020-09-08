@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <div th:replace="fragments/header :: header-css"></div>
+  <title>Create book</title>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+<div class="container">
+  <form id="create-form" th:object="${book}" th:action="@{/book/save}" th:method="post">
+
+    <div class="row"><h2>Book Info:</h2></div>
+
+    <div class="row">
+      <label for="holder-input-title">Title:</label>
+      <input id="holder-input-title" name="title" type="text" th:value="*{title}" value="title"/>
+    </div>
+
+    <div class="row">
+      <label for="holder-input-date">Date:</label>
+      <input id="holder-input-date" name="date" type="date" th:field="*{date}" value=""/>
+    </div>
+
+    <div class="row">
+      <label for="holder-input-author">Author:</label>
+      <select id="holder-input-author" th:field="*{author}">
+        <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.firstName} +' '+ ${author.lastName}"></option>
+      </select>
+    </div>
+
+    <div class="row">
+      <label for="holder-input-genre">Genre:</label>
+      <select id="holder-input-genre" th:field="*{genre}">
+        <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}"></option>
+      </select>
+    </div>
+
+    <div class="row">
+      <button type="submit" class="btn btn-success">Save</button>
+    </div>
+  </form>
+</div>
+<br>
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>
