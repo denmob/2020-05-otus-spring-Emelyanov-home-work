@@ -10,7 +10,9 @@
     <version>2020-05-SNAPSHOT</version>
   </parent>
 
+  <groupId>ru.otus</groupId>
   <artifactId>hw02-testing</artifactId>
+  <version>2020-05-SNAPSHOT</version>
   <name>hw02-testing</name>
 
   <dependencies>
@@ -50,6 +52,5 @@
       </plugin>
     </plugins>
   </build>
-
 
 </project>

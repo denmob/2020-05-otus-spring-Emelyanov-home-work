@@ -12,7 +12,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.otus.hw09.model.Author;
-import ru.otus.hw09.repository.AuthorRepository;
 
 import java.util.Optional;
 

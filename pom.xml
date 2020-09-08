@@ -4,6 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.3.3.RELEASE</version>
+    <relativePath/>
+  </parent>
+
   <groupId>otus-hw</groupId>
   <artifactId>otus-java-spring</artifactId>
   <version>2020-05-SNAPSHOT</version>
@@ -32,34 +39,8 @@
     <module>hw13-spring-security-acl</module>
   </modules>
 
-  <parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.3.1.RELEASE</version>
-    <relativePath/>
-  </parent>
-
-  <dependencies>
-    <!-- В этой зависимости и JUnit 5 (без JUnit 4), Mockito, AssertJ -->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <!-- Таким образом отключается Junit 4 -->
-          <groupId>org.junit.vintage</groupId>
-          <artifactId>junit-vintage-engine</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-  </dependencies>
-
   <properties>
-    <java.version>11</java.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>${java.version}</maven.compiler.source>
-    <maven.compiler.target>${java.version}</maven.compiler.target>
+    <java.version>14</java.version>
   </properties>
 
 </project>

@@ -14,7 +14,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.otus.hw09.model.Book;
-import ru.otus.hw09.repository.BookRepository;
 
 import java.util.Date;
 import java.util.List;

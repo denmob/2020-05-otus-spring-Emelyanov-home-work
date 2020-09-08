@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.hw09.model.Author;
-import ru.otus.hw09.model.Genre;
 import ru.otus.hw09.repository.AuthorRepository;
 
 import java.util.ArrayList;

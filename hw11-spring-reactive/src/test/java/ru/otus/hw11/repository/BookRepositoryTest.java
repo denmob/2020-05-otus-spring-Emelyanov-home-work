@@ -14,7 +14,6 @@ import ru.otus.hw11.model.Book;
 
 import java.util.Comparator;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
