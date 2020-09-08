@@ -75,7 +75,7 @@ class BookControllerMvcTest {
 
   @Test
   @SneakyThrows
-  @WithMockUser(username = "user", password = "123", authorities = {"ROLE_USER"})
+  @WithMockUser(username = "user", password = "123", authorities = "ROLE_USER")
   void listBookPage() {
     int countBook = 3;
     List<Book> list = new ArrayList<>();
@@ -94,7 +94,7 @@ class BookControllerMvcTest {
 
   @Test
   @SneakyThrows
-  @WithMockUser(authorities = {"ROLE_ADMIN"})
+  @WithMockUser(authorities = "ROLE_ADMIN")
   void createBookPage() {
     when(authorService.findAll()).thenReturn(authors);
     when(genreService.findAll()).thenReturn(genres);
@@ -109,7 +109,7 @@ class BookControllerMvcTest {
 
   @Test
   @SneakyThrows
-  @WithMockUser(authorities = {"ROLE_ACL"})
+  @WithMockUser(authorities = "ROLE_ACL")
   void createBookPage_403() {
     mockMvc.perform(get("/book/create"))
         .andExpect(status().is(302))
@@ -119,7 +119,7 @@ class BookControllerMvcTest {
 
   @Test
   @SneakyThrows
-  @WithMockUser(username = "admin", password = "456", roles = {"ADMIN"})
+  @WithMockUser(username = "admin", password = "456", roles = "ADMIN")
   void editBookPage_400() {
     MvcResult mvcResult = mockMvc.perform(get("/book/edit"))
         .andExpect(status().is(400))
@@ -130,7 +130,7 @@ class BookControllerMvcTest {
 
   @Test
   @SneakyThrows
-  @WithMockUser(username = "admin", roles = {"ADMIN"})
+  @WithMockUser(username = "admin", roles = "ADMIN")
   void editBookPage() {
     when(bookService.readBookById(book1.getId())).thenReturn(Optional.ofNullable(book2));
     when(authorService.findAll()).thenReturn(authors);
@@ -155,7 +155,7 @@ class BookControllerMvcTest {
 
   @Test
   @SneakyThrows
-  @WithMockUser(username = "admin", roles = {"ADMIN"})
+  @WithMockUser(username = "admin", roles = "ADMIN")
   void saveBook() {
     when(bookService.save(book1)).thenReturn(book1);
 
@@ -175,7 +175,7 @@ class BookControllerMvcTest {
 
   @Test
   @SneakyThrows
-  @WithMockUser(username = "admin", roles = {"ADMIN"})
+  @WithMockUser(username = "admin", roles = "ADMIN")
   void deleteBook() {
     when(bookService.deleteBookById(book1.getId())).thenReturn(true);
     when(commentService.deleteCommentAllByBookId(book1.getId())).thenReturn(true);
@@ -187,29 +187,12 @@ class BookControllerMvcTest {
 
   @Test
   @SneakyThrows
-  @WithMockUser(authorities = {"USER_ROLE"})
+  @WithMockUser(authorities = "USER_ROLE")
   void deleteBook_403() {
     mockMvc.perform(post("/book/delete").param("id", book1.getId()))
         .andExpect(status().is(302))
         .andExpect(redirectedUrl("/403"));
   }
-
-//  @Test
-//  @SneakyThrows
-//  @WithMockUser
-//  void editBookPage_acl_user() {
-//    when(bookService.readBookById(book1.getId())).thenReturn(Optional.ofNullable(book2));
-//    when(authorService.findAll()).thenReturn(authors);
-//    when(genreService.findAll()).thenReturn(genres);
-//
-//    MvcResult mvcResult = mockMvc.perform(get("/book/edit").param("id", book1.getId()))
-//        .andExpect(status().is(200))
-//        .andExpect(MockMvcResultMatchers.content().string(containsString("<title>Edit book</title>")))
-//        .andReturn();
-//
-//    assertEquals("text/html;charset=UTF-8", mvcResult.getResponse().getContentType());
-//  }
-
 
   @SpringBootConfiguration
   public static class StopWebMvcScan {

@@ -14,7 +14,6 @@ import ru.otus.hw13.service.GenreService;
 
 @Controller
 @RequiredArgsConstructor
-@PreAuthorize("isAuthenticated()")
 public class BookController {
 
   private final BookService bookService;
@@ -29,7 +28,6 @@ public class BookController {
     return "book/list";
   }
 
-  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/book/create")
   public String createBookPage(Model model) {
     model.addAttribute("book", new Book());
@@ -38,10 +36,9 @@ public class BookController {
     return "book/create";
   }
 
-  @PreAuthorize("hasAnyRole('USER','ADMIN')")
   @GetMapping("/book/edit")
   public String editBookPage(@RequestParam("id") String id, Model model) {
-    Book book = bookService.readBookById(id).orElseThrow(NotFoundException::new);
+    Book book = bookService.readBookById(id).orElseThrow(() -> new NotFoundException("Not found entry book.id: " + id));
     model.addAttribute("book", book);
     model.addAttribute("authors", authorService.findAll());
     model.addAttribute("genres", genreService.findAll());

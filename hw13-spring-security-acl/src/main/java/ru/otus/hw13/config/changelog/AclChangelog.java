@@ -94,7 +94,6 @@ public class AclChangelog {
     template.save(createMongoAcl(Book.class.getName(), book.getId(), mongoEntryList));
   }
 
-
   private MongoEntry createMongoEntry(MongoSid entrySid, Permission permission) {
     return new MongoEntry(UUID.randomUUID().toString(), entrySid, permission.getMask(), true, true, true);
   }

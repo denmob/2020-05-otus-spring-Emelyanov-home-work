@@ -46,7 +46,7 @@ class CommentControllerMvcTest {
 
   @Test
   @SneakyThrows
-  @WithMockUser(username = "user", password = "123", authorities = {"ROLE_USER"})
+  @WithMockUser(username = "user", password = "123", authorities = "ROLE_USER")
   @DisplayName("viewCommentPage with valid security user")
   void viewCommentPage_200() {
     Book book = Book.builder().id("123").title("title").build();
@@ -66,7 +66,7 @@ class CommentControllerMvcTest {
 
   @Test
   @SneakyThrows
-  @WithMockUser(username = "test", authorities = {"ROLE_TEST"})
+  @WithMockUser(username = "test", authorities = "ROLE_TEST")
   @DisplayName("viewCommentPage security user with ROLE_TEST")
   void viewCommentPage_403() {
     mockMvc.perform(get("/comment/list"))
@@ -76,7 +76,7 @@ class CommentControllerMvcTest {
 
   @Test
   @SneakyThrows
-  @WithMockUser(username = "admin", password = "123", authorities = {"ROLE_USER"})
+  @WithMockUser(username = "admin", password = "123", authorities = "ROLE_USER")
   @DisplayName("Required parameter is not present")
   void viewCommentPage_400() {
     Book book = Book.builder().id("123").title("title").build();
@@ -88,7 +88,7 @@ class CommentControllerMvcTest {
 
   @Test
   @SneakyThrows
-  @WithMockUser(username = "user", password = "567", authorities = {"ROLE_USER"})
+  @WithMockUser(username = "user", password = "567", authorities = "ROLE_USER")
   @DisplayName("incorrect url invoke(404) viewComment")
   void viewCommentPage_404() {
     mockMvc.perform(get("/viewComment123"))

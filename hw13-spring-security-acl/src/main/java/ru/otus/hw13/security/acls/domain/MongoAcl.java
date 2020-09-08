@@ -1,6 +1,5 @@
 package ru.otus.hw13.security.acls.domain;
 
-import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -48,9 +47,8 @@ public class MongoAcl {
 
   public MongoAcl(Serializable id, String className, Serializable instanceId, MongoSid owner,
                   Serializable parentId, boolean entriesInheriting) {
-    this(id, className, instanceId);
+    this(id, className, instanceId, owner);
     this.parentId = parentId;
-    this.owner = owner;
     this.inheritPermissions = entriesInheriting;
   }
 

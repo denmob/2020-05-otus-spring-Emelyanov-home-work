@@ -18,7 +18,6 @@ public class BookChangelog {
 
   private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-
   @ChangeSet(order = "000", id = "dropBooks", author = "dyemelianov", runAlways = true)
   public void dropBooks(MongockTemplate template) {
     template.dropCollection("books");

@@ -62,12 +62,12 @@ public class AclConfig {
 
   @Bean
   public CacheManager cacheManager() {
-    return new ConcurrentMapCacheManager("test");
+    return new ConcurrentMapCacheManager("hw13");
   }
 
   @Bean
   public AclCache aclCache() {
-    Cache springCache = cacheManager().getCache("test");
+    Cache springCache = cacheManager().getCache("hw13");
     return new SpringCacheBasedAclCache(springCache, permissionGrantingStrategy(), aclAuthorizationStrategy());
   }
 
