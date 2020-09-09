@@ -1,0 +1,32 @@
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 0
+      database: hw13-test
+
+  datasource:
+    url:
+    initialization-mode: always
+
+mongock:
+  runner-type: InitializingBean
+  change-logs-scan-package:
+    - ru.otus.hw14.test.config.mongock.changelog
+
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+
+    show-sql: true
+
+  shell:
+    interactive:
+      enabled: true
+
+logging:
+  level:
+    ROOT: INFO
+
+
