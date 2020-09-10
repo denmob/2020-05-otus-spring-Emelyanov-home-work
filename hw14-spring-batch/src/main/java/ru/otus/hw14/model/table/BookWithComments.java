@@ -1,10 +1,8 @@
-package ru.otus.hw14.model;
+package ru.otus.hw14.model.table;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.otus.hw14.model.table.Book;
-import ru.otus.hw14.model.table.Comment;
 
 import java.util.ArrayList;
 import java.util.List;

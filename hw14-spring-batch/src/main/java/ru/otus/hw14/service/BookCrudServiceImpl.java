@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.hw14.model.BookWithComments;
+import ru.otus.hw14.model.table.BookWithComments;
 import ru.otus.hw14.model.table.Book;
 import ru.otus.hw14.repository.crud.BookCrudRepository;
 

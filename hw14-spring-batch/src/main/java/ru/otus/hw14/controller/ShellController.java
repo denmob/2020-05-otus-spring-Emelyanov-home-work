@@ -17,12 +17,12 @@ public class ShellController {
   private static final String FAILURE_OPERATION = "Failure operation";
   private static final String ILLEGAL_ARGUMENTS = "Illegal Arguments";
 
-  @ShellMethod(value = "", key = {"s1", "start ops 1"})
+  @ShellMethod(value = "Export mongo data to temporary", key = {"s1", "start ops 1"})
   public String mongoToMemory() {
     return SUCCESS_OPERATION;
   }
 
-  @ShellMethod(value = "", key = {"s2", "start ops 2"})
+  @ShellMethod(value = "Import data to postgres", key = {"s2", "start ops 2"})
   public String memoryToPostgre() {
     return SUCCESS_OPERATION;
   }

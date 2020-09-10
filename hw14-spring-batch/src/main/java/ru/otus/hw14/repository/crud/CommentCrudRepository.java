@@ -1,6 +1,5 @@
 package ru.otus.hw14.repository.crud;
 
-
 import org.springframework.data.repository.CrudRepository;
 import ru.otus.hw14.model.table.Comment;
 

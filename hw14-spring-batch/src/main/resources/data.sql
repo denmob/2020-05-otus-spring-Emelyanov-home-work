@@ -15,4 +15,6 @@ values (1, 1, 3, 'Pragmatic Unit Testing in Java 8 with JUnit', '2015-05-01'),
 
 insert into comments(id, commentary, book_id)
 values (1, 'Test 1', 1),
-       (2, 'Test 2', 1);
+       (2, 'Test 2', 1),
+       (3, 'Test 3', 2),
+       (4, 'Test 4', 2);

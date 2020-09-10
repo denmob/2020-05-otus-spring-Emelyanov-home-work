@@ -1,7 +1,11 @@
-delete from books;
-delete from comments;
-delete from genres;
-delete from authors;
+delete
+from books;
+delete
+from comments;
+delete
+from genres;
+delete
+from authors;
 
 insert into authors(id, first_Name, last_Name, birthday)
 values (1, 'Jeff', 'Langr', '1969-11-08'),

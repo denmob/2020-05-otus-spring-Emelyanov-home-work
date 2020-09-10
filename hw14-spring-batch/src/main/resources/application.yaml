@@ -5,28 +5,34 @@ spring:
       uri: mongodb://localhost
       port: 27017
 
-  datasource:
-    url:
-    initialization-mode: always
-
-mongock:
-  runner-type: InitializingBean
-  change-logs-scan-package:
-    - ru.otus.hw13.config.changelog
-
   jpa:
+    database: POSTGRESQL
+    properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
     generate-ddl: false
     hibernate:
       ddl-auto: none
-
     show-sql: true
+
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: 123
+
+    initialization-mode: always
+    schema: classpath:/schema.sql
+    data: classpath:/data.sql
+    continue-on-error: true
 
   shell:
     interactive:
       enabled: true
 
+mongock:
+  runner-type: InitializingBean
+  change-logs-scan-package:
+    - ru.otus.hw14.config.changelog
+
 logging:
   level:
     ROOT: INFO
-
-
