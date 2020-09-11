@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw14.model.table.Comment;
 import ru.otus.hw14.repository.crud.CommentCrudRepository;
 
+import javax.persistence.TypedQuery;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -31,6 +33,11 @@ public class CommentCrudServiceImpl implements CommentCrudService {
   @Transactional
   public void deleteAll() {
     commentCrudRepository.deleteAll();
+  }
+
+  @Override
+  public List<Comment> getAllByBookId(long bookId) {
+    return commentCrudRepository.getAllByBookId(bookId);
   }
 
   @Override

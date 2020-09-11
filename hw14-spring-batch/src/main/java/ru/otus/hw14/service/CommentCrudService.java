@@ -2,6 +2,7 @@ package ru.otus.hw14.service;
 
 import ru.otus.hw14.model.table.Comment;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CommentCrudService {
@@ -15,4 +16,6 @@ public interface CommentCrudService {
   void delete(Comment entity);
 
   void deleteAll();
+
+  List<Comment> getAllByBookId(long bookId);
 }

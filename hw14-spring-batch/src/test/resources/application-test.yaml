@@ -25,7 +25,7 @@ spring:
 mongock:
   runner-type: InitializingBean
   change-logs-scan-package:
-    - ru.otus.hw14.test.config.mongock.changelog
+    - ru.otus.hw14.test.mongock.changelog
 
 logging:
   level:

@@ -1,4 +1,4 @@
-package ru.otus.hw14.test.config.mongock.changelog;
+package ru.otus.hw14.changelog;
 
 import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;
@@ -21,7 +21,7 @@ public class CommentChangelog {
   @ChangeSet(order = "001", id = "addComments01", author = "dyemelianov", runAlways = true)
   public void addComments01(MongockTemplate template) {
     Book book = template.findOne(new Query().addCriteria(
-        Criteria.where("title").is("Pragmatic Unit Testing in Java 8 with JUnit(test)")), Book.class);
+        Criteria.where("title").is("Pragmatic Unit Testing in Java 8 with JUnit")), Book.class);
 
     var comment = Comment.builder()
         .bookId(book.getId())
@@ -34,7 +34,7 @@ public class CommentChangelog {
   @ChangeSet(order = "002", id = "addComments02", author = "dyemelianov", runAlways = true)
   public void addComments02(MongockTemplate template) {
     Book book = template.findOne(new Query().addCriteria(
-        Criteria.where("title").is("Pragmatic Unit Testing in Java 8 with JUnit(test)")), Book.class);
+        Criteria.where("title").is("Pragmatic Unit Testing in Java 8 with JUnit")), Book.class);
 
     var comment = Comment.builder()
         .bookId(book.getId())
@@ -47,7 +47,7 @@ public class CommentChangelog {
   @ChangeSet(order = "003", id = "addComments03", author = "dyemelianov", runAlways = true)
   public void addComments03(MongockTemplate template) {
     Book book = template.findOne(new Query().addCriteria(
-        Criteria.where("title").is("Effective Java(test)")), Book.class);
+        Criteria.where("title").is("Effective Java")), Book.class);
 
     var comment = Comment.builder()
         .bookId(book.getId())
@@ -60,7 +60,7 @@ public class CommentChangelog {
   @ChangeSet(order = "004", id = "addComments04", author = "dyemelianov", runAlways = true)
   public void addComments04(MongockTemplate template) {
     Book book = template.findOne(new Query().addCriteria(
-        Criteria.where("title").is("Pragmatic Unit Testing in Java 8 with JUnit(test)")), Book.class);
+        Criteria.where("title").is("Pragmatic Unit Testing in Java 8 with JUnit")), Book.class);
 
     var comment = Comment.builder()
         .bookId(book.getId())

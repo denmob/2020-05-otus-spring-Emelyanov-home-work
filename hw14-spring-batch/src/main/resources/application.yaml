@@ -14,24 +14,28 @@ spring:
     show-sql: true
 
   datasource:
-    platform: postgres
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://localhost:5432/hw14
     username: postgres
     password: 123
 
     initialization-mode: always
-    schema: classpath:/schema.sql
-    data: classpath:/data.sql
+    schema: classpath:/postgres_schema.sql
+    data: classpath:/postgres_data.sql
     continue-on-error: true
 
   shell:
     interactive:
       enabled: true
 
+  batch:
+    initialize-schema: always
+    job:
+      enabled: false
+
 mongock:
   runner-type: InitializingBean
   change-logs-scan-package:
-    - ru.otus.hw14.config.changelog
+    - ru.otus.hw14.changelog
 
 logging:
   level:
