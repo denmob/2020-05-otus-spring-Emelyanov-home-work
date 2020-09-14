@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.*;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemProcessor;
@@ -24,12 +23,10 @@ import javax.sql.DataSource;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-public class JobAuthorConfig {
+public class StepAuthorConfig {
+
   private static final int CHUNK_SIZE = 5;
-
-  private final JobBuilderFactory jobBuilderFactory;
   private final StepBuilderFactory stepBuilderFactory;
-
   private final MongoTemplate mongoTemplate;
   private final DataSource dataSource;
 
@@ -72,13 +69,6 @@ public class JobAuthorConfig {
         .processor(itemAuthorProcessor())
         .writer(jdbcItemAuthorWriter())
         .allowStartIfComplete(true)
-        .build();
-  }
-
-  @Bean
-  public Job migrateAuthorJob() {
-    return jobBuilderFactory.get("migrateAuthorJob")
-        .start(migrateAuthorStep())
         .build();
   }
 }

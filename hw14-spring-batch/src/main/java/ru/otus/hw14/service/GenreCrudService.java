@@ -8,6 +8,8 @@ public interface GenreCrudService {
 
   Optional<Genre> findById(String id);
 
+  Optional<Genre> findByName(String name);
+
   Iterable<Genre> findAll();
 
   Genre save(Genre entity);

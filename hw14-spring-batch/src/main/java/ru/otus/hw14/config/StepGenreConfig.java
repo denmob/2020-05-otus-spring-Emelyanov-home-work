@@ -3,9 +3,7 @@ package ru.otus.hw14.config;
 import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemProcessor;
@@ -25,12 +23,10 @@ import javax.sql.DataSource;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-public class JobGenreConfig {
+public class StepGenreConfig {
+
   private static final int CHUNK_SIZE = 5;
-
-  private final JobBuilderFactory jobBuilderFactory;
   private final StepBuilderFactory stepBuilderFactory;
-
   private final MongoTemplate mongoTemplate;
   private final DataSource dataSource;
 
@@ -73,13 +69,6 @@ public class JobGenreConfig {
         .processor(itemGenreProcessor())
         .writer(jdbcItemGenreWriter())
         .allowStartIfComplete(true)
-        .build();
-  }
-
-  @Bean
-  public Job migrateGenreJob() {
-    return jobBuilderFactory.get("migrateGenreJob")
-        .start(migrateGenreStep())
         .build();
   }
 }

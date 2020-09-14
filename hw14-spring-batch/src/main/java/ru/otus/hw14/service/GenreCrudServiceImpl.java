@@ -39,6 +39,11 @@ public class GenreCrudServiceImpl implements GenreCrudService {
   }
 
   @Override
+  public Optional<Genre> findByName(String name) {
+    return genreCrudRepository.findByName(name);
+  }
+
+  @Override
   @Transactional(readOnly = true)
   public Iterable<Genre> findAll() {
     return genreCrudRepository.findAll();

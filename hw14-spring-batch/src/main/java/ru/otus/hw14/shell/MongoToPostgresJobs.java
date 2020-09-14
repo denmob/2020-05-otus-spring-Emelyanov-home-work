@@ -9,26 +9,36 @@ import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import ru.otus.hw14.service.AuthorCrudService;
+import ru.otus.hw14.service.BookCrudService;
+import ru.otus.hw14.service.CommentCrudService;
+import ru.otus.hw14.service.GenreCrudService;
 
 @ShellComponent
 @RequiredArgsConstructor
 public class MongoToPostgresJobs {
 
   private final JobLauncher jobLauncher;
-  private final Job migrateAuthorJob;
-  private final Job migrateGenreJob;
+  private final Job migrateDataJob;
+  private final CommentCrudService commentCrudService;
+  private final BookCrudService bookCrudService;
+  private final GenreCrudService genreCrudService;
+  private final AuthorCrudService authorCrudService;
 
   @SneakyThrows
-  @ShellMethod(value = "migrate authors from mongo to postgres", key = {"amtp"})
-  public String migrateAuthors() {
-    JobExecution execution = jobLauncher.run(migrateAuthorJob, new JobParameters());
+  @ShellMethod(value = "migrate data from mongo to postgres", key = {"start"})
+  public String migrateData() {
+    JobExecution execution = jobLauncher.run(migrateDataJob, new JobParameters());
     return execution.toString();
   }
 
   @SneakyThrows
-  @ShellMethod(value = "migrate authors from mongo to postgres", key = {"gmtp"})
-  public String migrateGenres() {
-    JobExecution execution = jobLauncher.run(migrateGenreJob, new JobParameters());
-    return execution.toString();
+  @ShellMethod(value = "delete data and restart migrate data from mongo to postgres", key = {"restart"})
+  public String restartMigrateData() {
+    commentCrudService.deleteAll();
+    bookCrudService.deleteAll();
+    genreCrudService.deleteAll();
+    authorCrudService.deleteAll();
+    return migrateData();
   }
 }

@@ -1,11 +1,13 @@
 package ru.otus.hw14.service;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw14.model.table.Author;
 import ru.otus.hw14.repository.crud.AuthorCrudRepository;
 
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -18,6 +20,11 @@ public class AuthorCrudServiceImpl implements AuthorCrudService {
   @Transactional(readOnly = true)
   public Optional<Author> findById(String id) {
     return authorCrudRepository.findById(Long.valueOf(id));
+  }
+
+  @Override
+  public Optional<Author> findByFirstNameAndLastNameAndBirthday(String firstName, String lastName, @NonNull Date birthday) {
+    return authorCrudRepository.findByFirstNameAndLastNameAndBirthday(firstName, lastName, birthday);
   }
 
   @Override

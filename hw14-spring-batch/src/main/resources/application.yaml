@@ -23,10 +23,6 @@ spring:
     data: classpath:/postgres_data.sql
     continue-on-error: true
 
-  shell:
-    interactive:
-      enabled: true
-
   batch:
     initialize-schema: always
     job:

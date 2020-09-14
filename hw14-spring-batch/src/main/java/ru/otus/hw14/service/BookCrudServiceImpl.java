@@ -4,10 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.hw14.model.table.BookWithComments;
 import ru.otus.hw14.model.table.Book;
+import ru.otus.hw14.model.table.BookWithComments;
 import ru.otus.hw14.repository.crud.BookCrudRepository;
 
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -25,6 +26,11 @@ public class BookCrudServiceImpl implements BookCrudService {
   @Override
   public Optional<Book> findById(String id) {
     return bookCrudRepository.findById(Long.valueOf(id));
+  }
+
+  @Override
+  public Optional<Book> findByTitleAndDate(String title, Date date) {
+    return bookCrudRepository.findByTitleAndDate(title,date);
   }
 
   @Override
