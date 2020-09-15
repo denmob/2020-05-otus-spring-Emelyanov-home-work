@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
-public class JobConfig {
+public class JobMigrateConfig {
 
   private final JobBuilderFactory jobBuilderFactory;
   private final Step migrateAuthorStep;

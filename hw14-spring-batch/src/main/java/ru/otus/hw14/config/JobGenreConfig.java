@@ -3,7 +3,9 @@ package ru.otus.hw14.config;
 import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemProcessor;
@@ -23,10 +25,11 @@ import javax.sql.DataSource;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-public class StepGenreConfig {
+public class JobGenreConfig {
 
   private static final int CHUNK_SIZE = 5;
   private final StepBuilderFactory stepBuilderFactory;
+  private final JobBuilderFactory jobBuilderFactory;
   private final MongoTemplate mongoTemplate;
   private final DataSource dataSource;
 
@@ -53,10 +56,7 @@ public class StepGenreConfig {
   public ItemWriter<Genre> jdbcItemGenreWriter() {
     JdbcBatchItemWriter<Genre> writer = new JdbcBatchItemWriter<>();
     writer.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>());
-
-    writer.setSql("INSERT INTO genres " +
-        "(name) " +
-        "VALUES (:name)");
+    writer.setSql("INSERT INTO genres (name) VALUES (:name)");
     writer.setDataSource(dataSource);
     return writer;
   }
@@ -69,6 +69,13 @@ public class StepGenreConfig {
         .processor(itemGenreProcessor())
         .writer(jdbcItemGenreWriter())
         .allowStartIfComplete(true)
+        .build();
+  }
+
+  @Bean
+  public Job migrateGenreJob() {
+    return jobBuilderFactory.get("migrateGenreJob")
+        .start(migrateGenreStep())
         .build();
   }
 }

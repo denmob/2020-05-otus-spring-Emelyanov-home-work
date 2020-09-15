@@ -3,7 +3,9 @@ package ru.otus.hw14.config;
 import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemProcessor;
@@ -24,9 +26,10 @@ import javax.persistence.PersistenceContext;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-public class StepBookConfig {
+public class JobBookConfig {
 
   private static final int CHUNK_SIZE = 5;
+  private final JobBuilderFactory jobBuilderFactory;
   private final StepBuilderFactory stepBuilderFactory;
   private final MongoTemplate mongoTemplate;
   private final ItemBookProcessorService itemBookProcessorService;
@@ -37,9 +40,8 @@ public class StepBookConfig {
   @Bean
   @StepScope
   public MongoItemReader<Book> mongoItemBookReader() {
-
     return new MongoItemReaderBuilder<Book>()
-        .name("mongoItemAuthorReader")
+        .name("mongoItemBookReader")
         .template(mongoTemplate)
         .targetType(Book.class)
         .jsonQuery("{ }")
@@ -69,6 +71,13 @@ public class StepBookConfig {
         .processor(itemBookProcessor())
         .writer(jpaItemBookWriter())
         .allowStartIfComplete(true)
+        .build();
+  }
+
+  @Bean
+  public Job migrateBookJob() {
+    return jobBuilderFactory.get("migrateBookJob")
+        .start(migrateBookStep())
         .build();
   }
 }

@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.*;
+import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemProcessor;
@@ -23,10 +24,11 @@ import javax.sql.DataSource;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-public class StepAuthorConfig {
+public class JobAuthorConfig {
 
   private static final int CHUNK_SIZE = 5;
   private final StepBuilderFactory stepBuilderFactory;
+  private final JobBuilderFactory jobBuilderFactory;
   private final MongoTemplate mongoTemplate;
   private final DataSource dataSource;
 
@@ -53,10 +55,7 @@ public class StepAuthorConfig {
   public ItemWriter<Author> jdbcItemAuthorWriter() {
     JdbcBatchItemWriter<Author> writer = new JdbcBatchItemWriter<>();
     writer.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>());
-
-    writer.setSql("INSERT INTO authors " +
-        "(first_name, last_name, birthday) " +
-        "VALUES (:firstName, :lastName, :birthday)");
+    writer.setSql("INSERT INTO authors (first_name, last_name, birthday) VALUES (:firstName, :lastName, :birthday)");
     writer.setDataSource(dataSource);
     return writer;
   }
@@ -69,6 +68,13 @@ public class StepAuthorConfig {
         .processor(itemAuthorProcessor())
         .writer(jdbcItemAuthorWriter())
         .allowStartIfComplete(true)
+        .build();
+  }
+
+  @Bean
+  public Job migrateAuthorJob() {
+    return jobBuilderFactory.get("migrateAuthorJob")
+        .start(migrateAuthorStep())
         .build();
   }
 }

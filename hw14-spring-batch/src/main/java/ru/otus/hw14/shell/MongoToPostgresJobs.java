@@ -9,6 +9,7 @@ import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw14.service.AuthorCrudService;
 import ru.otus.hw14.service.BookCrudService;
 import ru.otus.hw14.service.CommentCrudService;
@@ -33,7 +34,8 @@ public class MongoToPostgresJobs {
   }
 
   @SneakyThrows
-  @ShellMethod(value = "delete data and restart migrate data from mongo to postgres", key = {"restart"})
+  @Transactional
+  @ShellMethod(value = "delete postgres data and restart migrate", key = {"restart"})
   public String restartMigrateData() {
     commentCrudService.deleteAll();
     bookCrudService.deleteAll();

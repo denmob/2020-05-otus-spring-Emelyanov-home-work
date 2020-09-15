@@ -7,12 +7,23 @@ spring:
 
   datasource:
     url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
     initialization-mode: always
+    schema: classpath:/schema-test.sql
+    data: classpath:/data-test.sql
+
+  batch:
+    initialize-schema: always
+    job:
+      enabled: false
 
   jpa:
+    database: H2
+    properties.hibernate.dialect: org.hibernate.dialect.H2Dialect
     generate-ddl: false
     hibernate:
       ddl-auto: none
+    show-sql: true
 
   shell:
     interactive:
