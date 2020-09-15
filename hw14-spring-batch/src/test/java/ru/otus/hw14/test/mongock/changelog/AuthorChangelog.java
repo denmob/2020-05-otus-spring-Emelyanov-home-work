@@ -4,7 +4,7 @@ import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;
 import com.github.cloudyrock.mongock.driver.mongodb.springdata.v3.decorator.impl.MongockTemplate;
 import lombok.SneakyThrows;
-import ru.otus.hw14.model.document.Author;
+import ru.otus.hw14.model.document.AuthorDocument;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,19 +21,19 @@ public class AuthorChangelog {
 
   @ChangeSet(order = "001", id = "addAuthor01", author = "dyemelianov", runAlways = true)
   public void insertAuthor01(MongockTemplate template) {
-    var author = Author.builder().firstName("Jeff(test)").lastName("Langr").birthday(convertStringToDate("1969-11-08")).build();
+    var author = AuthorDocument.builder().firstName("Jeff(test)").lastName("Langr").birthday(convertStringToDate("1969-11-08")).build();
     template.save(author);
   }
 
   @ChangeSet(order = "002", id = "addAuthor02", author = "dyemelianov", runAlways = true)
   public void insertAuthor02(MongockTemplate template) {
-    var author = Author.builder().firstName("Joshua(test)").lastName("Bloch").birthday(convertStringToDate("1961-08-29")).build();
+    var author = AuthorDocument.builder().firstName("Joshua(test)").lastName("Bloch").birthday(convertStringToDate("1961-08-29")).build();
     template.save(author);
   }
 
   @ChangeSet(order = "003", id = "addAuthor03", author = "dyemelianov", runAlways = true)
   public void insertAuthor03(MongockTemplate template) {
-    var author = Author.builder().firstName("Cay S.(test)").lastName("Horstmann").birthday(convertStringToDate("1959-03-19")).build();
+    var author = AuthorDocument.builder().firstName("Cay S.(test)").lastName("Horstmann").birthday(convertStringToDate("1959-03-19")).build();
     template.save(author);
   }
 

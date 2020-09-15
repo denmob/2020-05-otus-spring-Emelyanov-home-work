@@ -1,21 +1,21 @@
 package ru.otus.hw14.service;
 
-import ru.otus.hw14.model.table.Comment;
+import ru.otus.hw14.model.entity.CommentEntity;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface CommentCrudService {
 
-  Optional<Comment> findById(String id);
+  Optional<CommentEntity> findById(String id);
 
-  Iterable<Comment> findAll();
+  Iterable<CommentEntity> findAll();
 
-  Comment save(Comment entity);
+  CommentEntity save(CommentEntity entity);
 
-  void delete(Comment entity);
+  void delete(CommentEntity entity);
 
   void deleteAll();
 
-  List<Comment> getAllByBookId(long bookId);
+  List<CommentEntity> getAllByBookEntityId(long bookEntityId);
 }

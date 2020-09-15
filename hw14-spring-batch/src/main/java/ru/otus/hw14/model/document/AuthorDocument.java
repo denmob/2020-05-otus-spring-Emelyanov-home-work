@@ -13,22 +13,19 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "books")
-public class Book {
+@Document(collection = "authors")
+public class AuthorDocument {
   @Id
   @BsonProperty("id")
   private String id;
 
-  @Field(name = "title")
-  private String title;
+  @Field(name = "first_name")
+  private @NonNull String firstName;
 
-  @Field(name = "date")
+  @Field(name = "last_name")
+  private @NonNull String lastName;
+
+  @Field(name = "birthday")
   @DateTimeFormat(pattern = "yyyy-MM-dd")
-  private Date date = new Date();
-
-  @Field(name = "author")
-  private Author author;
-
-  @Field(name = "genre")
-  private Genre genre;
+  private @NonNull Date birthday;
 }

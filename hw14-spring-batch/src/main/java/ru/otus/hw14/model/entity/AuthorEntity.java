@@ -1,4 +1,4 @@
-package ru.otus.hw14.model.table;
+package ru.otus.hw14.model.entity;
 
 import lombok.*;
 
@@ -11,7 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "authors")
-public class Author {
+public class AuthorEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;

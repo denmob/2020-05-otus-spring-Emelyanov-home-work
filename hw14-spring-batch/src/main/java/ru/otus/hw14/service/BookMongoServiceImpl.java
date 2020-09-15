@@ -3,7 +3,7 @@ package ru.otus.hw14.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.hw14.model.document.Book;
+import ru.otus.hw14.model.document.BookDocument;
 import ru.otus.hw14.repository.mongo.BookMongoRepository;
 
 import java.util.Optional;
@@ -16,23 +16,23 @@ public class BookMongoServiceImpl implements BookMongoService {
 
   @Override
   @Transactional
-  public Book save(Book entity) {
+  public BookDocument save(BookDocument entity) {
     return bookMongoRepository.save(entity);
   }
 
   @Override
-  public Optional<Book> findById(String id) {
+  public Optional<BookDocument> findById(String id) {
     return bookMongoRepository.findById(id);
   }
 
   @Override
-  public Iterable<Book> findAll() {
+  public Iterable<BookDocument> findAll() {
     return bookMongoRepository.findAll();
   }
 
   @Override
   @Transactional
-  public void delete(Book entity) {
+  public void delete(BookDocument entity) {
     bookMongoRepository.delete(entity);
   }
 

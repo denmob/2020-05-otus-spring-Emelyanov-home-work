@@ -1,4 +1,4 @@
-package ru.otus.hw14.model.table;
+package ru.otus.hw14.model.entity;
 
 import lombok.*;
 
@@ -10,7 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "genres")
-public class Genre {
+public class GenreEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;

@@ -1,4 +1,4 @@
-package ru.otus.hw14.model.table;
+package ru.otus.hw14.model.entity;
 
 import lombok.*;
 
@@ -11,9 +11,9 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "book")
+@ToString(exclude = "bookEntity")
 @Table(name = "comments")
-public class Comment {
+public class CommentEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
@@ -23,5 +23,5 @@ public class Comment {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "book_id", referencedColumnName = "id")
-  private Book book;
+  private BookEntity bookEntity;
 }

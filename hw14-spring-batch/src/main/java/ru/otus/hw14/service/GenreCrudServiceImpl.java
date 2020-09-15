@@ -3,7 +3,7 @@ package ru.otus.hw14.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.hw14.model.table.Genre;
+import ru.otus.hw14.model.entity.GenreEntity;
 import ru.otus.hw14.repository.crud.GenreCrudRepository;
 
 import java.util.Optional;
@@ -16,13 +16,13 @@ public class GenreCrudServiceImpl implements GenreCrudService {
 
   @Override
   @Transactional
-  public Genre save(Genre entity) {
+  public GenreEntity save(GenreEntity entity) {
     return genreCrudRepository.save(entity);
   }
 
   @Override
   @Transactional
-  public void delete(Genre entity) {
+  public void delete(GenreEntity entity) {
     genreCrudRepository.delete(entity);
   }
 
@@ -34,18 +34,18 @@ public class GenreCrudServiceImpl implements GenreCrudService {
 
   @Override
   @Transactional(readOnly = true)
-  public Optional<Genre> findById(String id) {
+  public Optional<GenreEntity> findById(String id) {
     return genreCrudRepository.findById(Long.valueOf(id));
   }
 
   @Override
-  public Optional<Genre> findByName(String name) {
+  public Optional<GenreEntity> findByName(String name) {
     return genreCrudRepository.findByName(name);
   }
 
   @Override
   @Transactional(readOnly = true)
-  public Iterable<Genre> findAll() {
+  public Iterable<GenreEntity> findAll() {
     return genreCrudRepository.findAll();
   }
 }

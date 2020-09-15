@@ -5,26 +5,30 @@ import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
 @Data
 @Builder
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "comments")
-public class Comment {
+@Document(collection = "books")
+public class BookDocument {
   @Id
   @BsonProperty("id")
   private String id;
 
-  @Field(name = "commentary")
-  private @NonNull String commentary;
+  @Field(name = "title")
+  private String title;
 
-  @Field(name = "book_id")
-  private String bookId;
+  @Field(name = "date")
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  private Date date = new Date();
 
-  @Field(name = "timestamp")
-  private Date timestamp;
+  @Field(name = "author")
+  private AuthorDocument authorDocument;
+
+  @Field(name = "genre")
+  private GenreDocument genreDocument;
 }

@@ -12,15 +12,16 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.data.MongoItemReader;
 import org.springframework.batch.item.data.builder.MongoItemReaderBuilder;
-import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
-import org.springframework.batch.item.database.JdbcBatchItemWriter;
+import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import ru.otus.hw14.model.document.Genre;
+import ru.otus.hw14.model.document.GenreDocument;
+import ru.otus.hw14.model.entity.GenreEntity;
 
-import javax.sql.DataSource;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 @Slf4j
 @Configuration
@@ -31,15 +32,17 @@ public class JobGenreConfig {
   private final StepBuilderFactory stepBuilderFactory;
   private final JobBuilderFactory jobBuilderFactory;
   private final MongoTemplate mongoTemplate;
-  private final DataSource dataSource;
+
+  @PersistenceContext
+  private EntityManager entityManager;
 
   @Bean
   @StepScope
-  public MongoItemReader<Genre> mongoItemGenreReader() {
-    return new MongoItemReaderBuilder<Genre>()
+  public MongoItemReader<GenreDocument> mongoItemGenreReader() {
+    return new MongoItemReaderBuilder<GenreDocument>()
         .name("mongoItemGenreReader")
         .template(mongoTemplate)
-        .targetType(Genre.class)
+        .targetType(GenreDocument.class)
         .jsonQuery("{ }")
         .sorts(ImmutableMap.of("_id", Sort.Direction.ASC))
         .build();
@@ -47,24 +50,22 @@ public class JobGenreConfig {
 
   @Bean
   @StepScope
-  public ItemProcessor<Genre, Genre> itemGenreProcessor() {
-    return genre -> genre;
+  public ItemProcessor<GenreDocument, GenreEntity> itemGenreProcessor() {
+    return genre -> GenreEntity.builder().name(genre.getName()).build();
   }
 
   @Bean
   @StepScope
-  public ItemWriter<Genre> jdbcItemGenreWriter() {
-    JdbcBatchItemWriter<Genre> writer = new JdbcBatchItemWriter<>();
-    writer.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>());
-    writer.setSql("INSERT INTO genres (name) VALUES (:name)");
-    writer.setDataSource(dataSource);
-    return writer;
+  public ItemWriter<GenreEntity> jdbcItemGenreWriter() {
+    JpaItemWriter<GenreEntity> genreEntityJpaItemWriter = new JpaItemWriter<>();
+    genreEntityJpaItemWriter.setEntityManagerFactory(entityManager.getEntityManagerFactory());
+    return genreEntityJpaItemWriter;
   }
 
   @Bean
   public Step migrateGenreStep() {
     return stepBuilderFactory.get("migrateGenreStep")
-        .<Genre, Genre>chunk(CHUNK_SIZE)
+        .<GenreDocument, GenreEntity>chunk(CHUNK_SIZE)
         .reader(mongoItemGenreReader())
         .processor(itemGenreProcessor())
         .writer(jdbcItemGenreWriter())

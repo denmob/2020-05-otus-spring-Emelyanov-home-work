@@ -6,9 +6,9 @@ import com.github.cloudyrock.mongock.driver.mongodb.springdata.v3.decorator.impl
 import lombok.SneakyThrows;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import ru.otus.hw14.model.document.Author;
-import ru.otus.hw14.model.document.Book;
-import ru.otus.hw14.model.document.Genre;
+import ru.otus.hw14.model.document.AuthorDocument;
+import ru.otus.hw14.model.document.BookDocument;
+import ru.otus.hw14.model.document.GenreDocument;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,48 +25,48 @@ public class BookChangelog {
 
   @ChangeSet(order = "001", id = "addBook01", author = "dyemelianov", runAlways = true)
   public void addBook01(MongockTemplate template) {
-    Author author = template.findOne(new Query().addCriteria(
-        Criteria.where("birthday").lt(convertStringToDate("1960-11-08"))), Author.class);
+    AuthorDocument authorDocument = template.findOne(new Query().addCriteria(
+        Criteria.where("birthday").lt(convertStringToDate("1960-11-08"))), AuthorDocument.class);
 
-    Genre genre = template.findOne(new Query().addCriteria(
-        Criteria.where("name").regex("^Soft")), Genre.class);
+    GenreDocument genreDocument = template.findOne(new Query().addCriteria(
+        Criteria.where("name").regex("^Soft")), GenreDocument.class);
 
-    var book = Book.builder()
+    var book = BookDocument.builder()
         .title("Java Core Fundamentals")
-        .author(author)
-        .genre(genre)
+        .authorDocument(authorDocument)
+        .genreDocument(genreDocument)
         .date(convertStringToDate("2016-05-17")).build();
     template.save(book);
   }
 
   @ChangeSet(order = "002", id = "addBook02", author = "dyemelianov", runAlways = true)
   public void addBook02(MongockTemplate template) {
-    Author author = template.findOne(new Query().addCriteria(
-        Criteria.where("birthday").lt(convertStringToDate("1969-11-08")).gt(convertStringToDate("1959-03-19"))), Author.class);
+    AuthorDocument authorDocument = template.findOne(new Query().addCriteria(
+        Criteria.where("birthday").lt(convertStringToDate("1969-11-08")).gt(convertStringToDate("1959-03-19"))), AuthorDocument.class);
 
-    Genre genre = template.findOne(new Query().addCriteria(
-        Criteria.where("name").regex("^S")), Genre.class);
+    GenreDocument genreDocument = template.findOne(new Query().addCriteria(
+        Criteria.where("name").regex("^S")), GenreDocument.class);
 
-    var book = Book.builder()
+    var book = BookDocument.builder()
         .title("Effective Java")
-        .author(author)
-        .genre(genre)
+        .authorDocument(authorDocument)
+        .genreDocument(genreDocument)
         .date(convertStringToDate("2018-01-01")).build();
     template.save(book);
   }
 
   @ChangeSet(order = "003", id = "addBook03", author = "dyemelianov", runAlways = true)
   public void addBook03(MongockTemplate template) {
-    Author author = template.findOne(new Query().addCriteria(
-        Criteria.where("last_name").is("Langr")), Author.class);
+    AuthorDocument authorDocument = template.findOne(new Query().addCriteria(
+        Criteria.where("last_name").is("Langr")), AuthorDocument.class);
 
-    Genre genre = template.findOne(new Query().addCriteria(
-        Criteria.where("name").regex("^P")), Genre.class);
+    GenreDocument genreDocument = template.findOne(new Query().addCriteria(
+        Criteria.where("name").regex("^P")), GenreDocument.class);
 
-    var book = Book.builder()
+    var book = BookDocument.builder()
         .title("Pragmatic Unit Testing in Java 8 with JUnit")
-        .author(author)
-        .genre(genre)
+        .authorDocument(authorDocument)
+        .genreDocument(genreDocument)
         .date(convertStringToDate("2015-05-01")).build();
     template.save(book);
   }

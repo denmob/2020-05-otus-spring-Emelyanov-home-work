@@ -2,12 +2,12 @@ package ru.otus.hw14.repository.crud;
 
 
 import org.springframework.data.repository.CrudRepository;
-import ru.otus.hw14.model.table.Book;
+import ru.otus.hw14.model.entity.BookEntity;
 
 import java.util.Date;
 import java.util.Optional;
 
-public interface BookCrudRepository extends CrudRepository<Book,Long> {
+public interface BookCrudRepository extends CrudRepository<BookEntity,Long> {
 
-  Optional<Book> findByTitleAndDate(String title, Date date);
+  Optional<BookEntity> findByTitleAndDate(String title, Date date);
 }

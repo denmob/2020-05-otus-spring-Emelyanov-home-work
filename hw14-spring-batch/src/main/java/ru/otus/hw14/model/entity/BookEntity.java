@@ -1,4 +1,4 @@
-package ru.otus.hw14.model.table;
+package ru.otus.hw14.model.entity;
 
 import lombok.*;
 
@@ -13,9 +13,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "books")
-@ToString(exclude = "comments")
-@NamedEntityGraph(name = "book-genre-entity-graph", attributeNodes = {@NamedAttributeNode("genre")})
-public class Book {
+@ToString(exclude = "commentEntities")
+@NamedEntityGraph(name = "book-genre-entity-graph", attributeNodes = {@NamedAttributeNode("genreEntity")})
+public class BookEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
@@ -28,12 +28,12 @@ public class Book {
 
   @ManyToOne
   @JoinColumn(name = "author_id", referencedColumnName = "id")
-  private Author author;
+  private AuthorEntity authorEntity;
 
   @ManyToOne
   @JoinColumn(name = "genre_id", referencedColumnName = "id")
-  private Genre genre;
+  private GenreEntity genreEntity;
 
-  @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
-  private List<Comment> comments = new ArrayList<>();
+  @OneToMany(mappedBy = "bookEntity", fetch = FetchType.LAZY)
+  private List<CommentEntity> commentEntities = new ArrayList<>();
 }

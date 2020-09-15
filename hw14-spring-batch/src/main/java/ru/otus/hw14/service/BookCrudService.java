@@ -1,24 +1,21 @@
 package ru.otus.hw14.service;
 
-import ru.otus.hw14.model.table.Book;
-import ru.otus.hw14.model.table.BookWithComments;
+import ru.otus.hw14.model.entity.BookEntity;
 
 import java.util.Date;
 import java.util.Optional;
 
 public interface BookCrudService {
 
-  Optional<Book> findById(String id);
+  Optional<BookEntity> findById(String id);
 
-  Optional<Book> findByTitleAndDate(String title, Date date);
+  Optional<BookEntity> findByTitleAndDate(String title, Date date);
 
-  Iterable<Book> findAll();
+  Iterable<BookEntity> findAll();
 
-  Book save(Book entity);
+  BookEntity save(BookEntity entity);
 
-  void delete(Book entity);
+  void delete(BookEntity entity);
 
   void deleteAll();
-
-  Optional<BookWithComments> readWithComments(long id);
 }

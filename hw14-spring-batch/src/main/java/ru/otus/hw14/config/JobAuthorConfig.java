@@ -11,15 +11,16 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.data.MongoItemReader;
 import org.springframework.batch.item.data.builder.MongoItemReaderBuilder;
-import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
-import org.springframework.batch.item.database.JdbcBatchItemWriter;
+import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import ru.otus.hw14.model.document.Author;
+import ru.otus.hw14.model.document.AuthorDocument;
+import ru.otus.hw14.model.entity.AuthorEntity;
 
-import javax.sql.DataSource;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 @Slf4j
 @Configuration
@@ -30,15 +31,17 @@ public class JobAuthorConfig {
   private final StepBuilderFactory stepBuilderFactory;
   private final JobBuilderFactory jobBuilderFactory;
   private final MongoTemplate mongoTemplate;
-  private final DataSource dataSource;
+
+  @PersistenceContext
+  private EntityManager entityManager;
 
   @Bean
   @StepScope
-  public MongoItemReader<Author> mongoItemAuthorReader() {
-    return new MongoItemReaderBuilder<Author>()
+  public MongoItemReader<AuthorDocument> mongoItemAuthorReader() {
+    return new MongoItemReaderBuilder<AuthorDocument>()
         .name("mongoItemAuthorReader")
         .template(mongoTemplate)
-        .targetType(Author.class)
+        .targetType(AuthorDocument.class)
         .jsonQuery("{ }")
         .sorts(ImmutableMap.of("_id", Sort.Direction.ASC))
         .build();
@@ -46,24 +49,26 @@ public class JobAuthorConfig {
 
   @Bean
   @StepScope
-  public ItemProcessor<Author, Author> itemAuthorProcessor() {
-    return author -> author;
+  public ItemProcessor<AuthorDocument, AuthorEntity> itemAuthorProcessor() {
+    return author -> AuthorEntity.builder()
+        .firstName(author.getFirstName())
+        .lastName(author.getLastName())
+        .birthday(author.getBirthday())
+        .build();
   }
 
   @Bean
   @StepScope
-  public ItemWriter<Author> jdbcItemAuthorWriter() {
-    JdbcBatchItemWriter<Author> writer = new JdbcBatchItemWriter<>();
-    writer.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>());
-    writer.setSql("INSERT INTO authors (first_name, last_name, birthday) VALUES (:firstName, :lastName, :birthday)");
-    writer.setDataSource(dataSource);
-    return writer;
+  public ItemWriter<AuthorEntity> jdbcItemAuthorWriter() {
+    JpaItemWriter<AuthorEntity> authorEntityJpaItemWriter = new JpaItemWriter<>();
+    authorEntityJpaItemWriter.setEntityManagerFactory(entityManager.getEntityManagerFactory());
+    return authorEntityJpaItemWriter;
   }
 
   @Bean
   public Step migrateAuthorStep() {
     return stepBuilderFactory.get("migrateAuthorStep")
-        .<Author, Author>chunk(CHUNK_SIZE)
+        .<AuthorDocument, AuthorEntity>chunk(CHUNK_SIZE)
         .reader(mongoItemAuthorReader())
         .processor(itemAuthorProcessor())
         .writer(jdbcItemAuthorWriter())

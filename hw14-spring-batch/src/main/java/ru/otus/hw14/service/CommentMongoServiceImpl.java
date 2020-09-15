@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.hw14.model.document.Comment;
+import ru.otus.hw14.model.document.CommentDocument;
 import ru.otus.hw14.repository.mongo.CommentMongoRepository;
 
 import java.util.List;
@@ -17,24 +17,24 @@ public class CommentMongoServiceImpl implements CommentMongoService {
   private final CommentMongoRepository commentMongoRepository;
 
   @Override
-  public Optional<Comment> findById(String id) {
+  public Optional<CommentDocument> findById(String id) {
     return commentMongoRepository.findById(id);
   }
 
   @Override
-  public Iterable<Comment> findAll() {
+  public Iterable<CommentDocument> findAll() {
     return commentMongoRepository.findAll();
   }
 
   @Override
   @Transactional
-  public Comment save(Comment entity) {
+  public CommentDocument save(CommentDocument entity) {
     return commentMongoRepository.save(entity);
   }
 
   @Override
   @Transactional
-  public void delete(Comment entity) {
+  public void delete(CommentDocument entity) {
     commentMongoRepository.delete(entity);
   }
 
@@ -45,7 +45,7 @@ public class CommentMongoServiceImpl implements CommentMongoService {
   }
 
   @Override
-  public List<Comment> readAllForBook(String bookId) {
+  public List<CommentDocument> readAllForBook(String bookId) {
     return commentMongoRepository.findAllByBookId(bookId);
   }
 

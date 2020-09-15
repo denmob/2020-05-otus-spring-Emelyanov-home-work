@@ -10,9 +10,14 @@ import org.springframework.batch.test.JobRepositoryTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.test.context.ActiveProfiles;
+import ru.otus.hw14.repository.crud.AuthorCrudRepository;
+import ru.otus.hw14.repository.mongo.AuthorMongoRepository;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -26,6 +31,9 @@ import java.util.Collection;
 @ActiveProfiles("test")
 @EnableAutoConfiguration
 @EnableConfigurationProperties
+@EntityScan("ru.otus.hw14.model.entity")
+@EnableJpaRepositories(basePackageClasses = {AuthorCrudRepository.class})
+@EnableMongoRepositories(basePackageClasses = {AuthorMongoRepository.class})
 @SpringBootTest(classes = {JobAuthorConfig.class, BatchConfig.class, MongoConfig.class})
 class JobAuthorConfigTest {
 
@@ -49,30 +57,23 @@ class JobAuthorConfigTest {
 
   @Test
   @SneakyThrows
-  void givenJobExecuted_thenSuccess(){
-
+  void givenJobExecuted_thenSuccess() {
     JobExecution jobExecution = jobLauncherTestUtils.launchJob();
     JobInstance actualJobInstance = jobExecution.getJobInstance();
     ExitStatus actualJobExitStatus = jobExecution.getExitStatus();
 
-    assertThat(actualJobInstance.getJobName(),is("migrateAuthorJob"));
-    assertThat(actualJobExitStatus.getExitCode(),is("COMPLETED"));
+    assertThat(actualJobInstance.getJobName(), is("migrateAuthorJob"));
+    assertThat(actualJobExitStatus.getExitCode(), is("COMPLETED"));
   }
 
   @Test
-   void givenStepExecuted_thenReaWrite_3(){
-
+  void givenStepExecuted_thenReaWrite_3() {
     JobExecution jobExecution = jobLauncherTestUtils.launchStep("migrateAuthorStep");
     Collection<StepExecution> actualStepExecutions = jobExecution.getStepExecutions();
-    ExitStatus actualJobExitStatus = jobExecution.getExitStatus();
 
-    assertThat(actualStepExecutions.size(),is(1));
+    assertThat(actualStepExecutions.size(), is(1));
 
-    actualStepExecutions.forEach(stepExecution -> {
-      assertThat(stepExecution.getWriteCount(), is(3));
-    });
-    actualStepExecutions.forEach(stepExecution -> {
-      assertThat(stepExecution.getReadCount(), is(3));
-    });
+    actualStepExecutions.forEach(stepExecution -> assertThat(stepExecution.getWriteCount(), is(3)));
+    actualStepExecutions.forEach(stepExecution -> assertThat(stepExecution.getReadCount(), is(3)));
   }
 }

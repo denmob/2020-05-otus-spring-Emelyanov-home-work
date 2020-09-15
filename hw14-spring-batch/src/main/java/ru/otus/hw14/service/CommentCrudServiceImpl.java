@@ -3,10 +3,9 @@ package ru.otus.hw14.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.hw14.model.table.Comment;
+import ru.otus.hw14.model.entity.CommentEntity;
 import ru.otus.hw14.repository.crud.CommentCrudRepository;
 
-import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,13 +18,13 @@ public class CommentCrudServiceImpl implements CommentCrudService {
 
   @Override
   @Transactional
-  public Comment save(Comment entity) {
+  public CommentEntity save(CommentEntity entity) {
     return commentCrudRepository.save(entity);
   }
 
   @Override
   @Transactional
-  public void delete(Comment entity) {
+  public void delete(CommentEntity entity) {
     commentCrudRepository.delete(entity);
   }
 
@@ -36,19 +35,19 @@ public class CommentCrudServiceImpl implements CommentCrudService {
   }
 
   @Override
-  public List<Comment> getAllByBookId(long bookId) {
-    return commentCrudRepository.getAllByBookId(bookId);
+  public List<CommentEntity> getAllByBookEntityId(long bookId) {
+    return commentCrudRepository.getAllByBookEntityId(bookId);
   }
 
   @Override
   @Transactional(readOnly = true)
-  public Optional<Comment> findById(String id) {
+  public Optional<CommentEntity> findById(String id) {
     return commentCrudRepository.findById(Long.valueOf(id));
   }
 
   @Override
   @Transactional(readOnly = true)
-  public Iterable<Comment> findAll() {
+  public Iterable<CommentEntity> findAll() {
     return commentCrudRepository.findAll();
   }
 }

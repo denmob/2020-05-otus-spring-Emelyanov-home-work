@@ -1,8 +1,9 @@
 package ru.otus.hw14.service;
 
-import ru.otus.hw14.model.table.Comment;
+import ru.otus.hw14.model.document.CommentDocument;
+import ru.otus.hw14.model.entity.CommentEntity;
 
 public interface ItemCommentProcessorService {
 
-  Comment convertDocumentToEntity(ru.otus.hw14.model.document.Comment comment);
+  CommentEntity convertDocumentToEntity(CommentDocument commentDocument);
 }

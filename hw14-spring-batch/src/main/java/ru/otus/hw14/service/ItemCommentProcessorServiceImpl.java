@@ -2,8 +2,10 @@ package ru.otus.hw14.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.otus.hw14.model.document.Book;
-import ru.otus.hw14.model.table.Comment;
+import ru.otus.hw14.model.document.BookDocument;
+import ru.otus.hw14.model.document.CommentDocument;
+import ru.otus.hw14.model.entity.BookEntity;
+import ru.otus.hw14.model.entity.CommentEntity;
 
 @Service
 @RequiredArgsConstructor
@@ -13,14 +15,14 @@ public class ItemCommentProcessorServiceImpl implements ItemCommentProcessorServ
   private final BookCrudService bookCrudService;
 
   @Override
-  public Comment convertDocumentToEntity(ru.otus.hw14.model.document.Comment comment) {
+  public CommentEntity convertDocumentToEntity(CommentDocument commentDocument) {
 
-    Book bookDocument = bookMongoService.findById(comment.getBookId())
-        .orElseThrow(() -> new NotFoundException(String.format("BookDocument.id %s not found", comment.getBookId())));
+    BookDocument bookDocument = bookMongoService.findById(commentDocument.getBookId())
+        .orElseThrow(() -> new NotFoundException(String.format("BookDocument.id %s not found", commentDocument.getBookId())));
 
-    ru.otus.hw14.model.table.Book bookEntity = bookCrudService.findByTitleAndDate(bookDocument.getTitle(), bookDocument.getDate())
+    BookEntity bookEntity = bookCrudService.findByTitleAndDate(bookDocument.getTitle(), bookDocument.getDate())
         .orElseThrow(() -> new NotFoundException(String.format("BookEntity.title %s and BookEntity.date %s not found", bookDocument.getTitle(), bookDocument.getDate())));
 
-    return Comment.builder().book(bookEntity).commentary(comment.getCommentary()).build();
+    return CommentEntity.builder().bookEntity(bookEntity).commentary(commentDocument.getCommentary()).build();
   }
 }

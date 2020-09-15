@@ -1,11 +1,11 @@
 package ru.otus.hw14.repository.crud;
 
 import org.springframework.data.repository.CrudRepository;
-import ru.otus.hw14.model.table.Genre;
+import ru.otus.hw14.model.entity.GenreEntity;
 
 import java.util.Optional;
 
-public interface GenreCrudRepository extends CrudRepository<Genre,Long> {
+public interface GenreCrudRepository extends CrudRepository<GenreEntity,Long> {
 
-  Optional<Genre> findByName(String name);
+  Optional<GenreEntity> findByName(String name);
 }

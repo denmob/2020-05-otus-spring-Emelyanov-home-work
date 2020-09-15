@@ -4,9 +4,10 @@ package ru.otus.hw14.service;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.otus.hw14.model.table.Author;
-import ru.otus.hw14.model.table.Book;
-import ru.otus.hw14.model.table.Genre;
+import ru.otus.hw14.model.document.BookDocument;
+import ru.otus.hw14.model.entity.AuthorEntity;
+import ru.otus.hw14.model.entity.BookEntity;
+import ru.otus.hw14.model.entity.GenreEntity;
 
 
 @Service
@@ -17,22 +18,22 @@ public class ItemBookProcessorServiceImpl implements ItemBookProcessorService {
   private final GenreCrudService genreCrudService;
 
   @Override
-  public Book convertDocumentToEntity(@NonNull ru.otus.hw14.model.document.Book book) {
+  public BookEntity convertDocumentToEntity(@NonNull BookDocument bookDocument) {
 
-    Author author = authorCrudService.findByFirstNameAndLastNameAndBirthday(
-        book.getAuthor().getFirstName(),
-        book.getAuthor().getLastName(),
-        book.getAuthor().getBirthday())
+    AuthorEntity authorEntity = authorCrudService.findByFirstNameAndLastNameAndBirthday(
+        bookDocument.getAuthorDocument().getFirstName(),
+        bookDocument.getAuthorDocument().getLastName(),
+        bookDocument.getAuthorDocument().getBirthday())
         .orElseThrow(() -> new NotFoundException("Author not found"));
 
-    Genre genre = genreCrudService.findByName(book.getGenre().getName())
+    GenreEntity genreEntity = genreCrudService.findByName(bookDocument.getGenreDocument().getName())
         .orElseThrow(() -> new NotFoundException("Genre not found"));
 
-    return Book.builder()
-        .title(book.getTitle())
-        .date(book.getDate())
-        .author(author)
-        .genre(genre)
+    return BookEntity.builder()
+        .title(bookDocument.getTitle())
+        .date(bookDocument.getDate())
+        .authorEntity(authorEntity)
+        .genreEntity(genreEntity)
         .build();
   }
 }

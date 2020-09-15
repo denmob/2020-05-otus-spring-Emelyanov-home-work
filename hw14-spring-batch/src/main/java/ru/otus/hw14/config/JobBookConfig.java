@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import ru.otus.hw14.model.document.*;
+import ru.otus.hw14.model.entity.BookEntity;
 import ru.otus.hw14.service.ItemBookProcessorService;
 
 import javax.persistence.EntityManager;
@@ -39,11 +40,11 @@ public class JobBookConfig {
 
   @Bean
   @StepScope
-  public MongoItemReader<Book> mongoItemBookReader() {
-    return new MongoItemReaderBuilder<Book>()
+  public MongoItemReader<BookDocument> mongoItemBookReader() {
+    return new MongoItemReaderBuilder<BookDocument>()
         .name("mongoItemBookReader")
         .template(mongoTemplate)
-        .targetType(Book.class)
+        .targetType(BookDocument.class)
         .jsonQuery("{ }")
         .sorts(ImmutableMap.of("_id", Sort.Direction.ASC))
         .build();
@@ -51,14 +52,14 @@ public class JobBookConfig {
 
   @Bean
   @StepScope
-  public ItemProcessor<ru.otus.hw14.model.document.Book, ru.otus.hw14.model.table.Book> itemBookProcessor() {
+  public ItemProcessor<BookDocument, BookEntity> itemBookProcessor() {
     return itemBookProcessorService::convertDocumentToEntity;
   }
 
   @Bean
   @StepScope
-  public ItemWriter<ru.otus.hw14.model.table.Book> jpaItemBookWriter() {
-    JpaItemWriter<ru.otus.hw14.model.table.Book> bookJpaItemWriter = new JpaItemWriter<>();
+  public ItemWriter<BookEntity> jpaItemBookWriter() {
+    JpaItemWriter<BookEntity> bookJpaItemWriter = new JpaItemWriter<>();
     bookJpaItemWriter.setEntityManagerFactory(entityManager.getEntityManagerFactory());
     return bookJpaItemWriter;
   }
@@ -66,7 +67,7 @@ public class JobBookConfig {
   @Bean
   public Step migrateBookStep() {
     return stepBuilderFactory.get("migrateBookStep")
-        .<Book, ru.otus.hw14.model.table.Book>chunk(CHUNK_SIZE)
+        .<BookDocument, BookEntity>chunk(CHUNK_SIZE)
         .reader(mongoItemBookReader())
         .processor(itemBookProcessor())
         .writer(jpaItemBookWriter())

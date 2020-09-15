@@ -4,8 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.hw14.model.table.Book;
-import ru.otus.hw14.model.table.BookWithComments;
+import ru.otus.hw14.model.entity.BookEntity;
 import ru.otus.hw14.repository.crud.BookCrudRepository;
 
 import java.util.Date;
@@ -19,29 +18,29 @@ public class BookCrudServiceImpl implements BookCrudService {
 
   @Override
   @Transactional
-  public Book save(Book entity) {
+  public BookEntity save(BookEntity entity) {
     return bookCrudRepository.save(entity);
   }
 
   @Override
-  public Optional<Book> findById(String id) {
+  public Optional<BookEntity> findById(String id) {
     return bookCrudRepository.findById(Long.valueOf(id));
   }
 
   @Override
-  public Optional<Book> findByTitleAndDate(String title, Date date) {
+  public Optional<BookEntity> findByTitleAndDate(String title, Date date) {
     return bookCrudRepository.findByTitleAndDate(title,date);
   }
 
   @Override
   @Transactional(readOnly = true)
-  public Iterable<Book> findAll() {
+  public Iterable<BookEntity> findAll() {
     return bookCrudRepository.findAll();
   }
 
   @Override
   @Transactional
-  public void delete(Book entity) {
+  public void delete(BookEntity entity) {
     bookCrudRepository.delete(entity);
   }
 
@@ -49,16 +48,5 @@ public class BookCrudServiceImpl implements BookCrudService {
   @Transactional
   public void deleteAll() {
     bookCrudRepository.deleteAll();
-  }
-
-  @Override
-  @Transactional(readOnly = true)
-  public Optional<BookWithComments> readWithComments(long id) {
-    Optional<Book> optionalBook = bookCrudRepository.findById(id);
-    if (optionalBook.isPresent()) {
-      Hibernate.initialize(optionalBook.get().getComments());
-      return optionalBook.map(book -> new BookWithComments(book, book.getComments()));
-    }
-    return Optional.empty();
   }
 }

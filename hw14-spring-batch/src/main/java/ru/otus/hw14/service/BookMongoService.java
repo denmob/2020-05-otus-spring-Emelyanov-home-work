@@ -1,18 +1,18 @@
 package ru.otus.hw14.service;
 
-import ru.otus.hw14.model.document.Book;
+import ru.otus.hw14.model.document.BookDocument;
 
 import java.util.Optional;
 
 public interface BookMongoService {
 
-  Optional<Book> findById(String id);
+  Optional<BookDocument> findById(String id);
 
-  Iterable<Book> findAll();
+  Iterable<BookDocument> findAll();
 
-  Book save(Book entity);
+  BookDocument save(BookDocument entity);
 
-  void delete(Book entity);
+  void delete(BookDocument entity);
 
   void deleteAll();
 }

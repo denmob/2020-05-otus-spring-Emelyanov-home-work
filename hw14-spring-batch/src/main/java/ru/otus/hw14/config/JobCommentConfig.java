@@ -17,7 +17,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import ru.otus.hw14.model.document.Comment;
+import ru.otus.hw14.model.document.CommentDocument;
+import ru.otus.hw14.model.entity.CommentEntity;
 import ru.otus.hw14.service.ItemCommentProcessorService;
 
 import javax.persistence.EntityManager;
@@ -39,11 +40,11 @@ public class JobCommentConfig {
 
   @Bean
   @StepScope
-  public MongoItemReader<Comment> mongoItemCommentReader() {
-    return new MongoItemReaderBuilder<Comment>()
+  public MongoItemReader<CommentDocument> mongoItemCommentReader() {
+    return new MongoItemReaderBuilder<CommentDocument>()
         .name("mongoItemCommentReader")
         .template(mongoTemplate)
-        .targetType(Comment.class)
+        .targetType(CommentDocument.class)
         .jsonQuery("{ }")
         .sorts(ImmutableMap.of("_id", Sort.Direction.ASC))
         .build();
@@ -51,14 +52,14 @@ public class JobCommentConfig {
 
   @Bean
   @StepScope
-  public ItemProcessor<Comment, ru.otus.hw14.model.table.Comment> itemCommentProcessor() {
+  public ItemProcessor<CommentDocument, CommentEntity> itemCommentProcessor() {
     return itemCommentProcessorService::convertDocumentToEntity;
   }
 
   @Bean
   @StepScope
-  public ItemWriter<ru.otus.hw14.model.table.Comment> jpaItemCommentWriter() {
-    JpaItemWriter<ru.otus.hw14.model.table.Comment> commentJpaItemWriter = new JpaItemWriter<>();
+  public ItemWriter<CommentEntity> jpaItemCommentWriter() {
+    JpaItemWriter<CommentEntity> commentJpaItemWriter = new JpaItemWriter<>();
     commentJpaItemWriter.setEntityManagerFactory(entityManager.getEntityManagerFactory());
     return commentJpaItemWriter;
   }
@@ -66,7 +67,7 @@ public class JobCommentConfig {
   @Bean
   public Step migrateCommentStep() {
     return stepBuilderFactory.get("migrateCommentStep")
-        .<Comment, ru.otus.hw14.model.table.Comment>chunk(CHUNK_SIZE)
+        .<CommentDocument, CommentEntity>chunk(CHUNK_SIZE)
         .reader(mongoItemCommentReader())
         .processor(itemCommentProcessor())
         .writer(jpaItemCommentWriter())

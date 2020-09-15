@@ -1,20 +1,20 @@
 package ru.otus.hw14.service;
 
-import ru.otus.hw14.model.table.Genre;
+import ru.otus.hw14.model.entity.GenreEntity;
 
 import java.util.Optional;
 
 public interface GenreCrudService {
 
-  Optional<Genre> findById(String id);
+  Optional<GenreEntity> findById(String id);
 
-  Optional<Genre> findByName(String name);
+  Optional<GenreEntity> findByName(String name);
 
-  Iterable<Genre> findAll();
+  Iterable<GenreEntity> findAll();
 
-  Genre save(Genre entity);
+  GenreEntity save(GenreEntity entity);
 
-  void delete(Genre entity);
+  void delete(GenreEntity entity);
 
   void deleteAll();
 }

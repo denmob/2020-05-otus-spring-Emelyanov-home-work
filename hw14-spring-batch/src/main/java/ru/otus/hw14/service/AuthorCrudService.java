@@ -1,22 +1,22 @@
 package ru.otus.hw14.service;
 
 import lombok.NonNull;
-import ru.otus.hw14.model.table.Author;
+import ru.otus.hw14.model.entity.AuthorEntity;
 
 import java.util.Date;
 import java.util.Optional;
 
 public interface AuthorCrudService {
 
-  Optional<Author> findById(String id);
+  Optional<AuthorEntity> findById(String id);
 
-  Optional<Author> findByFirstNameAndLastNameAndBirthday(String firstName, String lastName, @NonNull Date birthday);
+  Optional<AuthorEntity> findByFirstNameAndLastNameAndBirthday(String firstName, String lastName, @NonNull Date birthday);
 
-  Iterable<Author> findAll();
+  Iterable<AuthorEntity> findAll();
 
-  Author save(Author entity);
+  AuthorEntity save(AuthorEntity entity);
 
-  void delete(Author entity);
+  void delete(AuthorEntity entity);
 
   void deleteAll();
 }

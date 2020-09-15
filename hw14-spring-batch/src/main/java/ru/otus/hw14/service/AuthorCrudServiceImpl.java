@@ -4,7 +4,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.hw14.model.table.Author;
+import ru.otus.hw14.model.entity.AuthorEntity;
 import ru.otus.hw14.repository.crud.AuthorCrudRepository;
 
 import java.util.Date;
@@ -18,30 +18,30 @@ public class AuthorCrudServiceImpl implements AuthorCrudService {
 
   @Override
   @Transactional(readOnly = true)
-  public Optional<Author> findById(String id) {
+  public Optional<AuthorEntity> findById(String id) {
     return authorCrudRepository.findById(Long.valueOf(id));
   }
 
   @Override
-  public Optional<Author> findByFirstNameAndLastNameAndBirthday(String firstName, String lastName, @NonNull Date birthday) {
+  public Optional<AuthorEntity> findByFirstNameAndLastNameAndBirthday(String firstName, String lastName, @NonNull Date birthday) {
     return authorCrudRepository.findByFirstNameAndLastNameAndBirthday(firstName, lastName, birthday);
   }
 
   @Override
   @Transactional
-  public Author save(Author entity) {
+  public AuthorEntity save(AuthorEntity entity) {
     return authorCrudRepository.save(entity);
   }
 
   @Override
   @Transactional(readOnly = true)
-  public Iterable<Author> findAll() {
+  public Iterable<AuthorEntity> findAll() {
     return authorCrudRepository.findAll();
   }
 
   @Override
   @Transactional
-  public void delete(Author entity) {
+  public void delete(AuthorEntity entity) {
     authorCrudRepository.delete(entity);
   }
 
