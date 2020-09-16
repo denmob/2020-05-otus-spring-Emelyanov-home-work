@@ -11,7 +11,7 @@ spring:
     generate-ddl: false
     hibernate:
       ddl-auto: none
-    show-sql: true
+    show-sql: false
 
   datasource:
     url: jdbc:postgresql://localhost:5432/hw14
@@ -21,7 +21,6 @@ spring:
     initialization-mode: always
     schema: classpath:/postgres_schema.sql
     data: classpath:/postgres_data.sql
-    continue-on-error: true
 
   batch:
     initialize-schema: always

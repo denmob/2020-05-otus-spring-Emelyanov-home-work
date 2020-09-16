@@ -1,20 +1,20 @@
-CREATE SEQUENCE book_sequence
+CREATE SEQUENCE IF NOT EXISTS book_sequence
     start 1
     increment 1;
 
-CREATE SEQUENCE author_sequence
+CREATE SEQUENCE IF NOT EXISTS author_sequence
     start 1
     increment 1;
 
-CREATE SEQUENCE genre_sequence
+CREATE SEQUENCE IF NOT EXISTS genre_sequence
     start 1
     increment 1;
 
-CREATE SEQUENCE comment_sequence
+CREATE SEQUENCE IF NOT EXISTS comment_sequence
     start 1
     increment 1;
 
-create table authors
+CREATE TABLE IF NOT EXISTS authors
 (
     id         INTEGER NOT NULL PRIMARY KEY DEFAULT NEXTVAL('author_sequence'),
     first_name varchar(200),
@@ -22,13 +22,13 @@ create table authors
     birthday   date
 );
 
-create table genres
+CREATE TABLE IF NOT EXISTS genres
 (
     id   INTEGER NOT NULL PRIMARY KEY DEFAULT NEXTVAL('genre_sequence'),
     name varchar(200)
 );
 
-create table books
+CREATE TABLE IF NOT EXISTS books
 (
     id        INTEGER NOT NULL PRIMARY KEY DEFAULT NEXTVAL('book_sequence'),
     author_id bigint,
@@ -37,7 +37,7 @@ create table books
     date      date
 );
 
-create table comments
+CREATE TABLE IF NOT EXISTS comments
 (
     id         INTEGER NOT NULL PRIMARY KEY DEFAULT NEXTVAL('comment_sequence'),
     commentary varchar(200),
