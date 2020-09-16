@@ -30,6 +30,7 @@ import ru.otus.hw14.service.GenreMongoServiceImpl;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -67,21 +68,16 @@ class JobGenreConfigTest {
   @Test
   @SneakyThrows
   void mongoItemGenreReader() {
-    //one
-    assertNotNull(genreMongoService.findById(mongoItemGenreReader.read().getId()));
-    //two
-    assertNotNull(genreMongoService.findById(mongoItemGenreReader.read().getId()));
-    //tree
-    assertNotNull(genreMongoService.findById(mongoItemGenreReader.read().getId()));
+    assertNotNull(genreMongoService.findById(Objects.requireNonNull(mongoItemGenreReader.read()).getId()));
+    assertNotNull(genreMongoService.findById(Objects.requireNonNull(mongoItemGenreReader.read()).getId()));
+    assertNotNull(genreMongoService.findById(Objects.requireNonNull(mongoItemGenreReader.read()).getId()));
   }
 
   @Test
   @SneakyThrows
   void jdbcItemGenreWriter() {
     assertEquals(0, ((List<GenreEntity>) genreCrudService.findAll()).size());
-
     jobLauncherTestUtils.launchJob();
-
     assertEquals(3, ((List<GenreEntity>) genreCrudService.findAll()).size());
   }
 
