@@ -76,9 +76,9 @@ class JobGenreConfigTest {
   @Test
   @SneakyThrows
   void jdbcItemGenreWriter() {
-    assertEquals(0, ((List<GenreEntity>) genreCrudService.findAll()).size());
-    jobLauncherTestUtils.launchJob();
     assertEquals(3, ((List<GenreEntity>) genreCrudService.findAll()).size());
+    jobLauncherTestUtils.launchJob();
+    assertEquals(6, ((List<GenreEntity>) genreCrudService.findAll()).size());
   }
 
   @Test

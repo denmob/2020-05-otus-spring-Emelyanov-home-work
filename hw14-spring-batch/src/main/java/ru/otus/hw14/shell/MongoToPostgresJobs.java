@@ -1,6 +1,5 @@
 package ru.otus.hw14.shell;
 
-
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.batch.core.Job;

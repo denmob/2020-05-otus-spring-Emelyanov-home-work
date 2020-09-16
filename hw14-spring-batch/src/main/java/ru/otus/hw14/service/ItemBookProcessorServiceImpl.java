@@ -1,6 +1,5 @@
 package ru.otus.hw14.service;
 
-
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -8,7 +7,6 @@ import ru.otus.hw14.model.document.BookDocument;
 import ru.otus.hw14.model.entity.AuthorEntity;
 import ru.otus.hw14.model.entity.BookEntity;
 import ru.otus.hw14.model.entity.GenreEntity;
-
 
 @Service
 @RequiredArgsConstructor

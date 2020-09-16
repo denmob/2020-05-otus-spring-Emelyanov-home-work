@@ -28,10 +28,10 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import org.springframework.orm.jpa.EntityManagerHolder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
-import ru.otus.hw14.model.document.CommentDocument;
-import ru.otus.hw14.model.entity.CommentEntity;
-import ru.otus.hw14.repository.crud.CommentCrudRepository;
-import ru.otus.hw14.repository.mongo.CommentMongoRepository;
+import ru.otus.hw14.model.document.BookDocument;
+import ru.otus.hw14.model.entity.BookEntity;
+import ru.otus.hw14.repository.crud.BookCrudRepository;
+import ru.otus.hw14.repository.mongo.BookMongoRepository;
 import ru.otus.hw14.service.*;
 
 import javax.persistence.EntityManager;
@@ -52,26 +52,26 @@ import static org.mockito.Mockito.*;
 @EnableAutoConfiguration
 @EnableConfigurationProperties
 @EntityScan("ru.otus.hw14.model.entity")
-@EnableJpaRepositories(basePackageClasses = {CommentCrudRepository.class})
-@EnableMongoRepositories(basePackageClasses = {CommentMongoRepository.class})
-@SpringBootTest(classes = {JobCommentConfig.class, BatchConfig.class, MongoConfig.class,
-    CommentMongoServiceImpl.class, CommentCrudServiceImpl.class, ItemCommentProcessorServiceImpl.class})
-class JobCommentConfigTest {
+@EnableJpaRepositories(basePackageClasses = {BookCrudRepository.class})
+@EnableMongoRepositories(basePackageClasses = {BookMongoRepository.class})
+@SpringBootTest(classes = {JobBookConfig.class, BatchConfig.class, MongoConfig.class,
+    BookMongoServiceImpl.class, BookCrudServiceImpl.class, ItemBookProcessorServiceImpl.class})
+class JobBookConfigTest {
 
   @Autowired
   private JobLauncherTestUtils jobLauncherTestUtils;
   @Autowired
   private JobRepositoryTestUtils jobRepositoryTestUtils;
   @Autowired
-  private MongoItemReader<CommentDocument> commentDocumentMongoItemReader;
+  private MongoItemReader<BookDocument> bookDocumentMongoItemReader;
   @Autowired
-  private CommentMongoServiceImpl commentMongoService;
+  private BookMongoServiceImpl bookMongoService;
   @Autowired
-  private CommentCrudServiceImpl commentCrudService;
+  private BookCrudServiceImpl bookCrudService;
   @Autowired
-  private ItemProcessor<CommentDocument, CommentEntity> itemCommentProcessor;
+  private ItemProcessor<BookDocument, BookEntity> bookEntityItemProcessor;
   @MockBean
-  private ItemCommentProcessorServiceImpl itemCommentProcessorService;
+  private ItemBookProcessorServiceImpl itemBookProcessorService;
   @Mock
   private EntityManagerFactory entityManagerFactory;
   @Mock
@@ -86,52 +86,50 @@ class JobCommentConfigTest {
 
   @Test
   @SneakyThrows
-  void mongoItemCommentReader() {
-    assertEquals("addComments01", Objects.requireNonNull(commentDocumentMongoItemReader.read()).getCommentary());
-    assertEquals("addComments02", Objects.requireNonNull(commentDocumentMongoItemReader.read()).getCommentary());
-    assertEquals("addComments03", Objects.requireNonNull(commentDocumentMongoItemReader.read()).getCommentary());
-    assertEquals("addComments04", Objects.requireNonNull(commentDocumentMongoItemReader.read()).getCommentary());
+  void mongoItemBookReader() {
+    assertEquals("Pragmatic Unit Testing in Java 8 with JUnit(test)", Objects.requireNonNull(bookDocumentMongoItemReader.read()).getTitle());
+    assertEquals("Effective Java(test)", Objects.requireNonNull(bookDocumentMongoItemReader.read()).getTitle());
+    assertEquals("Java Core Fundamentals(test)", Objects.requireNonNull(bookDocumentMongoItemReader.read()).getTitle());
   }
-
 
   @Test
   @SneakyThrows
-  void jpaItemCommentWriter() {
-    JpaItemWriter<CommentEntity> itemWriter = new JpaItemWriterBuilder<CommentEntity>()
+  void itemBookProcessor() {
+    List<BookDocument> bookDocuments = (List<BookDocument>) bookMongoService.findAll();
+    List<BookEntity> bookEntities = (List<BookEntity>) bookCrudService.findAll();
+
+    when(itemBookProcessorService.convertDocumentToEntity(bookDocuments.get(0))).thenReturn(bookEntities.get(0));
+
+    assertEquals(bookEntities.get(0), bookEntityItemProcessor.process(bookDocuments.get(0)));
+
+    verify(itemBookProcessorService, times(1)).convertDocumentToEntity(bookDocuments.get(0));
+  }
+
+  @Test
+  @SneakyThrows
+  void jpaItemBookWriter() {
+    JpaItemWriter<BookEntity> itemWriter = new JpaItemWriterBuilder<BookEntity>()
         .entityManagerFactory(this.entityManagerFactory)
         .build();
     itemWriter.afterPropertiesSet();
 
-    List<CommentEntity> commentEntities = (List<CommentEntity>) commentCrudService.findAll();
+    List<BookEntity> bookEntities = (List<BookEntity>) bookCrudService.findAll();
 
-    itemWriter.write(commentEntities);
-    verify(this.entityManager).merge(commentEntities.get(0));
-    verify(this.entityManager).merge(commentEntities.get(1));
-    verify(this.entityManager).merge(commentEntities.get(2));
+    itemWriter.write(bookEntities);
+    verify(this.entityManager).merge(bookEntities.get(0));
+    verify(this.entityManager).merge(bookEntities.get(1));
+    verify(this.entityManager).merge(bookEntities.get(2));
   }
 
   @Test
-  @SneakyThrows
-  void itemCommentProcessor() {
-    List<CommentDocument> commentDocuments = (List<CommentDocument>) commentMongoService.findAll();
-    List<CommentEntity> commentEntities = (List<CommentEntity>) commentCrudService.findAll();
+  void migrateBookStep() {
+    List<BookDocument> bookDocuments = (List<BookDocument>) bookMongoService.findAll();
+    List<BookEntity> bookEntities = (List<BookEntity>) bookCrudService.findAll();
 
-    when(itemCommentProcessorService.convertDocumentToEntity(commentDocuments.get(0))).thenReturn(commentEntities.get(0));
+    when(itemBookProcessorService.convertDocumentToEntity(bookDocuments.get(0))).thenReturn(bookEntities.get(0));
+    when(itemBookProcessorService.convertDocumentToEntity(bookDocuments.get(1))).thenReturn(bookEntities.get(1));
 
-    assertEquals(commentEntities.get(0), itemCommentProcessor.process(commentDocuments.get(0)));
-
-    verify(itemCommentProcessorService, times(1)).convertDocumentToEntity(commentDocuments.get(0));
-  }
-
-  @Test
-  void migrateCommentStep() {
-    List<CommentDocument> commentDocuments = (List<CommentDocument>) commentMongoService.findAll();
-    List<CommentEntity> commentEntities = (List<CommentEntity>) commentCrudService.findAll();
-
-    when(itemCommentProcessorService.convertDocumentToEntity(commentDocuments.get(0))).thenReturn(commentEntities.get(0));
-    when(itemCommentProcessorService.convertDocumentToEntity(commentDocuments.get(1))).thenReturn(commentEntities.get(1));
-
-    JobExecution jobExecution = jobLauncherTestUtils.launchStep("migrateCommentStep");
+    JobExecution jobExecution = jobLauncherTestUtils.launchStep("migrateBookStep");
     Collection<StepExecution> actualStepExecutions = jobExecution.getStepExecutions();
     ExitStatus actualJobExitStatus = jobExecution.getExitStatus();
 
@@ -139,16 +137,16 @@ class JobCommentConfigTest {
     assertThat(actualStepExecutions.size(), is(1));
 
     actualStepExecutions.forEach(stepExecution -> assertThat(stepExecution.getWriteCount(), is(2)));
-    actualStepExecutions.forEach(stepExecution -> assertThat(stepExecution.getReadCount(), is(4)));
+    actualStepExecutions.forEach(stepExecution -> assertThat(stepExecution.getReadCount(), is(3)));
   }
 
   @Test
   @SneakyThrows
-  void migrateCommentJob() {
-    List<CommentDocument> commentDocuments = (List<CommentDocument>) commentMongoService.findAll();
-    List<CommentEntity> commentEntities = (List<CommentEntity>) commentCrudService.findAll();
+  void migrateBookJob() {
+    List<BookDocument> bookDocuments = (List<BookDocument>) bookMongoService.findAll();
+    List<BookEntity> bookEntities = (List<BookEntity>) bookCrudService.findAll();
 
-    when(itemCommentProcessorService.convertDocumentToEntity(commentDocuments.get(0))).thenReturn(commentEntities.get(0));
+    when(itemBookProcessorService.convertDocumentToEntity(bookDocuments.get(0))).thenReturn(bookEntities.get(0));
 
     JobExecution jobExecution = jobLauncherTestUtils.launchJob();
     Collection<StepExecution> actualStepExecutions = jobExecution.getStepExecutions();
@@ -157,6 +155,6 @@ class JobCommentConfigTest {
     assertThat(actualJobExitStatus.getExitCode(), is("COMPLETED"));
 
     actualStepExecutions.forEach(stepExecution -> assertThat(stepExecution.getWriteCount(), is(1)));
-    actualStepExecutions.forEach(stepExecution -> assertThat(stepExecution.getReadCount(), is(4)));
+    actualStepExecutions.forEach(stepExecution -> assertThat(stepExecution.getReadCount(), is(3)));
   }
 }
