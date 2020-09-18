@@ -2,13 +2,14 @@ package ru.otus.hw14.service;
 
 import ru.otus.hw14.model.document.CommentDocument;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CommentMongoService {
 
   Optional<CommentDocument> findById(String id);
 
-  Iterable<CommentDocument> findAll();
+  List<CommentDocument> findAll();
 
   CommentDocument save(CommentDocument entity);
 
@@ -16,7 +17,7 @@ public interface CommentMongoService {
 
   void deleteAll();
 
-  Iterable<CommentDocument> readAllForBook(String bookId);
+  List<CommentDocument> readAllForBook(String bookId);
 
   void deleteCommentAllByBookId(String bookId);
 }

@@ -20,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import ru.otus.hw14.model.document.GenreDocument;
 import ru.otus.hw14.model.entity.GenreEntity;
@@ -43,6 +44,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @EnableAutoConfiguration
 @EnableConfigurationProperties
 @EntityScan("ru.otus.hw14.model.entity")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @EnableJpaRepositories(basePackageClasses = {GenreCrudRepository.class})
 @EnableMongoRepositories(basePackageClasses = {GenreMongoRepository.class})
 @SpringBootTest(classes = {JobGenreConfig.class, BatchConfig.class, MongoConfig.class, GenreMongoServiceImpl.class, GenreCrudServiceImpl.class})
@@ -75,7 +77,7 @@ class JobGenreConfigTest {
 
   @Test
   @SneakyThrows
-  void jdbcItemGenreWriter() {
+  void repositoryItemGenreWriter() {
     assertEquals(3, ((List<GenreEntity>) genreCrudService.findAll()).size());
     jobLauncherTestUtils.launchJob();
     assertEquals(6, ((List<GenreEntity>) genreCrudService.findAll()).size());

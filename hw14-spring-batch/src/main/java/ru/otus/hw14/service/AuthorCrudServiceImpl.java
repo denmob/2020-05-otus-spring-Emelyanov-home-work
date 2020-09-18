@@ -8,6 +8,7 @@ import ru.otus.hw14.model.entity.AuthorEntity;
 import ru.otus.hw14.repository.crud.AuthorCrudRepository;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,8 +36,8 @@ public class AuthorCrudServiceImpl implements AuthorCrudService {
 
   @Override
   @Transactional(readOnly = true)
-  public Iterable<AuthorEntity> findAll() {
-    return authorCrudRepository.findAll();
+  public List<AuthorEntity> findAll() {
+    return (List<AuthorEntity>) authorCrudRepository.findAll();
   }
 
   @Override

@@ -26,6 +26,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.orm.jpa.EntityManagerHolder;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import ru.otus.hw14.model.document.BookDocument;
@@ -52,6 +53,7 @@ import static org.mockito.Mockito.*;
 @EnableAutoConfiguration
 @EnableConfigurationProperties
 @EntityScan("ru.otus.hw14.model.entity")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @EnableJpaRepositories(basePackageClasses = {BookCrudRepository.class})
 @EnableMongoRepositories(basePackageClasses = {BookMongoRepository.class})
 @SpringBootTest(classes = {JobBookConfig.class, BatchConfig.class, MongoConfig.class,
@@ -72,15 +74,9 @@ class JobBookConfigTest {
   private ItemProcessor<BookDocument, BookEntity> bookEntityItemProcessor;
   @MockBean
   private ItemBookProcessorServiceImpl itemBookProcessorService;
-  @Mock
-  private EntityManagerFactory entityManagerFactory;
-  @Mock
-  private EntityManager entityManager;
 
   @BeforeEach
   void clearMetaData() {
-    MockitoAnnotations.initMocks(this);
-    TransactionSynchronizationManager.bindResource(this.entityManagerFactory, new EntityManagerHolder(this.entityManager));
     jobRepositoryTestUtils.removeJobExecutions();
   }
 
@@ -103,22 +99,6 @@ class JobBookConfigTest {
     assertEquals(bookEntities.get(0), bookEntityItemProcessor.process(bookDocuments.get(0)));
 
     verify(itemBookProcessorService, times(1)).convertDocumentToEntity(bookDocuments.get(0));
-  }
-
-  @Test
-  @SneakyThrows
-  void jpaItemBookWriter() {
-    JpaItemWriter<BookEntity> itemWriter = new JpaItemWriterBuilder<BookEntity>()
-        .entityManagerFactory(this.entityManagerFactory)
-        .build();
-    itemWriter.afterPropertiesSet();
-
-    List<BookEntity> bookEntities = (List<BookEntity>) bookCrudService.findAll();
-
-    itemWriter.write(bookEntities);
-    verify(this.entityManager).merge(bookEntities.get(0));
-    verify(this.entityManager).merge(bookEntities.get(1));
-    verify(this.entityManager).merge(bookEntities.get(2));
   }
 
   @Test

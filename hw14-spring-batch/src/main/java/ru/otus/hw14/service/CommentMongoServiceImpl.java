@@ -22,7 +22,7 @@ public class CommentMongoServiceImpl implements CommentMongoService {
   }
 
   @Override
-  public Iterable<CommentDocument> findAll() {
+  public List<CommentDocument> findAll() {
     return commentMongoRepository.findAll();
   }
 

@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw14.model.document.GenreDocument;
 import ru.otus.hw14.repository.mongo.GenreMongoRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,7 +21,7 @@ public class GenreMongoServiceImpl implements GenreMongoService {
   }
 
   @Override
-  public Iterable<GenreDocument> findAll() {
+  public List<GenreDocument> findAll() {
     return genreMongoRepository.findAll();
   }
 

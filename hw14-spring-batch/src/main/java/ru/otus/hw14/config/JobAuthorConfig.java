@@ -6,21 +6,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.data.MongoItemReader;
+import org.springframework.batch.item.data.RepositoryItemWriter;
 import org.springframework.batch.item.data.builder.MongoItemReaderBuilder;
-import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import ru.otus.hw14.model.document.AuthorDocument;
 import ru.otus.hw14.model.entity.AuthorEntity;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import ru.otus.hw14.repository.crud.AuthorCrudRepository;
 
 @Slf4j
 @Configuration
@@ -31,12 +28,9 @@ public class JobAuthorConfig {
   private final StepBuilderFactory stepBuilderFactory;
   private final JobBuilderFactory jobBuilderFactory;
   private final MongoTemplate mongoTemplate;
-
-  @PersistenceContext
-  private EntityManager entityManager;
+  private final AuthorCrudRepository authorCrudRepository;
 
   @Bean
-  @StepScope
   public MongoItemReader<AuthorDocument> mongoItemAuthorReader() {
     return new MongoItemReaderBuilder<AuthorDocument>()
         .name("mongoItemAuthorReader")
@@ -48,7 +42,6 @@ public class JobAuthorConfig {
   }
 
   @Bean
-  @StepScope
   public ItemProcessor<AuthorDocument, AuthorEntity> itemAuthorProcessor() {
     return author -> AuthorEntity.builder()
         .firstName(author.getFirstName())
@@ -58,11 +51,11 @@ public class JobAuthorConfig {
   }
 
   @Bean
-  @StepScope
-  public ItemWriter<AuthorEntity> jdbcItemAuthorWriter() {
-    JpaItemWriter<AuthorEntity> authorEntityJpaItemWriter = new JpaItemWriter<>();
-    authorEntityJpaItemWriter.setEntityManagerFactory(entityManager.getEntityManagerFactory());
-    return authorEntityJpaItemWriter;
+  public ItemWriter<AuthorEntity> repositoryItemAuthorWriter() {
+    RepositoryItemWriter<AuthorEntity> writer = new RepositoryItemWriter<>();
+    writer.setMethodName("save");
+    writer.setRepository(authorCrudRepository);
+    return writer;
   }
 
   @Bean
@@ -71,7 +64,7 @@ public class JobAuthorConfig {
         .<AuthorDocument, AuthorEntity>chunk(CHUNK_SIZE)
         .reader(mongoItemAuthorReader())
         .processor(itemAuthorProcessor())
-        .writer(jdbcItemAuthorWriter())
+        .writer(repositoryItemAuthorWriter())
         .allowStartIfComplete(true)
         .build();
   }

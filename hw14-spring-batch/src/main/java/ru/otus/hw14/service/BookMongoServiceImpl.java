@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw14.model.document.BookDocument;
 import ru.otus.hw14.repository.mongo.BookMongoRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,7 +27,7 @@ public class BookMongoServiceImpl implements BookMongoService {
   }
 
   @Override
-  public Iterable<BookDocument> findAll() {
+  public List<BookDocument> findAll() {
     return bookMongoRepository.findAll();
   }
 

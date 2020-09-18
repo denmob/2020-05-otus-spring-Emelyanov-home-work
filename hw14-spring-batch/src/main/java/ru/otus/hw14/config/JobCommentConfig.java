@@ -7,22 +7,19 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.data.MongoItemReader;
+import org.springframework.batch.item.data.RepositoryItemWriter;
 import org.springframework.batch.item.data.builder.MongoItemReaderBuilder;
-import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import ru.otus.hw14.model.document.CommentDocument;
 import ru.otus.hw14.model.entity.CommentEntity;
+import ru.otus.hw14.repository.crud.CommentCrudRepository;
 import ru.otus.hw14.service.ItemCommentProcessorService;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 @Slf4j
 @Configuration
@@ -34,12 +31,9 @@ public class JobCommentConfig {
   private final JobBuilderFactory jobBuilderFactory;
   private final MongoTemplate mongoTemplate;
   private final ItemCommentProcessorService itemCommentProcessorService;
-
-  @PersistenceContext
-  private EntityManager entityManager;
+  private final CommentCrudRepository commentCrudRepository;
 
   @Bean
-  @StepScope
   public MongoItemReader<CommentDocument> mongoItemCommentReader() {
     return new MongoItemReaderBuilder<CommentDocument>()
         .name("mongoItemCommentReader")
@@ -51,17 +45,16 @@ public class JobCommentConfig {
   }
 
   @Bean
-  @StepScope
   public ItemProcessor<CommentDocument, CommentEntity> itemCommentProcessor() {
     return itemCommentProcessorService::convertDocumentToEntity;
   }
 
   @Bean
-  @StepScope
-  public ItemWriter<CommentEntity> jpaItemCommentWriter() {
-    JpaItemWriter<CommentEntity> commentJpaItemWriter = new JpaItemWriter<>();
-    commentJpaItemWriter.setEntityManagerFactory(entityManager.getEntityManagerFactory());
-    return commentJpaItemWriter;
+  public ItemWriter<CommentEntity> repositoryItemCommentWriter() {
+    RepositoryItemWriter<CommentEntity> writer = new RepositoryItemWriter<>();
+    writer.setMethodName("save");
+    writer.setRepository(commentCrudRepository);
+    return writer;
   }
 
   @Bean
@@ -70,7 +63,7 @@ public class JobCommentConfig {
         .<CommentDocument, CommentEntity>chunk(CHUNK_SIZE)
         .reader(mongoItemCommentReader())
         .processor(itemCommentProcessor())
-        .writer(jpaItemCommentWriter())
+        .writer(repositoryItemCommentWriter())
         .allowStartIfComplete(true)
         .build();
   }

@@ -4,6 +4,7 @@ import lombok.NonNull;
 import ru.otus.hw14.model.entity.AuthorEntity;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 public interface AuthorCrudService {
@@ -12,7 +13,7 @@ public interface AuthorCrudService {
 
   Optional<AuthorEntity> findByFirstNameAndLastNameAndBirthday(String firstName, String lastName, @NonNull Date birthday);
 
-  Iterable<AuthorEntity> findAll();
+  List<AuthorEntity> findAll();
 
   AuthorEntity save(AuthorEntity entity);
 

@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw14.model.document.AuthorDocument;
 import ru.otus.hw14.repository.mongo.AuthorMongoRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,7 +27,7 @@ public class AuthorMongoServiceImpl implements AuthorMongoService {
   }
 
   @Override
-  public Iterable<AuthorDocument> findAll() {
+  public List<AuthorDocument> findAll() {
     return authorMongoRepository.findAll();
   }
 

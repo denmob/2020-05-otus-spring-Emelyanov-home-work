@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw14.model.entity.GenreEntity;
 import ru.otus.hw14.repository.crud.GenreCrudRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -45,7 +46,7 @@ public class GenreCrudServiceImpl implements GenreCrudService {
 
   @Override
   @Transactional(readOnly = true)
-  public Iterable<GenreEntity> findAll() {
-    return genreCrudRepository.findAll();
+  public List<GenreEntity> findAll() {
+    return (List<GenreEntity>) genreCrudRepository.findAll();
   }
 }

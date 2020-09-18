@@ -46,7 +46,7 @@ public class CommentCrudServiceImpl implements CommentCrudService {
 
   @Override
   @Transactional(readOnly = true)
-  public Iterable<CommentEntity> findAll() {
-    return commentCrudRepository.findAll();
+  public List<CommentEntity> findAll() {
+    return (List<CommentEntity>) commentCrudRepository.findAll();
   }
 }

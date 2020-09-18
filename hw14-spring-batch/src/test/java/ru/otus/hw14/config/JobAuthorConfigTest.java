@@ -15,6 +15,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import ru.otus.hw14.repository.crud.AuthorCrudRepository;
 import ru.otus.hw14.repository.mongo.AuthorMongoRepository;
@@ -57,6 +58,7 @@ class JobAuthorConfigTest {
 
   @Test
   @SneakyThrows
+  @DirtiesContext
   void givenJobExecuted_thenSuccess() {
     JobExecution jobExecution = jobLauncherTestUtils.launchJob();
     JobInstance actualJobInstance = jobExecution.getJobInstance();
@@ -67,6 +69,7 @@ class JobAuthorConfigTest {
   }
 
   @Test
+  @DirtiesContext
   void givenStepExecuted_thenReaWrite_3() {
     JobExecution jobExecution = jobLauncherTestUtils.launchStep("migrateAuthorStep");
     Collection<StepExecution> actualStepExecutions = jobExecution.getStepExecutions();

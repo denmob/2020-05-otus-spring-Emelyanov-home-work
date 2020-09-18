@@ -2,6 +2,7 @@ package ru.otus.hw14.service;
 
 import ru.otus.hw14.model.entity.GenreEntity;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface GenreCrudService {
@@ -10,7 +11,7 @@ public interface GenreCrudService {
 
   Optional<GenreEntity> findByName(String name);
 
-  Iterable<GenreEntity> findAll();
+  List<GenreEntity> findAll();
 
   GenreEntity save(GenreEntity entity);
 

@@ -9,7 +9,7 @@ public interface CommentCrudService {
 
   Optional<CommentEntity> findById(String id);
 
-  Iterable<CommentEntity> findAll();
+  List<CommentEntity> findAll();
 
   CommentEntity save(CommentEntity entity);
 

@@ -7,21 +7,18 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.data.MongoItemReader;
+import org.springframework.batch.item.data.RepositoryItemWriter;
 import org.springframework.batch.item.data.builder.MongoItemReaderBuilder;
-import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import ru.otus.hw14.model.document.GenreDocument;
 import ru.otus.hw14.model.entity.GenreEntity;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import ru.otus.hw14.repository.crud.GenreCrudRepository;
 
 @Slf4j
 @Configuration
@@ -32,12 +29,9 @@ public class JobGenreConfig {
   private final StepBuilderFactory stepBuilderFactory;
   private final JobBuilderFactory jobBuilderFactory;
   private final MongoTemplate mongoTemplate;
-
-  @PersistenceContext
-  private EntityManager entityManager;
+  private final GenreCrudRepository genreCrudRepository;
 
   @Bean
-  @StepScope
   public MongoItemReader<GenreDocument> mongoItemGenreReader() {
     return new MongoItemReaderBuilder<GenreDocument>()
         .name("mongoItemGenreReader")
@@ -49,17 +43,16 @@ public class JobGenreConfig {
   }
 
   @Bean
-  @StepScope
   public ItemProcessor<GenreDocument, GenreEntity> itemGenreProcessor() {
     return genre -> GenreEntity.builder().name(genre.getName()).build();
   }
 
   @Bean
-  @StepScope
-  public ItemWriter<GenreEntity> jdbcItemGenreWriter() {
-    JpaItemWriter<GenreEntity> genreEntityJpaItemWriter = new JpaItemWriter<>();
-    genreEntityJpaItemWriter.setEntityManagerFactory(entityManager.getEntityManagerFactory());
-    return genreEntityJpaItemWriter;
+  public ItemWriter<GenreEntity> repositoryItemGenreWriter() {
+    RepositoryItemWriter<GenreEntity> writer = new RepositoryItemWriter<>();
+    writer.setMethodName("save");
+    writer.setRepository(genreCrudRepository);
+    return writer;
   }
 
   @Bean
@@ -68,7 +61,7 @@ public class JobGenreConfig {
         .<GenreDocument, GenreEntity>chunk(CHUNK_SIZE)
         .reader(mongoItemGenreReader())
         .processor(itemGenreProcessor())
-        .writer(jdbcItemGenreWriter())
+        .writer(repositoryItemGenreWriter())
         .allowStartIfComplete(true)
         .build();
   }

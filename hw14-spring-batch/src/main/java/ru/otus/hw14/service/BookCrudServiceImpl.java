@@ -7,6 +7,7 @@ import ru.otus.hw14.model.entity.BookEntity;
 import ru.otus.hw14.repository.crud.BookCrudRepository;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,8 +34,8 @@ public class BookCrudServiceImpl implements BookCrudService {
 
   @Override
   @Transactional(readOnly = true)
-  public Iterable<BookEntity> findAll() {
-    return bookCrudRepository.findAll();
+  public List<BookEntity> findAll() {
+    return (List<BookEntity>) bookCrudRepository.findAll();
   }
 
   @Override
