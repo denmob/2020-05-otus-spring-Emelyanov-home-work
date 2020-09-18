@@ -1,0 +1,37 @@
+spring:
+  data:
+    mongodb:
+      database: hw14
+      uri: mongodb://localhost
+      port: 27017
+
+  jpa:
+    database: POSTGRESQL
+    properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/hw14
+    username: postgres
+    password: 123
+
+    initialization-mode: always
+    schema: classpath:/postgres_schema.sql
+    data: classpath:/postgres_data.sql
+
+  batch:
+    initialize-schema: always
+    job:
+      enabled: false
+
+mongock:
+  runner-type: InitializingBean
+  change-logs-scan-package:
+    - ru.otus.hw14.changelog
+
+logging:
+  level:
+    ROOT: INFO
