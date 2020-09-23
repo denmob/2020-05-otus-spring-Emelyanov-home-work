@@ -16,7 +16,7 @@
     <int:queue capacity='10'/>
   </int:channel>
 
-  <int-http:outbound-gateway id="outboundGateway"
+  <int-http:outbound-gateway id="httpOutboundGateway"
                              request-channel="httpRequestChannel" url="http://localhost:8080/income"
                              http-method="GET" reply-channel="httpReplyChannel"
                              expected-response-type="java.lang.String">
