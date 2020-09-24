@@ -50,5 +50,4 @@ public class FileWriteFlowConfig {
   public PollerMetadata poller() {
     return Pollers.fixedRate(100).maxMessagesPerPoll(2).get();
   }
-
 }

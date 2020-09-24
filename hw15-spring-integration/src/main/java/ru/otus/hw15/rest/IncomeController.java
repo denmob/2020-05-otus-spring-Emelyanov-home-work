@@ -14,16 +14,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class IncomeController {
 
-  private final IncomeService incomeList;
+  private final IncomeService incomeService;
 
   @GetMapping("/income")
   public List<Income> getIncome() {
-    return incomeList.getIncome();
+    return incomeService.getIncome();
   }
 
   @PostMapping("/income")
   public boolean saveIncome(@RequestParam(value = "amount", defaultValue = "890") double amount,
                             @RequestParam(value = "description", defaultValue = "IncomeController") String description) {
-    return incomeList.save(new Income(description, amount));
+    return incomeService.save(new Income(description, amount));
   }
 }
