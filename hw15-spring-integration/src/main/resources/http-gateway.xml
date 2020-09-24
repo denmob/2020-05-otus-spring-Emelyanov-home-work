@@ -10,6 +10,10 @@
     http://www.springframework.org/schema/integration/http
     http://www.springframework.org/schema/integration/http/spring-integration-http.xsd">
 
+  <int:inbound-channel-adapter channel="httpRequestChannel" expression="''">
+    <int:poller fixed-delay="5000"/>
+  </int:inbound-channel-adapter>
+
   <int:channel id="httpRequestChannel"/>
 
   <int:channel id="httpReplyChannel">
@@ -18,7 +22,10 @@
 
   <int-http:outbound-gateway id="httpOutboundGateway"
                              request-channel="httpRequestChannel" url="http://localhost:8080/income"
-                             http-method="GET" reply-channel="httpReplyChannel"
-                             expected-response-type="java.lang.String">
+                             http-method="GET"
+                             reply-channel="httpReplyChannel"
+                             expected-response-type="java.lang.String"
+                             auto-startup="true"
+                             reply-timeout="5000">
   </int-http:outbound-gateway>
 </beans>

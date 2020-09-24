@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class TransactionEndpoint {
+public class IncomeController {
 
   private final IncomeService incomeList;
 
@@ -22,8 +22,8 @@ public class TransactionEndpoint {
   }
 
   @PostMapping("/income")
-  public boolean saveIncome(@RequestParam(value = "amount", defaultValue = "777") double amount,
-                            @RequestParam(value = "description", defaultValue = "description") String description) {
+  public boolean saveIncome(@RequestParam(value = "amount", defaultValue = "890") double amount,
+                            @RequestParam(value = "description", defaultValue = "IncomeController") String description) {
     return incomeList.save(new Income(description, amount));
   }
 }

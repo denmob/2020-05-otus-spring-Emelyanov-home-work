@@ -4,19 +4,22 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
-import org.springframework.integration.annotation.MessagingGateway;
 import org.springframework.integration.channel.DirectChannel;
+
+import org.springframework.integration.dsl.IntegrationFlow;
+import org.springframework.integration.dsl.IntegrationFlows;
+import org.springframework.integration.dsl.Pollers;
 import org.springframework.integration.file.FileHeaders;
 import org.springframework.integration.file.FileWritingMessageHandler;
 import org.springframework.integration.file.support.FileExistsMode;
+import org.springframework.integration.scheduling.PollerMetadata;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
-import org.springframework.messaging.handler.annotation.Header;
 
 import java.io.File;
 
 @Configuration
-public class FileWritingGatewayConfig {
+public class FileWriteFlowConfig {
 
   @Bean
   public MessageChannel writeToFileChannel() {
@@ -34,12 +37,18 @@ public class FileWritingGatewayConfig {
     return handler;
   }
 
-  @MessagingGateway(defaultRequestChannel = "writeToFileChannel")
-  public interface FileWriteGateway {
-
-    void writeToFile(@Header(FileHeaders.FILENAME) String fileName,
-                     @Header("directory") File directory,
-                     String data);
-
+  @Bean
+  public IntegrationFlow fileWritingFlow() {
+    return IntegrationFlows.from("httpReplyChannel")
+        .enrichHeaders(h -> h.header(FileHeaders.FILENAME, "replyContent.txt")
+            .header("directory", new File(".", "fileFlow")))
+        .channel("writeToFileChannel")
+        .get();
   }
+
+  @Bean(name = PollerMetadata.DEFAULT_POLLER)
+  public PollerMetadata poller() {
+    return Pollers.fixedRate(100).maxMessagesPerPoll(2).get();
+  }
+
 }
