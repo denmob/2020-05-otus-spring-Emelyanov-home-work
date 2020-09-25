@@ -1,3 +1,11 @@
 logging:
   level:
-    ROOT: DEBUG
+    ROOT: INFO
+
+app:
+  write:
+    filename: replyContent.txt
+    childDirectory: fileFlowTest
+  read:
+    filterMask: '*.txt'
+    childDirectory: fileFlowTest

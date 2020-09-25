@@ -1,5 +1,7 @@
 package ru.otus.hw15.config;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.expression.Expression;
@@ -32,16 +34,16 @@ public class FileWriteFlowConfig {
   public MessageHandler fileWritingMessageHandler() {
     Expression directoryExpression = new SpelExpressionParser().parseExpression("headers.directory");
     FileWritingMessageHandler handler = new FileWritingMessageHandler(directoryExpression);
-    handler.setFileExistsMode(FileExistsMode.REPLACE);
+    handler.setFileExistsMode(FileExistsMode.REPLACE_IF_MODIFIED);
     handler.setExpectReply(false);
     return handler;
   }
 
   @Bean
-  public IntegrationFlow fileWritingFlow() {
+  public IntegrationFlow fileWritingFlow(@Value("${app.write.filename}") String filename, @Value("${app.write.childDirectory}") String childDirectory ) {
     return IntegrationFlows.from("httpReplyChannel")
-        .enrichHeaders(h -> h.header(FileHeaders.FILENAME, "replyContent.txt")
-            .header("directory", new File(".", "fileFlow")))
+        .enrichHeaders(h -> h.header(FileHeaders.FILENAME, filename)
+            .header("directory", new File(".", childDirectory)))
         .channel("writeToFileChannel")
         .get();
   }

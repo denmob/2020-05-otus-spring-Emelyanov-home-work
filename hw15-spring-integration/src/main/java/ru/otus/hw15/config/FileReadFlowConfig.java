@@ -1,17 +1,18 @@
 package ru.otus.hw15.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.channel.QueueChannel;
-import org.springframework.integration.dsl.IntegrationFlow;
-import org.springframework.integration.dsl.IntegrationFlows;
-import org.springframework.integration.dsl.Pollers;
+import org.springframework.integration.dsl.*;
 import org.springframework.integration.file.FileReadingMessageSource;
 import org.springframework.integration.file.dsl.Files;
 
+import org.springframework.integration.scheduling.PollerMetadata;
 import org.springframework.integration.transformer.AbstractTransformer;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandler;
@@ -22,6 +23,7 @@ import ru.otus.hw15.domain.Income;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 @Configuration
 public class FileReadFlowConfig {
@@ -40,17 +42,15 @@ public class FileReadFlowConfig {
     }
   }
 
+  public Consumer<SourcePollingChannelAdapterSpec> sourcePollingChannelAdapterSpecConsumer() {
+    return e -> e.poller(Pollers.fixedDelay(2000))
+        .autoStartup(true);
+  }
+
   @Bean
-  public IntegrationFlow fileReadingFlow(StringToIncomeTransformer stringToIncomeTransformer) {
+  public IntegrationFlow fileReadingFlow(StringToIncomeTransformer stringToIncomeTransformer, FileInboundChannelAdapter fileInboundChannelAdapter) {
     return IntegrationFlows
-        .from(Files.inboundAdapter(new File(".", "fileFlow"))
-                .scanEachPoll(Boolean.TRUE)
-                .patternFilter("*.txt")
-                .useWatchService(true)
-                .watchEvents(FileReadingMessageSource.WatchEventType.CREATE,
-                    FileReadingMessageSource.WatchEventType.MODIFY,
-                    FileReadingMessageSource.WatchEventType.DELETE),
-            e -> e.poller(Pollers.fixedDelay(5000)))
+        .from(fileInboundChannelAdapter.getFileReadingMessageSource(), sourcePollingChannelAdapterSpecConsumer())
         .transform(Files.toStringTransformer())
         .transform(stringToIncomeTransformer)
         .channel("fileReadingResultChannel")
@@ -66,6 +66,26 @@ public class FileReadFlowConfig {
     @SneakyThrows
     protected List<Income> doTransform(Message<?> message) {
       return Arrays.asList(mapper.readValue(message.getPayload().toString(), Income[].class));
+    }
+  }
+
+  @Getter
+  @Component
+  public static class FileInboundChannelAdapter {
+
+    private final FileReadingMessageSource fileReadingMessageSource;
+    private final File directory;
+
+    public FileInboundChannelAdapter(@Value("${app.read.filterMask}") String filterMask,
+                                     @Value("${app.read.childDirectory}") String childDirectory) {
+      directory = new File(".", childDirectory);
+      fileReadingMessageSource = Files.inboundAdapter(directory)
+          .scanEachPoll(Boolean.TRUE)
+          .patternFilter(filterMask)
+          .useWatchService(true)
+          .watchEvents(FileReadingMessageSource.WatchEventType.CREATE,
+              FileReadingMessageSource.WatchEventType.MODIFY,
+              FileReadingMessageSource.WatchEventType.DELETE).get();
     }
   }
 }
