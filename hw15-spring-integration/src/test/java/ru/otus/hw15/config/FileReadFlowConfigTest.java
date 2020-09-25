@@ -30,19 +30,14 @@ class FileReadFlowConfigTest {
 
   @Autowired
   private PollableChannel fileReadingResultChannel;
-
   @Autowired
   private FileReadFlowConfig.FileInboundChannelAdapter fileInboundChannelAdapter;
-
   @Autowired
   private FileReadFlowConfig.StringToIncomeTransformer stringToIncomeTransformer;
-
   @Value("${app.write.childDirectory}")
   private String childDirectory;
-
   @Value("${app.write.filename}")
   private String filename;
-
   private Path pathToWriteFile;
 
   @BeforeEach

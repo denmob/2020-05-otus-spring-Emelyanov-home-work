@@ -21,7 +21,6 @@ import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 @Slf4j
 @EnableIntegration
 @ActiveProfiles("test")
@@ -31,13 +30,10 @@ class FileWriteFlowConfigTest {
   @Autowired
   @Qualifier("httpReplyChannel")
   private MessageChannel httpReplyChannel;
-
   @Value("${app.write.childDirectory}")
   private String childDirectory;
-
   @Value("${app.write.filename}")
   private String filename;
-
   private Path pathToWriteFile;
 
   @BeforeEach

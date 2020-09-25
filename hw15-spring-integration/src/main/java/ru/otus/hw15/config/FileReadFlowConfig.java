@@ -11,8 +11,6 @@ import org.springframework.integration.channel.QueueChannel;
 import org.springframework.integration.dsl.*;
 import org.springframework.integration.file.FileReadingMessageSource;
 import org.springframework.integration.file.dsl.Files;
-
-import org.springframework.integration.scheduling.PollerMetadata;
 import org.springframework.integration.transformer.AbstractTransformer;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandler;

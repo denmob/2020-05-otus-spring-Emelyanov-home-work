@@ -1,6 +1,5 @@
 package ru.otus.hw15.domain;
 
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

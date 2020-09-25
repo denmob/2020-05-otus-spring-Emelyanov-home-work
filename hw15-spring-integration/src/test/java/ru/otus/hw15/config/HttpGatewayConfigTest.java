@@ -32,7 +32,6 @@ import static org.mockito.Mockito.*;
 class HttpGatewayConfigTest {
 
   private final ObjectMapper mapper = new ObjectMapper();
-
   @Autowired
   private MessageChannel httpRequestChannel;
   @Autowired
