@@ -1,0 +1,15 @@
+spring:
+  data:
+    mongodb:
+      database: hw16
+      uri: mongodb://localhost
+      port: 27017
+
+mongock:
+  runner-type: InitializingBean
+  change-logs-scan-package:
+    - ru.otus.hw16.config.changelog
+
+logging:
+  level:
+    ROOT: INFO
