@@ -58,14 +58,6 @@ class CommentServiceImplTest {
   }
 
   @Test
-  void deleteCommentaryContains() {
-    when(commentRepository.deleteCommentByCommentaryContains(oldComment.getCommentary())).thenReturn(1L);
-
-    commentService.deleteCommentaryContains(oldComment.getCommentary());
-    verify(commentRepository, times(1)).deleteCommentByCommentaryContains(oldComment.getCommentary());
-  }
-
-  @Test
   void findAllByBookId() {
     List<Comment> comments = Collections.singletonList(oldComment);
     when(commentRepository.findAllByBookId(oldComment.getBookId())).thenReturn(comments);

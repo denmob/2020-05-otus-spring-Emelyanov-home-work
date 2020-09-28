@@ -4,6 +4,8 @@ spring:
       database: hw16
       uri: mongodb://localhost
       port: 27017
+    rest:
+      basePath: /rest
 
 mongock:
   runner-type: InitializingBean
@@ -13,3 +15,16 @@ mongock:
 logging:
   level:
     ROOT: INFO
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  health:
+    defaults:
+      enabled: true
+

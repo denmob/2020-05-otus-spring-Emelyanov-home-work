@@ -47,14 +47,6 @@ class CommentRepositoryTest {
 
   @Test
   @DirtiesContext
-  void deleteCommentByCommentaryContains() {
-    assertFalse(commentRepository.findCommentByCommentaryContains("03").isEmpty());
-    assertEquals(1, commentRepository.deleteCommentByCommentaryContains("03"));
-    assertTrue(commentRepository.findCommentByCommentaryContains("03").isEmpty());
-  }
-
-  @Test
-  @DirtiesContext
   void deleteCommentByIdExistId() {
     assertEquals(1, commentRepository.deleteCommentById(comments.get(0).getId()));
   }

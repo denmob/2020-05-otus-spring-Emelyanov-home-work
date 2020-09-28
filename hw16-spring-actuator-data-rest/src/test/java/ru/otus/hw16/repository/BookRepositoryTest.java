@@ -43,24 +43,6 @@ class BookRepositoryTest {
   }
 
   @Test
-  @DisplayName("expectTitle with findByTitleContainsOrDateEquals")
-  void findByTitleContainsOrDateEqualsWithTile() {
-    String expectTitle = books.get(0).getTitle();
-    List<Book> books = bookRepository.findByTitleContainsOrDateEquals(expectTitle, null);
-    assertEquals(1, books.size());
-    assertEquals(expectTitle, books.get(0).getTitle());
-  }
-
-  @Test
-  @DisplayName("expectTitle with findByTitleContainsOrDateEquals")
-  void findByTitleContainsOrDateEqualsWithDate() {
-    Date expectDate = books.get(0).getDate();
-    List<Book> books = bookRepository.findByTitleContainsOrDateEquals("1", expectDate);
-    assertEquals(1, books.size());
-    assertEquals(expectDate, books.get(0).getDate());
-  }
-
-  @Test
   @DirtiesContext
   void deleteBookByTitleEquals() {
     String expectTitle = books.get(0).getTitle();

@@ -35,7 +35,7 @@ function saveBook(type, bookId, bookTitle, bookDate, authorId, genreId) {
   book.genre = genre;
 
   sendSaveObject(urlSaveBook, type, book).then(() => {
-    location.href = '/';
+    location.href = '/book/list';
     getBookList();
   });
 }

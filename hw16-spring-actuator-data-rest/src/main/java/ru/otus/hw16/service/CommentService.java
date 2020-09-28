@@ -12,7 +12,5 @@ public interface CommentService {
 
   List<Comment> readAllForBook(String bookId);
 
-  boolean deleteCommentaryContains(String partComment);
-
   boolean deleteCommentAllByBookId(String bookId);
 }

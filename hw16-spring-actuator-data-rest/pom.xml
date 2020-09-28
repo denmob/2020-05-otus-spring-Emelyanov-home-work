@@ -19,6 +19,8 @@
     <mongock.version>4.1.14</mongock.version>
     <bootstrap.version>3.3.7</bootstrap.version>
     <jquery.version>3.5.1</jquery.version>
+    <spring-data-rest-hal-browser.version>3.3.4.RELEASE</spring-data-rest-hal-browser.version>
+    <spring-data-rest-webmvc.version>3.3.4.RELEASE</spring-data-rest-webmvc.version>
   </properties>
 
   <dependencies>
@@ -33,15 +35,29 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-thymeleaf</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-mongodb</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-rest</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-rest-webmvc</artifactId>
+      <version>${spring-data-rest-webmvc.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-rest-hal-browser</artifactId>
+      <version>${spring-data-rest-hal-browser.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
     <dependency>
       <groupId>com.github.cloudyrock.mongock</groupId>

@@ -32,12 +32,6 @@ public class CommentServiceImpl implements CommentService {
   }
 
   @Override
-  @Transactional
-  public boolean deleteCommentaryContains(String partComment) {
-    return (commentRepository.deleteCommentByCommentaryContains(partComment)==1L);
-  }
-
-  @Override
   public boolean deleteCommentAllByBookId(String bookId) {
     return commentRepository.deleteCommentAllByBookId(bookId)==1L;
   }
