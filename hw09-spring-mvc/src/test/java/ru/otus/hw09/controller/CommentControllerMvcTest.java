@@ -1,4 +1,4 @@
-package ru.otus.hw09.rest;
+package ru.otus.hw09.controller;
 
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.DisplayName;

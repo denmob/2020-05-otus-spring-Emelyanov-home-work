@@ -1,4 +1,4 @@
-package ru.otus.hw09.rest;
+package ru.otus.hw09.controller;
 
 class NotFoundException extends RuntimeException {
 

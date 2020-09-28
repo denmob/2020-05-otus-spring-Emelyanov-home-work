@@ -1,4 +1,4 @@
-package ru.otus.hw09.rest;
+package ru.otus.hw09.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
