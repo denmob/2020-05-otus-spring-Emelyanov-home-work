@@ -62,7 +62,7 @@ class CommentControllerRestTest {
 
     when(commentService.readAllForBook(book.getId())).thenReturn(comments);
 
-    ResponseEntity<String> responseEntity = testRestTemplate.exchange("/api/comments/{bookId}", HttpMethod.GET, httpEntity, String.class, params);
+    ResponseEntity<String> responseEntity = testRestTemplate.exchange("/api/comment/book/{bookId}", HttpMethod.GET, httpEntity, String.class, params);
     String actualCommentary = JsonPath.parse(responseEntity.getBody()).read("$[0].commentary");
     assertEquals(expectComment.getCommentary(), actualCommentary);
 

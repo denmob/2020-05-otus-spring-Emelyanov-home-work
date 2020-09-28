@@ -53,7 +53,7 @@ class CommentControllerMvcTest {
 
     when(commentService.readAllForBook(book.getId())).thenReturn(comments);
 
-    MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/comments/{bookId}", book.getId())).andExpect(status().isOk()).andReturn();
+    MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/comment/book/{bookId}", book.getId())).andExpect(status().isOk()).andReturn();
     MockHttpServletResponse response = mvcResult.getResponse();
     String actualCommentary = JsonPath.parse(response.getContentAsString()).read("$[0].commentary");
     assertEquals(expectComment.getCommentary(), actualCommentary);
