@@ -1,5 +1,6 @@
 package ru.otus.hw16.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.springframework.data.annotation.Id;
@@ -17,15 +18,19 @@ import java.util.Date;
 public class Author {
   @Id
   @BsonProperty("id")
+  @JsonProperty("id")
   private String id;
 
   @Field(name = "first_name")
+  @JsonProperty("firstName")
   private @NonNull String firstName;
 
   @Field(name = "last_name")
+  @JsonProperty("lastName")
   private @NonNull String lastName;
 
   @Field(name = "birthday")
+  @JsonProperty("birthday")
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   private @NonNull Date birthday;
 }

@@ -22,23 +22,8 @@ public class AuthorServiceImpl implements AuthorService {
   }
 
   @Override
-  public Optional<Author> findByLastNameEquals(String authorLastName) {
-    return  authorRepository.findByLastNameEquals(authorLastName);
-  }
-
-  @Override
   public Optional<Author> findById(String authorId) {
     return authorRepository.findById(authorId);
-  }
-
-  @Override
-  public boolean deleteAuthorByLastNameEquals(String authorLastName) {
-    return authorRepository.deleteAuthorByLastNameEquals(authorLastName)== 1L;
-  }
-
-  @Override
-  public boolean deleteAuthorById(String authorId) {
-    return authorRepository.deleteAuthorById(authorId) == 1L;
   }
 
   @Override

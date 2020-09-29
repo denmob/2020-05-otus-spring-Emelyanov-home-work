@@ -8,9 +8,5 @@ public interface CommentService {
 
   Comment save(Comment entity);
 
-  List<Comment> readCommentaryContains(String partComment);
-
   List<Comment> readAllForBook(String bookId);
-
-  boolean deleteCommentAllByBookId(String bookId);
 }

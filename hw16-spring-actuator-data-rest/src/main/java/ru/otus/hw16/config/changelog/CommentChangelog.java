@@ -25,7 +25,7 @@ public class CommentChangelog {
 
     var comment = Comment.builder()
         .bookId(book.getId())
-        .commentary("addComments01")
+        .commentary("addComments01 Pragmatic Unit Testing in Java 8 with JUnit")
         .timestamp(new Date())
         .build();
     template.save(comment);
@@ -38,7 +38,7 @@ public class CommentChangelog {
 
     var comment = Comment.builder()
         .bookId(book.getId())
-        .commentary("addComments02")
+        .commentary("addComments02 Pragmatic Unit Testing in Java 8 with JUnit")
         .timestamp(new Date())
         .build();
     template.save(comment);
@@ -51,7 +51,20 @@ public class CommentChangelog {
 
     var comment = Comment.builder()
         .bookId(book.getId())
-        .commentary("addComments03")
+        .commentary("addComments03 Effective Java")
+        .timestamp(new Date())
+        .build();
+    template.save(comment);
+  }
+
+  @ChangeSet(order = "004", id = "addComments04", author = "dyemelianov", runAlways = true)
+  public void addComments04(MongockTemplate template) {
+    Book book = template.findOne(new Query().addCriteria(
+        Criteria.where("title").is("Java Core Fundamentals")), Book.class);
+
+    var comment = Comment.builder()
+        .bookId(book.getId())
+        .commentary("addComments04 Java Core Fundamentals")
         .timestamp(new Date())
         .build();
     template.save(comment);

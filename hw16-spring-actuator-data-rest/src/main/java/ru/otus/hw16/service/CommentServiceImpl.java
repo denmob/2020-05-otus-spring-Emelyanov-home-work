@@ -22,17 +22,7 @@ public class CommentServiceImpl implements CommentService {
   }
 
   @Override
-  public List<Comment> readCommentaryContains(String partComment) {
-    return commentRepository.findCommentByCommentaryContains(partComment);
-  }
-
-  @Override
   public List<Comment> readAllForBook(String bookId) {
     return commentRepository.findAllByBookId(bookId);
-  }
-
-  @Override
-  public boolean deleteCommentAllByBookId(String bookId) {
-    return commentRepository.deleteCommentAllByBookId(bookId)==1L;
   }
 }

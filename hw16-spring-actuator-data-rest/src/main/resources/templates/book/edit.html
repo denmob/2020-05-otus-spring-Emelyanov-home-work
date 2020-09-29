@@ -11,60 +11,71 @@
 
 <div class="container">
 
-    <div class="row"><h2>Book Info:</h2></div>
+  <div class="row"><h2>Book Info:</h2></div>
 
-    <div class="row">
-      <label for="holder-input-id">ID:</label>
-      <input id="holder-input-id" type="text" readonly="readonly" value=""/>
-    </div>
+  <div class="row">
+    <label for="holder-input-id">ID:</label>
+    <input id="holder-input-id" type="text" readonly="readonly" value=""/>
+  </div>
 
-    <div class="row">
-      <label for="holder-input-title">Title:</label>
-      <input id="holder-input-title" name="title" type="text" value=""/>
-    </div>
+  <div class="row">
+    <label for="holder-input-title">Title:</label>
+    <input id="holder-input-title" name="title" type="text" value=""/>
+  </div>
 
-    <div class="row">
-      <label for="holder-input-date">Date:</label>
-      <input id="holder-input-date" name="date" type="date" value=""/>
-    </div>
+  <div class="row">
+    <label for="holder-input-date">Date:</label>
+    <input id="holder-input-date" name="date" type="date" value=""/>
+  </div>
 
-    <div class="row">
-      <label for="holder-select-author">Author:</label>
-      <select id="holder-select-author">
-        <option id="option-author" th:each="author : ${authors}" th:value="${author.id}"
-                th:text="${author.firstName} +' '+ ${author.lastName}"></option>
-      </select>
-    </div>
+  <div class="row">
+    <label for="holder-select-author">Author:</label>
+    <select id="holder-select-author">
+      <option id="option-author" th:each="author : ${authors}" th:value="${author.id}"
+              th:text="${author.firstName} +' '+ ${author.lastName}"></option>
+    </select>
+  </div>
 
-    <div class="row">
-      <label for="holder-select-genre">Genre:</label>
-      <select id="holder-select-genre">
-        <option id="option-genre" th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}"></option>
-      </select>
-    </div>
+  <div class="row">
+    <label for="holder-select-genre">Genre:</label>
+    <select id="holder-select-genre">
+      <option id="option-genre" th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}"></option>
+    </select>
+  </div>
 
-    <div class="row">
-      <button onclick="saveBook('PUT',
+  <div class="row">
+    <button onclick="saveApiBook('PUT',
     $('#holder-input-id').val(),
     $('#holder-input-title').val(),
     $('#holder-input-date').val(),
     $('#holder-select-author').val(),
-    $('#holder-select-genre').val())"
-              >Save
-      </button>
-    </div>
+    $('#holder-select-genre').val())">Save
+    </button>
+  </div>
 
 </div>
 <br>
 <script type="text/javascript">
   getBook(location.pathname.split('bookId=')[1]);
 
-  function renderBook(book){
-    document.getElementById('holder-input-id').value = book.id;
+  function renderBook(book) {
+    document.getElementById('holder-input-id').value = getBookId(book);
     document.getElementById('holder-input-title').value = book.title;
     document.getElementById('holder-input-date').value = formatDate(book.date);
-    document.getElementById('holder-select-author').value = book.author.id;
-    document.getElementById('holder-select-genre').value = book.genre.id;
+    document.getElementById('holder-select-author').value = getAuthorId(book.author);
+    document.getElementById('holder-select-genre').value = getGenreId(book.genre);
+  }
+
+  function getBookId(book) {
+    return book._links.book.href.split('book/')[1];
+  }
+
+  function getAuthorId(author) {
+    return author._links.author.href.split('author/')[1];
+  }
+
+  function getGenreId(genre) {
+    return genre._links.genre.href.split('genre/')[1];
   }
 </script>
 

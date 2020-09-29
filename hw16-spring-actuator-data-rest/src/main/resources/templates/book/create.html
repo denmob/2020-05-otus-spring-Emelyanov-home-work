@@ -10,7 +10,7 @@
 <div th:replace="fragments/header :: header"></div>
 <div class="container">
 
-    <div class="row"><h2>Book Info:</h2></div>
+  <div class="row"><h2>Book Info:</h2></div>
 
   <div class="row">
     <label for="holder-input-title">Title:</label>
@@ -25,7 +25,7 @@
   <div class="row">
     <label for="holder-select-author">Author:</label>
     <select id="holder-select-author">
-      <option id="option-author" th:each="author : ${authors}" th:value="${author.id}"
+      <option id="option-author" th:each="author : ${authors}" th:value="${author.firstName} +';'+ ${author.lastName}"
               th:text="${author.firstName} +' '+ ${author.lastName}"></option>
     </select>
   </div>
@@ -33,12 +33,12 @@
   <div class="row">
     <label for="holder-select-genre">Genre:</label>
     <select id="holder-select-genre">
-      <option id="option-genre" th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}"></option>
+      <option id="option-genre" th:each="genre : ${genres}" th:value="${genre.name}" th:text="${genre.name}"></option>
     </select>
   </div>
 
   <div class="row">
-    <button onclick="saveBook('POST',
+    <button onclick="saveRestBook('POST',
     $('#holder-input-id').val(),
     $('#holder-input-title').val(),
     $('#holder-input-date').val(),

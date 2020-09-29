@@ -33,6 +33,7 @@
 
   function renderBookList(bookList) {
     $('#tbodyBookList').empty();
+
     bookList.forEach(function (book) {
       $('#tbodyBookList').append(`
                <tr>
@@ -40,12 +41,16 @@
                    <td>${new Date(book.date).toDateString()}</td>
                    <td>${book.author.firstName} ${book.author.lastName}</td>
                    <td>${book.genre.name}</td>
-                   <td><a href="/book/edit/bookId=${book.id}">Edit book</a></td>
-                   <td><a href="/comment/list/${book.id},${book.title}">View comments</a></td>
-                   <td><button onclick="deleteBook('${book.id}')">Delete book</button></td>
+                   <td><a href="/book/edit/bookId=${getBookId(book)}">Edit book</a></td>
+                   <td><a href="/comment/list/${getBookId(book)},${book.title}">View comments</a></td>
+                   <td><button onclick="deleteBook('${getBookId(book)}')">Delete book</button></td>
                </tr>
             `)
     })
+
+    function getBookId(book){
+      return book._links.book.href.split('book/')[1];
+    }
   }
 </script>
 

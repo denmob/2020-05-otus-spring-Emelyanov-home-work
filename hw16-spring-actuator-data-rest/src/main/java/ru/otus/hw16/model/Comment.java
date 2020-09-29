@@ -1,5 +1,6 @@
 package ru.otus.hw16.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.springframework.data.annotation.Id;
@@ -17,14 +18,18 @@ import java.util.Date;
 public class Comment {
   @Id
   @BsonProperty("id")
+  @JsonProperty("id")
   private String id;
 
   @Field(name = "commentary")
+  @JsonProperty("commentary")
   private @NonNull String commentary;
 
   @Field(name = "book_id")
+  @JsonProperty("bookId")
   private String bookId;
 
   @Field(name = "timestamp")
+  @JsonProperty("timestamp")
   private Date timestamp;
 }

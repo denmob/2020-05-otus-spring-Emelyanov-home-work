@@ -42,14 +42,6 @@ class CommentServiceImplTest {
   }
 
   @Test
-  void readCommentaryContains() {
-    when(commentRepository.findCommentByCommentaryContains(oldComment.getId())).thenReturn(anyList());
-
-    commentService.readCommentaryContains(oldComment.getId());
-    verify(commentRepository, times(1)).findCommentByCommentaryContains(oldComment.getId());
-  }
-
-  @Test
   void update() {
     when(commentRepository.save(newComment)).thenReturn(newComment);
 
@@ -63,14 +55,5 @@ class CommentServiceImplTest {
     when(commentRepository.findAllByBookId(oldComment.getBookId())).thenReturn(comments);
 
     Assertions.assertEquals(comments, commentService.readAllForBook(oldComment.getBookId()));
-  }
-
-  @Test
-  void deleteCommentAllByBookId() {
-    String bookId = "1232";
-    when(commentRepository.deleteCommentAllByBookId(bookId)).thenReturn(1L);
-
-    commentService.deleteCommentAllByBookId(bookId);
-    verify(commentRepository, times(1)).deleteCommentAllByBookId(bookId);
   }
 }
