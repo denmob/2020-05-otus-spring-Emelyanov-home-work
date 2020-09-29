@@ -21,6 +21,8 @@
     <jquery.version>3.5.1</jquery.version>
     <spring-data-rest-hal-browser.version>3.3.4.RELEASE</spring-data-rest-hal-browser.version>
     <spring-data-rest-webmvc.version>3.3.4.RELEASE</spring-data-rest-webmvc.version>
+    <metrics-aspectj.version>1.2.0</metrics-aspectj.version>
+    <micrometer.version>1.5.5</micrometer.version>
   </properties>
 
   <dependencies>
@@ -104,15 +106,60 @@
       <artifactId>jquery</artifactId>
       <version>${jquery.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjrt</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.astefanutti.metrics.aspectj</groupId>
+      <artifactId>metrics-aspectj</artifactId>
+      <version>${metrics-aspectj.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.astefanutti.metrics.aspectj</groupId>
+      <artifactId>metrics-aspectj-deps</artifactId>
+      <version>${metrics-aspectj.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-core</artifactId>
+      <version>${micrometer.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-registry-atlas</artifactId>
+      <version>${micrometer.version}</version>
+    </dependency>
   </dependencies>
 
   <build>
-    <plugins>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-      </plugin>
-    </plugins>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>aspectj-maven-plugin</artifactId>
+          <configuration>
+            <aspectLibraries>
+              <aspectLibrary>
+                <groupId>io.astefanutti.metrics.aspectj</groupId>
+                <artifactId>metrics-aspectj</artifactId>
+              </aspectLibrary>
+            </aspectLibraries>
+          </configuration>
+          <executions>
+            <execution>
+              <goals>
+                <goal>compile</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
 
 </project>

@@ -20,10 +20,13 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: health, mongo
+
   endpoint:
     health:
       show-details: always
+      enabled: true
+
   health:
     defaults:
       enabled: true
