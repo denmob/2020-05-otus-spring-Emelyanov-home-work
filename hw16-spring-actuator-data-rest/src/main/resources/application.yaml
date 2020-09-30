@@ -6,6 +6,8 @@ spring:
       port: 27017
     rest:
       basePath: /rest
+  application:
+    name: hw16Name
 
 mongock:
   runner-type: InitializingBean
@@ -15,19 +17,44 @@ mongock:
 logging:
   level:
     ROOT: INFO
+  file:
+    name: ./logs/logging_file.log
 
 management:
   endpoints:
     web:
       exposure:
-        include: health, mongo
+        include: health, info, metrics, prometheus
+    enabled-by-default: false
+    jmx:
+      exposure:
+        include: '*'
 
   endpoint:
     health:
       show-details: always
       enabled: true
 
+    logfile:
+      enabled: true
+      cache:
+        time-to-live: 10
+
+    metrics:
+      enabled: true
+
+    prometheus:
+      enabled: true
+
+    info:
+      enabled: true
+
+    shutdown:
+      enabled: true
+
   health:
     defaults:
       enabled: true
+
+
 

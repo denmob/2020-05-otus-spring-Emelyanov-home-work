@@ -6,8 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import ru.otus.hw16.config.MongoConfig;
 import ru.otus.hw16.model.Author;
 
 import java.util.Optional;
@@ -17,7 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @Slf4j
 @DataMongoTest
 @ActiveProfiles("test")
-@ComponentScan({"ru.otus.hw16.config", "ru.otus.hw16.repository"})
+@ComponentScan({"ru.otus.hw16.repository"})
+@Import(MongoConfig.class)
 class AuthorRepositoryTest {
 
   @Autowired

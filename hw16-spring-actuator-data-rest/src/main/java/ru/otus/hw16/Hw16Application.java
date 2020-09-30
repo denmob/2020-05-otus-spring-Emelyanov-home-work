@@ -1,7 +1,6 @@
 package ru.otus.hw16;
 
 import com.github.cloudyrock.spring.v5.EnableMongock;
-import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

@@ -12,14 +12,12 @@ import ru.otus.hw16.service.GenreService;
 
 @RestController
 @RequiredArgsConstructor
-@Timed("book")
 public class BookController {
 
   private final BookService bookService;
   private final AuthorService authorService;
   private final GenreService genreService;
 
-  @Timed(value = "book.put",longTask = true)
   @PutMapping(value = "/api/book", consumes = MediaType.APPLICATION_JSON_VALUE)
   public BookDto put(@RequestBody BookDto bookDto) {
     return BookDto.toDto(bookService.save(buildBookFromDto(bookDto)));

@@ -18,23 +18,12 @@
     <java.version>14</java.version>
     <mongock.version>4.1.14</mongock.version>
     <bootstrap.version>3.3.7</bootstrap.version>
-    <jquery.version>3.5.1</jquery.version>
-    <spring-data-rest-hal-browser.version>3.3.4.RELEASE</spring-data-rest-hal-browser.version>
-    <spring-data-rest-webmvc.version>3.3.4.RELEASE</spring-data-rest-webmvc.version>
-    <metrics-aspectj.version>1.2.0</metrics-aspectj.version>
-    <micrometer.version>1.5.5</micrometer.version>
+    <spring-data-rest-hal-browser.version>3.3.3.RELEASE</spring-data-rest-hal-browser.version>
+    <micrometer-registry-prometheus.version>1.5.5</micrometer-registry-prometheus.version>
+    <spring-aspects.version>5.2.9.RELEASE</spring-aspects.version>
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-configuration-processor</artifactId>
-      <optional>true</optional>
-    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -48,9 +37,8 @@
       <artifactId>spring-boot-starter-data-rest</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.springframework.data</groupId>
-      <artifactId>spring-data-rest-webmvc</artifactId>
-      <version>${spring-data-rest-webmvc.version}</version>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.data</groupId>
@@ -60,6 +48,16 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-registry-prometheus</artifactId>
+      <version>${micrometer-registry-prometheus.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-aspects</artifactId>
+      <version>${spring-aspects.version}</version>
     </dependency>
     <dependency>
       <groupId>com.github.cloudyrock.mongock</groupId>
@@ -102,33 +100,10 @@
       <version>${bootstrap.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>jquery</artifactId>
-      <version>${jquery.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.aspectj</groupId>
-      <artifactId>aspectjrt</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.astefanutti.metrics.aspectj</groupId>
-      <artifactId>metrics-aspectj</artifactId>
-      <version>${metrics-aspectj.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.astefanutti.metrics.aspectj</groupId>
-      <artifactId>metrics-aspectj-deps</artifactId>
-      <version>${metrics-aspectj.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.micrometer</groupId>
-      <artifactId>micrometer-core</artifactId>
-      <version>${micrometer.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.micrometer</groupId>
-      <artifactId>micrometer-registry-atlas</artifactId>
-      <version>${micrometer.version}</version>
+      <groupId>de.flapdoodle.embed</groupId>
+      <artifactId>de.flapdoodle.embed.process</artifactId>
+      <version>2.1.2</version>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
 
