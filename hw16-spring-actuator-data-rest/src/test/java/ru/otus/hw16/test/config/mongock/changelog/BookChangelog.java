@@ -72,6 +72,22 @@ public class BookChangelog {
     template.save(book);
   }
 
+  @ChangeSet(order = "004", id = "addBook04", author = "dyemelianov", runAlways = true)
+  public void addBook04(MongockTemplate template) {
+    Author author = template.findOne(new Query().addCriteria(
+        Criteria.where("last_name").is("Langr")), Author.class);
+
+    Genre genre = template.findOne(new Query().addCriteria(
+        Criteria.where("name").regex("^P")), Genre.class);
+
+    var book = Book.builder()
+        .title("Java Core Fundamentals(test)")
+        .author(author)
+        .genre(genre)
+        .date(convertStringToDate("2015-05-01")).build();
+    template.save(book);
+  }
+
   @SneakyThrows
   private Date convertStringToDate(String date) {
     return dateFormat.parse(date);

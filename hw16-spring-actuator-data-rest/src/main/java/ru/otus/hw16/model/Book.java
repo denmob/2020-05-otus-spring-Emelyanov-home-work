@@ -1,6 +1,5 @@
 package ru.otus.hw16.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.bson.codecs.pojo.annotations.BsonProperty;

@@ -1,6 +1,5 @@
 package ru.otus.hw16.rest;
 
-import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

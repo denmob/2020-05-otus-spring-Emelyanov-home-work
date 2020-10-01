@@ -3,6 +3,8 @@ spring:
     mongodb:
       database: hw016-test
       port: 0
+    rest:
+      basePath: /rest
 
 mongock:
   runner-type: InitializingBean

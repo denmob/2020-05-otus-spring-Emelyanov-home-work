@@ -49,7 +49,7 @@
     })
 
     function getBookId(book){
-      return book._links.book.href.split('book/')[1];
+      return book._links.self.href.split('book/')[1];
     }
   }
 </script>

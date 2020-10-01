@@ -67,15 +67,15 @@
   }
 
   function getBookId(book) {
-    return book._links.book.href.split('book/')[1];
+    return book._links.self.href.split('book/')[1];
   }
 
   function getAuthorId(author) {
-    return author._links.author.href.split('author/')[1];
+    return author._links.self.href.split('author/')[1];
   }
 
   function getGenreId(genre) {
-    return genre._links.genre.href.split('genre/')[1];
+    return genre._links.self.href.split('genre/')[1];
   }
 </script>
 

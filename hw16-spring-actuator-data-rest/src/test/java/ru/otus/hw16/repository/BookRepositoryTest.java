@@ -12,6 +12,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import ru.otus.hw16.config.MongoConfig;
 import ru.otus.hw16.model.Book;
+import ru.otus.hw16.rest.projections.CustomBook;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,8 +38,8 @@ class BookRepositoryTest {
 
   @Test
   void findByAuthorLastNameEquals() {
-    String expectLastName = books.get(0).getAuthor().getLastName();
-    Optional<Book> optionalBook = bookRepository.findByAuthorLastNameEquals(expectLastName);
+    String expectLastName = books.get(3).getAuthor().getLastName();
+    Optional<CustomBook> optionalBook = bookRepository.findByAuthorLastNameEquals(expectLastName);
     assertTrue(optionalBook.isPresent());
     assertEquals(expectLastName, optionalBook.get().getAuthor().getLastName());
   }
