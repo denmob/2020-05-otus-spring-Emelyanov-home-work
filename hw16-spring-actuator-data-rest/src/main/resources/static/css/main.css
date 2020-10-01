@@ -1,0 +1,35 @@
+h2{
+  color:#FF0000;
+}
+
+body {
+  background: lightblue;
+  padding: 50px;
+}
+
+label {
+  display: inline-block;
+  width: 100px;
+}
+
+input {
+  width: 300px;
+}
+
+.row {
+  margin-top: 10px;
+  border-color: black;
+}
+
+div#div1{
+  height:45px;width:200px;
+  float:right;
+  padding-bottom: 20px;
+}
+
+div#div2{
+  height:45px;width:600px;
+  float:left;
+  padding-bottom: 100px;
+}
+

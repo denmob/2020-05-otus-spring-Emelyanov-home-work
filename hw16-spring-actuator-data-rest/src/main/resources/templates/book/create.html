@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <div th:replace="fragments/header :: header-css"></div>
+  <title>Create book</title>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+<div class="container">
+
+  <div class="row"><h2>Book Info:</h2></div>
+
+  <div class="row">
+    <label for="holder-input-title">Title:</label>
+    <input id="holder-input-title" name="title" type="text" value=""/>
+  </div>
+
+  <div class="row">
+    <label for="holder-input-date">Date:</label>
+    <input id="holder-input-date" name="date" type="date" value=""/>
+  </div>
+
+  <div class="row">
+    <label for="holder-select-author">Author:</label>
+    <select id="holder-select-author">
+      <option id="option-author" th:each="author : ${authors}" th:value="${author.firstName} +';'+ ${author.lastName}"
+              th:text="${author.firstName} +' '+ ${author.lastName}"></option>
+    </select>
+  </div>
+
+  <div class="row">
+    <label for="holder-select-genre">Genre:</label>
+    <select id="holder-select-genre">
+      <option id="option-genre" th:each="genre : ${genres}" th:value="${genre.name}" th:text="${genre.name}"></option>
+    </select>
+  </div>
+
+  <div class="row">
+    <button onclick="saveRestBook('POST',
+    $('#holder-input-id').val(),
+    $('#holder-input-title').val(),
+    $('#holder-input-date').val(),
+    $('#holder-select-author').val(),
+    $('#holder-select-genre').val())"
+    >Save
+    </button>
+  </div>
+
+</div>
+<br>
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>
