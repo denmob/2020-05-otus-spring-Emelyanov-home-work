@@ -1,12 +1,15 @@
 package ru.otus.hw16.page;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.hw16.service.AuthorService;
 import ru.otus.hw16.service.GenreService;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class BookPageController {
@@ -15,6 +18,7 @@ public class BookPageController {
   private final GenreService genreService;
 
   @GetMapping("/")
+  @SneakyThrows
   public String root() {
     return "redirect:/book/list";
   }
