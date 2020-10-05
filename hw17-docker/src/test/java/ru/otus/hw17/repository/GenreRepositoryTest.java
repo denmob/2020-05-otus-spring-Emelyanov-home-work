@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import ru.otus.hw17.config.MongoConfig;
+import ru.otus.hw17.test.config.MongoConfig;
 import ru.otus.hw17.model.Genre;
 
 import java.util.Optional;

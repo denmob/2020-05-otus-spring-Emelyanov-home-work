@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import ru.otus.hw17.config.MongoConfig;
+import ru.otus.hw17.test.config.MongoConfig;
 import ru.otus.hw17.model.Comment;
 
 import java.util.List;

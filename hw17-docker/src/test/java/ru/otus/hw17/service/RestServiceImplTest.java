@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.test.context.ActiveProfiles;
-import ru.otus.hw17.config.MongoConfig;
+import ru.otus.hw17.test.config.MongoConfig;
 import ru.otus.hw17.repository.BookRepository;
 import ru.otus.hw17.rest.projections.CustomBookEntity;
 
