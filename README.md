@@ -20,4 +20,5 @@
 >* hw14-spring-batch/
 >* hw15-spring-integration/
 >* hw16-spring-actuator-data-rest/
+>* hw17-docker/
 

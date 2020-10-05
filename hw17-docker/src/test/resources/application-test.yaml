@@ -1,0 +1,16 @@
+spring:
+  data:
+    mongodb:
+      database: hw017-test
+      port: 0
+    rest:
+      basePath: /rest
+
+mongock:
+  runner-type: InitializingBean
+  change-logs-scan-package:
+    - ru.otus.hw17.test.config.mongock.changelog
+
+logging:
+  level:
+    ROOT: INFO

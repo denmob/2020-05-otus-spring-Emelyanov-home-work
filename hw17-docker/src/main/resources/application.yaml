@@ -1,0 +1,52 @@
+spring:
+  data:
+    mongodb:
+      database: hw17
+      uri: mongodb://localhost
+      port: 27017
+    rest:
+      basePath: /rest
+  application:
+    name: hw17Name
+
+mongock:
+  runner-type: InitializingBean
+  change-logs-scan-package:
+    - ru.otus.hw17.config.changelog
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics, prometheus, logfile, loggers
+    enabled-by-default: false
+    jmx:
+      exposure:
+        include: '*'
+
+  endpoint:
+    health:
+      show-details: always
+      enabled: true
+    logfile:
+      enabled: true
+      external-file: logs/logfile.log
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+    info:
+      enabled: true
+    loggers:
+      enabled: true
+    shutdown:
+      enabled: true
+
+  health:
+    defaults:
+      enabled: true
+
+logging:
+  file:
+    path: logs
+    name: logs/logfile.log
