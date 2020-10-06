@@ -20,11 +20,13 @@ public class BookPageController {
   @GetMapping("/")
   @SneakyThrows
   public String root() {
+    log.debug("root redirect:/book/list");
     return "redirect:/book/list";
   }
 
   @GetMapping("/book/list")
   public String booksPage() {
+    log.info("booksPage book/list");
     return "book/list";
   }
 

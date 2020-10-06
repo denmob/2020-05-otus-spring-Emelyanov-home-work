@@ -2,7 +2,6 @@ spring:
   data:
     mongodb:
       database: ${mongo.db.name:hw17}
-#      uri: ${MONGO_URI:mongodb://localhost}
       port: ${mongo.port:27017}
       host: ${mongo.host:localhost}
     rest:
@@ -31,6 +30,7 @@ management:
       enabled: true
     logfile:
       enabled: true
+      external-file: /logs/logfile.log
     metrics:
       enabled: true
     prometheus:
@@ -45,8 +45,3 @@ management:
   health:
     defaults:
       enabled: true
-
-logging:
-  level:
-    ROOT: INFO
-
