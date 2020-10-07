@@ -12,7 +12,6 @@
     <file>/logs/logfile.log</file>
     <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
       <fileNamePattern>/logs/logfile.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
-      <!-- keep 30 days' worth of history capped at 2GB total size -->
       <maxHistory>30</maxHistory>
       <maxFileSize>1GB</maxFileSize>
       <totalSizeCap>2GB</totalSizeCap>

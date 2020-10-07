@@ -24,4 +24,9 @@ COPY --from=build $PROJECT_DIR/target/hw17-docker-2020-05-SNAPSHOT.jar $PROJECT_
 EXPOSE 8080
 VOLUME /logs/
 
-ENTRYPOINT  ["java","-Dmongo.db.name=hw17Docker", "-Dmongo.host=mongo", "-Dmongo.port=27017","-Djava.security.egd=file:/dev/./urandom","-jar","/opt/project/hw17-docker-2020-05-SNAPSHOT.jar"]
+ENTRYPOINT  ["java", \
+            "-Dmongo.db.name=hw17Docker", \
+            "-Dmongo.host=mongo", \
+            "-Dmongo.port=27017", \
+            "-Djava.security.egd=file:/dev/./urandom", \
+            "-jar","/opt/project/hw17-docker-2020-05-SNAPSHOT.jar"]
