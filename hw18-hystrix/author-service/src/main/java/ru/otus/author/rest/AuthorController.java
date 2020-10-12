@@ -19,8 +19,13 @@ public class AuthorController {
     return authorService.findAll();
   }
 
+  @GetMapping("/api/author/id")
+  public Author getAuthorId(@RequestParam(value = "authorId") String authorId) {
+    return authorService.findById(authorId).orElseThrow(() -> new NotFoundException("Not found entry author.id: " + authorId));
+  }
+
   @GetMapping("/api/author/lastName")
-  public Author getAuthor(@RequestParam(value = "lastName") String lastName) {
-    return authorService.findByLastNameEquals(lastName).orElseThrow(() -> new NotFoundException("Not found entry author.lastName: " + lastName));
+  public Author getAuthorLastName(@RequestParam(value = "authorLastName") String authorLastName) {
+    return authorService.findByLastNameEquals(authorLastName).orElseThrow(() -> new NotFoundException("Not found entry author.lastName: " + authorLastName));
   }
 }

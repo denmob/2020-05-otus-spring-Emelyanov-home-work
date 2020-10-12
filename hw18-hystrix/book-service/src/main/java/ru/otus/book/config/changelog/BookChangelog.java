@@ -6,8 +6,8 @@ import com.github.cloudyrock.mongock.driver.mongodb.springdata.v3.decorator.impl
 import lombok.SneakyThrows;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import ru.otus.library.RestService;
-import ru.otus.library.RestServiceImpl;
+import ru.otus.library.service.RestService;
+import ru.otus.library.service.RestServiceImpl;
 import ru.otus.library.model.Author;
 import ru.otus.library.model.Book;
 import ru.otus.library.model.Genre;
@@ -33,9 +33,9 @@ public class BookChangelog {
   @ChangeSet(order = "001", id = "addBook01", author = "dyemelianov", runAlways = true)
   public void addBook01(MongockTemplate template) {
     MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-    map.add("lastName", "Langr");
+    map.add("authorLastName", "Langr");
     Author author = AUTHOR_REST_SERVICE.getEntity(URL_GET_AUTHOR_LAST_NAME, map, Author.class);
-    map.add("name","Programming");
+    map.add("genreName","Programming");
     Genre genre = GENRE_REST_SERVICE.getEntity(URL_GET_GENRE_NAME, map, Genre.class);
 
     var book = Book.builder()
@@ -49,9 +49,9 @@ public class BookChangelog {
   @ChangeSet(order = "002", id = "addBook02", author = "dyemelianov", runAlways = true)
   public void addBook02(MongockTemplate template) {
     MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-    map.add("lastName", "Bloch");
+    map.add("authorLastName", "Bloch");
     Author author = AUTHOR_REST_SERVICE.getEntity(URL_GET_AUTHOR_LAST_NAME, map, Author.class);
-    map.add("name","Science");
+    map.add("genreName","Science");
     Genre genre = GENRE_REST_SERVICE.getEntity(URL_GET_GENRE_NAME, map, Genre.class);
 
     var book = Book.builder()
@@ -65,9 +65,9 @@ public class BookChangelog {
   @ChangeSet(order = "003", id = "addBook03", author = "dyemelianov", runAlways = true)
   public void addBook03(MongockTemplate template) {
     MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-    map.add("lastName", "Horstmann");
+    map.add("authorLastName", "Horstmann");
     Author author = AUTHOR_REST_SERVICE.getEntity(URL_GET_AUTHOR_LAST_NAME, map, Author.class);
-    map.add("name","Software");
+    map.add("genreName","Software");
     Genre genre = GENRE_REST_SERVICE.getEntity(URL_GET_GENRE_NAME, map, Genre.class);
 
     var book = Book.builder()

@@ -1,7 +1,6 @@
 package ru.otus.comment.rest;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,9 +16,8 @@ public class CommentController {
 
   private final CommentService commentService;
 
-  @GetMapping(value = "/api/comment/book/{bookId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  @ResponseStatus(HttpStatus.OK)
-  public List<CommentDto> getComments(@PathVariable("bookId") String bookId) {
+  @GetMapping(value = "/api/comment/book/id", produces = MediaType.APPLICATION_JSON_VALUE)
+  public List<CommentDto> getComments(@RequestParam(value = "bookId") String bookId) {
       return commentService.readAllForBook(bookId).stream().map(CommentDto::toDto).collect(Collectors.toList());
   }
 }

@@ -3,13 +3,10 @@ package ru.otus.comment.config.changelog;
 import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;
 import com.github.cloudyrock.mongock.driver.mongodb.springdata.v3.decorator.impl.MongockTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import ru.otus.library.RestService;
-import ru.otus.library.RestServiceImpl;
-import ru.otus.library.model.Author;
+import ru.otus.library.service.RestService;
+import ru.otus.library.service.RestServiceImpl;
 import ru.otus.library.model.Book;
 import ru.otus.library.model.Comment;
 

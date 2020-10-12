@@ -21,7 +21,12 @@ public class GenreController {
   }
 
   @GetMapping("/api/genre/name")
-  public Genre getGenre(@RequestParam(value = "name") String mame) {
-    return genreService.findByNameEquals(mame).orElseThrow(() -> new NotFoundException("Not found entry genre.name: " + mame));
+  public Genre getGenreName(@RequestParam(value = "genreName") String genreName) {
+    return genreService.findByNameEquals(genreName).orElseThrow(() -> new NotFoundException("Not found entry genre.name: " + genreName));
+  }
+
+  @GetMapping("/api/genre/id")
+  public Genre getGenreId(@RequestParam(value = "genreId") String genreId) {
+    return genreService.findById(genreId).orElseThrow(() -> new NotFoundException("Not found entry genre.id: " + genreId));
   }
 }
