@@ -1,0 +1,33 @@
+body {
+  background: lightblue;
+  padding: 50px;
+}
+
+label {
+  display: inline-block;
+  width: 100px;
+}
+
+input {
+  width: 300px;
+}
+
+.createButton {
+  background-color: #008CBA;
+}
+
+.row {
+  margin-top: 10px;
+  border-color: black;
+}
+
+.books, .books td {
+  border: 1px solid black;
+  padding: 5px;
+}
+
+.comments, .comments td {
+  border: 1px solid black;
+  padding: 5px;
+}
+

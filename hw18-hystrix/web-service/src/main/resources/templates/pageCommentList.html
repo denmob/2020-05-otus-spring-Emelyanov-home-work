@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+  <head th:replace="fragments/head :: head(title='View comments page')"><title></title></head>
+
+  <body>
+    <input id="bookId-holder" type="hidden" th:value="${bookId}" >
+    <h1>book title :</h1>
+    <table class="comments">
+      <thead>
+      <tr>
+        <th>commentary</th>
+        <th>timestamp</th>
+      </tr>
+      </thead>
+      <tbody id="tbodyCommentList">
+      </tbody>
+    </table>
+    <br>
+    <a th:href="@{/}" href="pageBookList.html">Back to list books page</a>
+
+    <script type="text/javascript">
+      getCommentList(document.getElementById('bookId-holder').value);
+
+      function renderCommentList(commentList){
+        $('#tbodyCommentList').empty();
+        commentList.forEach(function (comment) {
+          $('#tbodyCommentList').append(`
+               <tr>
+                   <td>${comment.commentary}</td>
+                   <td>${new Date(comment.timestamp).toString()}</td>
+               </tr>
+            `)
+        })
+      }
+    </script>
+  </body>
+</html>

@@ -21,4 +21,5 @@
 >* hw15-spring-integration/
 >* hw16-spring-actuator-data-rest/
 >* hw17-docker/
+>* hw18-hystrix/
 
