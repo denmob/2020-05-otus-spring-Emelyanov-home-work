@@ -15,14 +15,14 @@
 
   <properties>
     <java.version>14</java.version>
-    <sharedLibrary.version>1.0</sharedLibrary.version>
+    <shared-library.version>1.0</shared-library.version>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>ru.otus</groupId>
-      <artifactId>sharedLibrary</artifactId>
-      <version>${sharedLibrary.version}</version>
+      <artifactId>shared-library</artifactId>
+      <version>${shared-library.version}</version>
     </dependency>
   </dependencies>
 

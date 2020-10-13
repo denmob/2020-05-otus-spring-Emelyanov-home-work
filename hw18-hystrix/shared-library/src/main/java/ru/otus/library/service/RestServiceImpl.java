@@ -2,12 +2,14 @@ package ru.otus.library.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -16,7 +18,15 @@ import java.util.List;
 @Service
 public class RestServiceImpl<T> implements RestService<T> {
 
-  private final RestOperations restOperations = new RestTemplate();
+  @LoadBalanced
+  @Bean
+  public RestTemplate getRestTemplate() {
+    return new RestTemplate();
+  }
+
+  @Autowired
+  private RestTemplate restTemplate;
+
   private final HttpHeaders httpHeaders = new HttpHeaders();
   private HttpEntity<?> httpEntity;
 
@@ -30,7 +40,7 @@ public class RestServiceImpl<T> implements RestService<T> {
     UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url).queryParams(multiValueMap);
     httpEntity = new HttpEntity<>(httpHeaders);
     ResponseEntity<T> responseEntity =
-        restOperations.exchange(builder.toUriString(), HttpMethod.GET, httpEntity, clazz);
+        restTemplate.exchange(builder.toUriString(), HttpMethod.GET, httpEntity, clazz);
     return responseEntity.getBody();
   }
 
@@ -51,7 +61,7 @@ public class RestServiceImpl<T> implements RestService<T> {
     UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url).queryParams(multiValueMap);
     httpEntity = new HttpEntity<>(httpHeaders);
     ResponseEntity<T> responseEntity =
-        restOperations.exchange(builder.toUriString(), HttpMethod.DELETE, httpEntity, clazz);
+        restTemplate.exchange(builder.toUriString(), HttpMethod.DELETE, httpEntity, clazz);
     return responseEntity.getBody();
   }
 
@@ -60,7 +70,7 @@ public class RestServiceImpl<T> implements RestService<T> {
     UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url).queryParams(multiValueMap);
     httpEntity = new HttpEntity<>(httpHeaders);
     ResponseEntity<List<T>> listResponseEntity =
-        restOperations.exchange(builder.toUriString(), HttpMethod.GET, httpEntity, new ParameterizedTypeReference<>() {
+        restTemplate.exchange(builder.toUriString(), HttpMethod.GET, httpEntity, new ParameterizedTypeReference<>() {
         });
     return listResponseEntity.getBody();
   }
@@ -75,7 +85,7 @@ public class RestServiceImpl<T> implements RestService<T> {
     String jsonObject = new ObjectMapper().writeValueAsString(entity);
     httpEntity = new HttpEntity<>(jsonObject, httpHeaders);
     ResponseEntity<T> responseEntity =
-        restOperations.exchange(url, httpMethod, httpEntity, clazz);
+        restTemplate.exchange(url, httpMethod, httpEntity, clazz);
     return responseEntity.getBody();
   }
 }
