@@ -9,11 +9,11 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @SpringBootApplication
 @EnableMongoRepositories
 @EnableConfigurationProperties
-public class WebService {
+public class WebServiceApplication {
 
   @SneakyThrows
   public static void main(String[] args) {
-    SpringApplication.run(WebService.class, args);
+    SpringApplication.run(WebServiceApplication.class, args);
   }
 }
 

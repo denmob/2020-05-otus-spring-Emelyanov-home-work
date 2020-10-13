@@ -11,11 +11,11 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @SpringBootApplication
 @EnableMongoRepositories
 @EnableConfigurationProperties
-public class BookService {
+public class BookServiceApplication {
 
   @SneakyThrows
   public static void main(String[] args) {
-    SpringApplication.run(BookService.class, args);
+    SpringApplication.run(BookServiceApplication.class, args);
   }
 }
 

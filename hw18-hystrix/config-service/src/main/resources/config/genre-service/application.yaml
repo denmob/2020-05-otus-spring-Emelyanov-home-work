@@ -9,10 +9,3 @@ mongock:
   runner-type: InitializingBean
   change-logs-scan-package:
     - ru.otus.genre.config.changelog
-
-logging:
-  level:
-    ROOT: INFO
-
-server:
-  port: 8003

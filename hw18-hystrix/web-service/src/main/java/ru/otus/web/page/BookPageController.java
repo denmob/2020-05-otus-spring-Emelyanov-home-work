@@ -28,15 +28,15 @@ public class BookPageController {
 
   @GetMapping("/pageBookCreate")
   public String pageBookCreate(Model model) {
-    model.addAttribute("authors", authorRestService.getEntities("http://localhost:8002/api/author"));
-    model.addAttribute("genres", genreRestService.getEntities("http://localhost:8003/api/genre"));
+    model.addAttribute("authors", authorRestService.getEntities("http://localhost:8001/api/author"));
+    model.addAttribute("genres", genreRestService.getEntities("http://localhost:8002/api/genre"));
     return "pageBookCreate";
   }
 
   @GetMapping("/pageBookEdit/{bookId}")
   public String pageBookEdit(@PathVariable("bookId") String bookId, Model model) {
-    model.addAttribute("authors", authorRestService.getEntities("http://localhost:8002/api/author"));
-    model.addAttribute("genres", genreRestService.getEntities("http://localhost:8003/api/genre"));
+    model.addAttribute("authors", authorRestService.getEntities("http://localhost:8001/api/author"));
+    model.addAttribute("genres", genreRestService.getEntities("http://localhost:8002/api/genre"));
     return "pageBookEdit";
   }
 }

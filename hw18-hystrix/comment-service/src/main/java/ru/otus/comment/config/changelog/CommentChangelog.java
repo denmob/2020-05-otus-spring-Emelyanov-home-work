@@ -16,7 +16,7 @@ import java.util.Date;
 @ChangeLog(order = "004")
 public class CommentChangelog {
 
-  private static final String URL_GET_BOOK_TITLE = "http://localhost:8001/api/book/title";
+  private static final String URL_GET_BOOK_TITLE = "http://localhost:8003/api/book/title";
 
   private static final RestService<Book> BOOK_REST_SERVICE = new RestServiceImpl<>();
 

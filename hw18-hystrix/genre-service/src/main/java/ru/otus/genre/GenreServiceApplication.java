@@ -1,4 +1,4 @@
-package ru.otus.author;
+package ru.otus.genre;
 
 import com.github.cloudyrock.spring.v5.EnableMongock;
 import lombok.SneakyThrows;
@@ -11,11 +11,11 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @SpringBootApplication
 @EnableMongoRepositories
 @EnableConfigurationProperties
-public class AuthorService {
+public class GenreServiceApplication {
 
   @SneakyThrows
   public static void main(String[] args) {
-    SpringApplication.run(AuthorService.class, args);
+    SpringApplication.run(GenreServiceApplication.class, args);
   }
 }
 

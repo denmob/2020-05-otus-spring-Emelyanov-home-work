@@ -1,18 +1,11 @@
 spring:
   data:
     mongodb:
-      database: hw18_comment
+      database: hw18_author
       uri: mongodb://localhost
       port: 27017
 
 mongock:
   runner-type: InitializingBean
   change-logs-scan-package:
-    - ru.otus.comment.config.changelog
-
-logging:
-  level:
-    ROOT: INFO
-
-server:
-  port: 8004
+    - ru.otus.author.config.changelog

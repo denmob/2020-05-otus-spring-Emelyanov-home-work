@@ -24,13 +24,27 @@
     <module>author-service</module>
     <module>genre-service</module>
     <module>comment-service</module>
+    <module>config-service</module>
   </modules>
 
   <properties>
     <java.version>14</java.version>
     <mongock-spring.version>3.2.8</mongock-spring.version>
     <jquery.version>3.5.1</jquery.version>
+    <spring-cloud.version>Greenwich.SR1</spring-cloud.version>
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${spring-cloud.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <dependency>
