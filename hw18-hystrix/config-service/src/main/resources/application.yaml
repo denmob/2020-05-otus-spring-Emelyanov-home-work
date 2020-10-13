@@ -1,0 +1,29 @@
+server:
+  port: 8000
+
+spring:
+  application:
+    name: config-service
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: "[classpath:/config, classpath:/config/{application}, classpath:/config/{application}/{profile}]"
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8010/eureka
+    register-with-eureka: true
+    fetch-registry: true
+
+  instance:
+    leaseRenewalIntervalInSeconds: 30
+    leaseExpirationDurationInSeconds: 90
+    instance-id: ${spring.application.name}:${server.port}
+    prefer-ip-address: true
+
+app:
+  message: This is the primary Application Property for ${spring.application.name}

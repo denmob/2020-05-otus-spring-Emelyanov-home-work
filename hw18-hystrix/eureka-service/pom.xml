@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -9,20 +9,18 @@
     <version>2020-05-SNAPSHOT</version>
   </parent>
 
-  <artifactId>book-service</artifactId>
+  <artifactId>eureka-service</artifactId>
   <version>2020-05-SNAPSHOT</version>
-  <name>book-service</name>
+  <name>eureka-service</name>
 
   <properties>
     <java.version>14</java.version>
-    <sharedLibrary.version>1.0</sharedLibrary.version>
   </properties>
 
   <dependencies>
     <dependency>
-      <groupId>ru.otus</groupId>
-      <artifactId>sharedLibrary</artifactId>
-      <version>${sharedLibrary.version}</version>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
     </dependency>
   </dependencies>
 

@@ -9,3 +9,16 @@ mongock:
   runner-type: InitializingBean
   change-logs-scan-package:
     - ru.otus.book.config.changelog
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8010/eureka
+    register-with-eureka: true
+    fetch-registry: true
+
+  instance:
+    leaseRenewalIntervalInSeconds: 30
+    leaseExpirationDurationInSeconds: 90
+    instance-id: ${spring.application.name}:${server.port}
+    prefer-ip-address: true
