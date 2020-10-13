@@ -1,6 +1,7 @@
 package ru.otus.library.service;
 
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 

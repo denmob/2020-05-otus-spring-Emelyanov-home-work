@@ -22,9 +22,3 @@ eureka:
     leaseExpirationDurationInSeconds: 90
     instance-id: ${spring.application.name}:${server.port}
     prefer-ip-address: true
-
-book-service:
-  ribbon:
-    eureka:
-      enabled: true
-  ServerListRefreshInterval: 1000

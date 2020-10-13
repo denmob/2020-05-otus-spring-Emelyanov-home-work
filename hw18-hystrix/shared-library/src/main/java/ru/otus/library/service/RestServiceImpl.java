@@ -2,9 +2,6 @@ package ru.otus.library.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -18,21 +15,18 @@ import java.util.List;
 @Service
 public class RestServiceImpl<T> implements RestService<T> {
 
-  @LoadBalanced
-  @Bean
-  public RestTemplate getRestTemplate() {
-    return new RestTemplate();
-  }
-
-  @Autowired
-  private RestTemplate restTemplate;
-
   private final HttpHeaders httpHeaders = new HttpHeaders();
   private HttpEntity<?> httpEntity;
+  private RestTemplate restTemplate;
 
   public RestServiceImpl() {
-    httpHeaders.set("Accept", MediaType.APPLICATION_JSON_VALUE);
-    httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+    this.restTemplate = new RestTemplate();
+    configHttpHeaders();
+  }
+
+  public RestServiceImpl(RestTemplate restTemplate) {
+    this.restTemplate = restTemplate;
+    configHttpHeaders();
   }
 
   @Override
@@ -87,5 +81,10 @@ public class RestServiceImpl<T> implements RestService<T> {
     ResponseEntity<T> responseEntity =
         restTemplate.exchange(url, httpMethod, httpEntity, clazz);
     return responseEntity.getBody();
+  }
+
+  private void configHttpHeaders() {
+    httpHeaders.set("Accept", MediaType.APPLICATION_JSON_VALUE);
+    httpHeaders.setContentType(MediaType.APPLICATION_JSON);
   }
 }

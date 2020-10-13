@@ -18,8 +18,8 @@ import java.util.Date;
 @ChangeLog(order = "003")
 public class BookChangelog {
 
-  private static final String URL_GET_AUTHOR_LAST_NAME = "http://author-service/api/author/lastName";
-  private static final String URL_GET_GENRE_NAME = "http://genre-service/api/genre/name";
+  private static final String URL_GET_AUTHOR_LAST_NAME = "http://localhost:8001/api/author/lastName";
+  private static final String URL_GET_GENRE_NAME = "http://localhost:8002/api/genre/name";
 
   private static final RestService<Author> AUTHOR_REST_SERVICE = new RestServiceImpl<>();
   private static final RestService<Genre> GENRE_REST_SERVICE = new RestServiceImpl<>();

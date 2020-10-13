@@ -1,10 +1,4 @@
 eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8010/eureka
-    register-with-eureka: false
-    fetch-registry: false
-
   server:
     wait-time-in-ms-when-sync-empty: 5
     registry-sync-retries: 3

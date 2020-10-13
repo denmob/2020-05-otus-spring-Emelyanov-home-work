@@ -43,7 +43,7 @@ eureka:
     instance-id: ${spring.application.name}:${server.port}
     prefer-ip-address: true
 
-web-service:
+book-service:
   ribbon:
     eureka:
       enabled: true
