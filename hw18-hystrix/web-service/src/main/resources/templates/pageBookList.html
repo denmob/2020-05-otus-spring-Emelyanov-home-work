@@ -33,7 +33,7 @@
                      <td>${new Date(book.date).toDateString()}</td>
                      <td>${book.author.firstName} ${book.author.lastName}</td>
                      <td>${book.genre.name}</td>
-                     <td><a href="/pageBookEdit/bookId=${book.id}">Edit book</a></td>
+                     <td><a href="/pageBookEdit/id=${book.id}">Edit book</a></td>
                      <td><a href="/pageCommentList/${book.id},${book.title}">View comments</a></td>
                      <td><button onclick="deleteBook('${book.id}')">Delete book</button></td>
                  </tr>

@@ -19,10 +19,10 @@ public class CommentController {
 
   private final RestService<CommentDto> commentDtoRestService = new RestServiceImpl<>();
 
-  @GetMapping(value = "/api/comment/book/{bookId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public List<CommentDto> getComments(@PathVariable("bookId") String bookId) {
+  @GetMapping(value = "/api/comment/book/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public List<CommentDto> getComments(@PathVariable("id") String id) {
     MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
-    multiValueMap.add("bookId", bookId);
-    return commentDtoRestService.getEntities("http://localhost:8004/api/comment/book/id", multiValueMap);
+    multiValueMap.add("id", id);
+    return commentDtoRestService.getEntities("http://localhost:8004/api/comment/book", multiValueMap);
   }
 }

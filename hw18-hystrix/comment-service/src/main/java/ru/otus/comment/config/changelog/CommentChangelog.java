@@ -16,7 +16,7 @@ import java.util.Date;
 @ChangeLog(order = "004")
 public class CommentChangelog {
 
-  private static final String URL_GET_BOOK_TITLE = "http://localhost:8003/api/book/title";
+  private static final String URL_GET_BOOK_TITLE = "http://localhost:8003/api/book";
 
   private static final RestService<Book> BOOK_REST_SERVICE = new RestServiceImpl<>();
 
@@ -29,7 +29,7 @@ public class CommentChangelog {
   public void addComments01(MongockTemplate template) {
 
     MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-    map.add("bookTitle", "Fundamentals");
+    map.add("title", "Fundamentals");
     Book book = BOOK_REST_SERVICE.getEntity(URL_GET_BOOK_TITLE, map, Book.class);
 
     var comment = Comment.builder()
@@ -43,7 +43,7 @@ public class CommentChangelog {
   @ChangeSet(order = "002", id = "addComments02", author = "dyemelianov", runAlways = true)
   public void addComments02(MongockTemplate template) {
     MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-    map.add("bookTitle", "Effective");
+    map.add("title", "Effective");
     Book book = BOOK_REST_SERVICE.getEntity(URL_GET_BOOK_TITLE, map, Book.class);
 
     var comment = Comment.builder()
@@ -57,7 +57,7 @@ public class CommentChangelog {
   @ChangeSet(order = "003", id = "addComments03", author = "dyemelianov", runAlways = true)
   public void addComments03(MongockTemplate template) {
     MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-    map.add("bookTitle", "Pragmatic");
+    map.add("title", "Pragmatic");
     Book book = BOOK_REST_SERVICE.getEntity(URL_GET_BOOK_TITLE, map, Book.class);
 
     var comment = Comment.builder()

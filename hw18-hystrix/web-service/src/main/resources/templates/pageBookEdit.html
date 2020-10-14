@@ -46,7 +46,7 @@
   <a th:href="@{/}" href="pageBookList.html">Back to list books page</a>
 
   <script type="text/javascript">
-    getBook(location.pathname.split('bookId=')[1]);
+    getBook(location.pathname.split('id=')[1]);
 
     function renderBook(book) {
       document.getElementById('input-id').value = book.id;

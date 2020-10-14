@@ -30,8 +30,8 @@ public class RestServiceImpl<T> implements RestService<T> {
   }
 
   @Override
-  public T getEntity(String url, MultiValueMap<String, String> multiValueMap, Class<T> clazz) {
-    UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url).queryParams(multiValueMap);
+  public T getEntity(String url, MultiValueMap<String, String> queryParams, Class<T> clazz) {
+    UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url).queryParams(queryParams);
     httpEntity = new HttpEntity<>(httpHeaders);
     ResponseEntity<T> responseEntity =
         restTemplate.exchange(builder.toUriString(), HttpMethod.GET, httpEntity, clazz);
@@ -51,17 +51,17 @@ public class RestServiceImpl<T> implements RestService<T> {
   }
 
   @Override
-  public T deleteEntity(String url, MultiValueMap<String, String> multiValueMap, Class<T> clazz) {
-    UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url).queryParams(multiValueMap);
+  public boolean deleteEntity(String url, MultiValueMap<String, String> queryParams, Class<T> clazz) {
+    UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url).queryParams(queryParams);
     httpEntity = new HttpEntity<>(httpHeaders);
     ResponseEntity<T> responseEntity =
         restTemplate.exchange(builder.toUriString(), HttpMethod.DELETE, httpEntity, clazz);
-    return responseEntity.getBody();
+    return responseEntity.getStatusCode().is2xxSuccessful();
   }
 
   @Override
-  public List<T> getEntities(String url, MultiValueMap<String, String> multiValueMap) {
-    UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url).queryParams(multiValueMap);
+  public List<T> getEntities(String url, MultiValueMap<String, String> queryParams) {
+    UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url).queryParams(queryParams);
     httpEntity = new HttpEntity<>(httpHeaders);
     ResponseEntity<List<T>> listResponseEntity =
         restTemplate.exchange(builder.toUriString(), HttpMethod.GET, httpEntity, new ParameterizedTypeReference<>() {

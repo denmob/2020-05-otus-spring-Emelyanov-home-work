@@ -18,8 +18,8 @@ import java.util.Date;
 @ChangeLog(order = "003")
 public class BookChangelog {
 
-  private static final String URL_GET_AUTHOR_LAST_NAME = "http://localhost:8001/api/author/lastName";
-  private static final String URL_GET_GENRE_NAME = "http://localhost:8002/api/genre/name";
+  private static final String URL_GET_AUTHOR_LAST_NAME = "http://localhost:8001/api/author";
+  private static final String URL_GET_GENRE_NAME = "http://localhost:8002/api/genre";
 
   private static final RestService<Author> AUTHOR_REST_SERVICE = new RestServiceImpl<>();
   private static final RestService<Genre> GENRE_REST_SERVICE = new RestServiceImpl<>();
@@ -33,9 +33,9 @@ public class BookChangelog {
   @ChangeSet(order = "001", id = "addBook01", author = "dyemelianov", runAlways = true)
   public void addBook01(MongockTemplate template) {
     MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-    map.add("authorLastName", "Langr");
+    map.add("lastName", "Langr");
     Author author = AUTHOR_REST_SERVICE.getEntity(URL_GET_AUTHOR_LAST_NAME, map, Author.class);
-    map.add("genreName","Programming");
+    map.add("name","Programming");
     Genre genre = GENRE_REST_SERVICE.getEntity(URL_GET_GENRE_NAME, map, Genre.class);
 
     var book = Book.builder()
@@ -49,9 +49,9 @@ public class BookChangelog {
   @ChangeSet(order = "002", id = "addBook02", author = "dyemelianov", runAlways = true)
   public void addBook02(MongockTemplate template) {
     MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-    map.add("authorLastName", "Bloch");
+    map.add("lastName", "Bloch");
     Author author = AUTHOR_REST_SERVICE.getEntity(URL_GET_AUTHOR_LAST_NAME, map, Author.class);
-    map.add("genreName","Science");
+    map.add("name","Science");
     Genre genre = GENRE_REST_SERVICE.getEntity(URL_GET_GENRE_NAME, map, Genre.class);
 
     var book = Book.builder()
@@ -65,9 +65,9 @@ public class BookChangelog {
   @ChangeSet(order = "003", id = "addBook03", author = "dyemelianov", runAlways = true)
   public void addBook03(MongockTemplate template) {
     MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-    map.add("authorLastName", "Horstmann");
+    map.add("lastName", "Horstmann");
     Author author = AUTHOR_REST_SERVICE.getEntity(URL_GET_AUTHOR_LAST_NAME, map, Author.class);
-    map.add("genreName","Software");
+    map.add("name","Software");
     Genre genre = GENRE_REST_SERVICE.getEntity(URL_GET_GENRE_NAME, map, Genre.class);
 
     var book = Book.builder()

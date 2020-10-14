@@ -17,6 +17,7 @@ import java.util.List;
 @RestController
 public class BookController {
 
+  private static final String URL_BOOK_SERVICE = "http://book-service/api/book";
   private final RestService<BookDto> bookDtoRestService;
   private final RestService<Author> authorRestService = new RestServiceImpl<>();
   private final RestService<Genre> genreRestService = new RestServiceImpl<>();
@@ -27,41 +28,44 @@ public class BookController {
 
   @GetMapping("/api/book")
   public List<BookDto> getBooks() {
-    return bookDtoRestService.getEntities("http://book-service/api/book");
+    MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
+    multiValueMap.add("countBook", "10");
+    return bookDtoRestService.getEntities(URL_BOOK_SERVICE, multiValueMap);
   }
 
-  @GetMapping("/api/book/{bookId}")
-  public BookDto edit(@PathVariable("bookId") String bookId) {
+  @GetMapping("/api/book/{id}")
+  public BookDto edit(@PathVariable("id") String id) {
     MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
-    multiValueMap.add("bookId", bookId);
-    return bookDtoRestService.getEntity("http://book-service/api/book/id", multiValueMap, BookDto.class);
+    multiValueMap.add("id", id);
+    return bookDtoRestService.getEntity(URL_BOOK_SERVICE, multiValueMap, BookDto.class);
   }
 
   @PostMapping(value = "/api/book", consumes = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
   public BookDto post(@RequestBody BookDto bookDto) {
-    return bookDtoRestService.postEntity("http://book-service/api/book", buildBookFromDto(bookDto), BookDto.class);
+    return bookDtoRestService.postEntity(URL_BOOK_SERVICE, buildBookFromDto(bookDto), BookDto.class);
   }
 
   @PutMapping(value = "/api/book", consumes = MediaType.APPLICATION_JSON_VALUE)
   public BookDto put(@RequestBody BookDto bookDto) {
-    return bookDtoRestService.putEntity("http://book-service/api/book", buildBookFromDto(bookDto), BookDto.class);
+    return bookDtoRestService.putEntity(URL_BOOK_SERVICE, buildBookFromDto(bookDto), BookDto.class);
   }
 
-  @DeleteMapping("/api/book/{bookId}")
-  public ResponseEntity<Void> delete(@PathVariable("bookId") String bookId) {
+  @DeleteMapping("/api/book/{id}")
+  public ResponseEntity<Void> delete(@PathVariable("id") String id) {
     MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
-    multiValueMap.add("bookId", bookId);
-    bookDtoRestService.deleteEntity("http://book-service/api/book/id", multiValueMap, BookDto.class);
-    return ResponseEntity.ok().build();
+    multiValueMap.add("id", id);
+    if (bookDtoRestService.deleteEntity(URL_BOOK_SERVICE, multiValueMap, BookDto.class)) {
+      return ResponseEntity.ok().build();
+    } else return ResponseEntity.notFound().build();
   }
 
   private Book buildBookFromDto(BookDto bookDto) {
     MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
-    multiValueMap.add("authorId", bookDto.getAuthor().getId());
-    Author author = authorRestService.getEntity("http://localhost:8001/api/author/id", multiValueMap, Author.class);
-    multiValueMap.add("genreId", bookDto.getGenre().getId());
-    Genre genre = genreRestService.getEntity("http://localhost:8002/api/genre/id", multiValueMap, Genre.class);
+    multiValueMap.add("id", bookDto.getAuthor().getId());
+    Author author = authorRestService.getEntity("http://localhost:8001/api/author", multiValueMap, Author.class);
+    multiValueMap.set("id", bookDto.getGenre().getId());
+    Genre genre = genreRestService.getEntity("http://localhost:8002/api/genre", multiValueMap, Genre.class);
 
     return Book.builder()
         .id(bookDto.getId())

@@ -20,13 +20,13 @@ public class GenreController {
     return genreService.findAll();
   }
 
-  @GetMapping("/api/genre/name")
-  public Genre getGenreName(@RequestParam(value = "genreName") String genreName) {
-    return genreService.findByNameEquals(genreName).orElseThrow(() -> new NotFoundException("Not found entry genre.name: " + genreName));
+  @GetMapping(value = "/api/genre", params = "name")
+  public Genre getGenreName(@RequestParam(value = "name") String name) {
+    return genreService.findByNameEquals(name).orElseThrow(() -> new NotFoundException("Not found entry genre.name: " + name));
   }
 
-  @GetMapping("/api/genre/id")
-  public Genre getGenreId(@RequestParam(value = "genreId") String genreId) {
-    return genreService.findById(genreId).orElseThrow(() -> new NotFoundException("Not found entry genre.id: " + genreId));
+  @GetMapping(value = "/api/genre", params = "id")
+  public Genre getGenreId(@RequestParam(value = "id") String id) {
+    return genreService.findById(id).orElseThrow(() -> new NotFoundException("Not found entry genre.id: " + id));
   }
 }
