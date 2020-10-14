@@ -18,7 +18,13 @@ eureka:
     fetch-registry: true
 
   instance:
-    leaseRenewalIntervalInSeconds: 30
+    leaseRenewalIntervalInSeconds: 10
     leaseExpirationDurationInSeconds: 90
     instance-id: ${spring.application.name}:${server.port}
     prefer-ip-address: true
+
+author-service:
+  ribbon:
+    eager-load:
+      enabled: true
+  ServerListRefreshInterval: 1000

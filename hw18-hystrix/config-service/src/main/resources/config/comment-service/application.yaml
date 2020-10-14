@@ -18,7 +18,21 @@ eureka:
     fetch-registry: true
 
   instance:
-    leaseRenewalIntervalInSeconds: 30
+    leaseRenewalIntervalInSeconds: 10
     leaseExpirationDurationInSeconds: 90
     instance-id: ${spring.application.name}:${server.port}
     prefer-ip-address: true
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 1000
+        readTimeout: 1000
+        loggerLevel: basic
+
+comment-service:
+  ribbon:
+    eager-load:
+      enabled: true
+  ServerListRefreshInterval: 1000

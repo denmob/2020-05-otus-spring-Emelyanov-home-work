@@ -48,3 +48,24 @@ book-service:
     eureka:
       enabled: true
   ServerListRefreshInterval: 1000
+
+author-service:
+  ribbon:
+    eureka:
+      enabled: true
+  ServerListRefreshInterval: 1000
+
+genre-service:
+  ribbon:
+    eureka:
+      enabled: true
+  ServerListRefreshInterval: 1000
+
+comment-service:
+  ribbon:
+    eureka:
+      enabled: true
+  ServerListRefreshInterval: 1000
+
+web-service:
+  ServerListRefreshInterval: 1000

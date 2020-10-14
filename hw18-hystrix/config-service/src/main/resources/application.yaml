@@ -27,3 +27,6 @@ eureka:
 
 app:
   message: This is the primary Application Property for ${spring.application.name}
+
+comfig-service:
+  ServerListRefreshInterval: 1000

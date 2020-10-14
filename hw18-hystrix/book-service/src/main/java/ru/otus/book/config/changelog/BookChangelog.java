@@ -4,10 +4,8 @@ import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;
 import com.github.cloudyrock.mongock.driver.mongodb.springdata.v3.decorator.impl.MongockTemplate;
 import lombok.SneakyThrows;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import ru.otus.library.service.RestService;
-import ru.otus.library.service.RestServiceImpl;
+import ru.otus.book.feign.AuthorServiceProxy;
+import ru.otus.book.feign.GenreServiceProxy;
 import ru.otus.library.model.Author;
 import ru.otus.library.model.Book;
 import ru.otus.library.model.Genre;
@@ -18,25 +16,15 @@ import java.util.Date;
 @ChangeLog(order = "003")
 public class BookChangelog {
 
-  private static final String URL_GET_AUTHOR_LAST_NAME = "http://localhost:8001/api/author";
-  private static final String URL_GET_GENRE_NAME = "http://localhost:8002/api/genre";
-
-  private static final RestService<Author> AUTHOR_REST_SERVICE = new RestServiceImpl<>();
-  private static final RestService<Genre> GENRE_REST_SERVICE = new RestServiceImpl<>();
-  private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-
   @ChangeSet(order = "000", id = "dropBooks", author = "dyemelianov", runAlways = true)
   public void dropBooks(MongockTemplate template) {
     template.dropCollection("books");
   }
 
   @ChangeSet(order = "001", id = "addBook01", author = "dyemelianov", runAlways = true)
-  public void addBook01(MongockTemplate template) {
-    MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-    map.add("lastName", "Langr");
-    Author author = AUTHOR_REST_SERVICE.getEntity(URL_GET_AUTHOR_LAST_NAME, map, Author.class);
-    map.add("name","Programming");
-    Genre genre = GENRE_REST_SERVICE.getEntity(URL_GET_GENRE_NAME, map, Genre.class);
+  public void addBook01(MongockTemplate template, AuthorServiceProxy authorServiceProxy, GenreServiceProxy genreServiceProxy) {
+    Author author = authorServiceProxy.getAuthorByLastName("Langr");
+    Genre genre = genreServiceProxy.getGenreByName("Programming");
 
     var book = Book.builder()
         .title("Java Core Fundamentals")
@@ -47,12 +35,9 @@ public class BookChangelog {
   }
 
   @ChangeSet(order = "002", id = "addBook02", author = "dyemelianov", runAlways = true)
-  public void addBook02(MongockTemplate template) {
-    MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-    map.add("lastName", "Bloch");
-    Author author = AUTHOR_REST_SERVICE.getEntity(URL_GET_AUTHOR_LAST_NAME, map, Author.class);
-    map.add("name","Science");
-    Genre genre = GENRE_REST_SERVICE.getEntity(URL_GET_GENRE_NAME, map, Genre.class);
+  public void addBook02(MongockTemplate template, AuthorServiceProxy authorServiceProxy, GenreServiceProxy genreServiceProxy) {
+    Author author = authorServiceProxy.getAuthorByLastName("Bloch");
+    Genre genre = genreServiceProxy.getGenreByName("Science");
 
     var book = Book.builder()
         .title("Effective Java")
@@ -63,12 +48,9 @@ public class BookChangelog {
   }
 
   @ChangeSet(order = "003", id = "addBook03", author = "dyemelianov", runAlways = true)
-  public void addBook03(MongockTemplate template) {
-    MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-    map.add("lastName", "Horstmann");
-    Author author = AUTHOR_REST_SERVICE.getEntity(URL_GET_AUTHOR_LAST_NAME, map, Author.class);
-    map.add("name","Software");
-    Genre genre = GENRE_REST_SERVICE.getEntity(URL_GET_GENRE_NAME, map, Genre.class);
+  public void addBook03(MongockTemplate template, AuthorServiceProxy authorServiceProxy, GenreServiceProxy genreServiceProxy) {
+    Author author = authorServiceProxy.getAuthorByLastName("Horstmann");
+    Genre genre = genreServiceProxy.getGenreByName("Software");
 
     var book = Book.builder()
         .title("Pragmatic Unit Testing in Java 8 with JUnit")
@@ -80,6 +62,6 @@ public class BookChangelog {
 
   @SneakyThrows
   private Date convertStringToDate(String date) {
-    return DATE_FORMAT.parse(date);
+    return new SimpleDateFormat("yyyy-MM-dd").parse(date);
   }
 }

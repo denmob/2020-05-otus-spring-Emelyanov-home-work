@@ -3,3 +3,6 @@ eureka:
     wait-time-in-ms-when-sync-empty: 5
     registry-sync-retries: 3
     max-threads-for-peer-replication: 0
+
+eureka-service:
+  ServerListRefreshInterval: 1000

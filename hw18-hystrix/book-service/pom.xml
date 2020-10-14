@@ -24,6 +24,10 @@
       <artifactId>shared-library</artifactId>
       <version>${shared-library.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-openfeign</artifactId>
+    </dependency>
   </dependencies>
 
   <build>

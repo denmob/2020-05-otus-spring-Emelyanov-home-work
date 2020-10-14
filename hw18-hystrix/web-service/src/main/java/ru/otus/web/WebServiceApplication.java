@@ -6,8 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration;
-import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @EnableEurekaClient
@@ -15,7 +13,6 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @SpringBootApplication
 @EnableMongoRepositories
 @EnableConfigurationProperties
-@RibbonClient(name = "book-service", configuration = RibbonAutoConfiguration.class)
 public class WebServiceApplication {
 
   @SneakyThrows

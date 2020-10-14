@@ -18,12 +18,16 @@ import java.util.List;
 public class BookController {
 
   private static final String URL_BOOK_SERVICE = "http://book-service/api/book";
+  private static final String URL_AUTHOR_SERVICE = "http://author-service/api/author";
+  private static final String URL_GENRE_SERVICE = "http://genre-service/api/genre";
   private final RestService<BookDto> bookDtoRestService;
-  private final RestService<Author> authorRestService = new RestServiceImpl<>();
-  private final RestService<Genre> genreRestService = new RestServiceImpl<>();
+  private final RestService<Author> authorRestService;
+  private final RestService<Genre> genreRestService;
 
   public BookController(RestTemplate restTemplateRibbon) {
     this.bookDtoRestService = new RestServiceImpl<>(restTemplateRibbon);
+    this.authorRestService = new RestServiceImpl<>(restTemplateRibbon);
+    this.genreRestService = new RestServiceImpl<>(restTemplateRibbon);
   }
 
   @GetMapping("/api/book")
@@ -63,9 +67,9 @@ public class BookController {
   private Book buildBookFromDto(BookDto bookDto) {
     MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
     multiValueMap.add("id", bookDto.getAuthor().getId());
-    Author author = authorRestService.getEntity("http://localhost:8001/api/author", multiValueMap, Author.class);
+    Author author = authorRestService.getEntity(URL_AUTHOR_SERVICE, multiValueMap, Author.class);
     multiValueMap.set("id", bookDto.getGenre().getId());
-    Genre genre = genreRestService.getEntity("http://localhost:8002/api/genre", multiValueMap, Genre.class);
+    Genre genre = genreRestService.getEntity(URL_GENRE_SERVICE, multiValueMap, Genre.class);
 
     return Book.builder()
         .id(bookDto.getId())
