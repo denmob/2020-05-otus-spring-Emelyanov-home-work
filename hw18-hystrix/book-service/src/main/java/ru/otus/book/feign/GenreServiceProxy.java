@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.otus.library.model.Genre;
 
-@FeignClient(name = "genre-service")
-@RequestMapping(value = "/api")
+@FeignClient(name = "zuul-service-gateway")
+@RequestMapping(value = "/gs/api")
 public interface GenreServiceProxy {
 
 	@GetMapping(value = "/genre")

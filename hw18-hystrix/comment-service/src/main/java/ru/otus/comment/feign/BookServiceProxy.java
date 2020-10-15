@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.otus.library.model.Book;
 
-@FeignClient(name = "book-service")
-@RequestMapping(value = "/api")
+@FeignClient(name = "zuul-service-gateway")
+@RequestMapping(value = "/bs/api")
 public interface BookServiceProxy {
 
 	@GetMapping(value = "/book",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

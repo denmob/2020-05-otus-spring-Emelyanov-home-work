@@ -4,3 +4,4 @@ eureka:
       defaultZone: http://localhost:8010/eureka
     register-with-eureka: false
     fetch-registry: false
+    registry-fetch-interval-seconds: 1
