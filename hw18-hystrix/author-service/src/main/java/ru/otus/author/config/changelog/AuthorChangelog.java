@@ -12,8 +12,6 @@ import java.util.Date;
 @ChangeLog(order = "001")
 public class AuthorChangelog {
 
-  private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
   @ChangeSet(order = "000", id = "dropAuthors", author = "dyemelianov", runAlways = true)
   public void dropAuthors(MongockTemplate template) {
     template.dropCollection("authors");
@@ -39,6 +37,6 @@ public class AuthorChangelog {
 
   @SneakyThrows
   private Date convertStringToDate(String date) {
-    return dateFormat.parse(date);
+    return new SimpleDateFormat("yyyy-MM-dd").parse(date);
   }
 }

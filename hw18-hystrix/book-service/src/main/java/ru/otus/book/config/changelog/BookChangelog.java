@@ -4,11 +4,9 @@ import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;
 import com.github.cloudyrock.mongock.driver.mongodb.springdata.v3.decorator.impl.MongockTemplate;
 import lombok.SneakyThrows;
-import ru.otus.book.feign.AuthorServiceProxy;
-import ru.otus.book.feign.GenreServiceProxy;
-import ru.otus.library.model.Author;
+import ru.otus.book.service.AuthorService;
+import ru.otus.book.service.GenreService;
 import ru.otus.library.model.Book;
-import ru.otus.library.model.Genre;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,9 +20,10 @@ public class BookChangelog {
   }
 
   @ChangeSet(order = "001", id = "addBook01", author = "dyemelianov", runAlways = true)
-  public void addBook01(MongockTemplate template, AuthorServiceProxy authorServiceProxy, GenreServiceProxy genreServiceProxy) {
-    Author author = authorServiceProxy.getAuthorByLastName("Langr");
-    Genre genre = genreServiceProxy.getGenreByName("Programming");
+  public void addBook01(MongockTemplate template, AuthorService authorService, GenreService genreService) {
+
+    var author = authorService.getAuthor("Langr");
+    var genre = genreService.getGenre("Programming");
 
     var book = Book.builder()
         .title("Java Core Fundamentals")
@@ -35,9 +34,10 @@ public class BookChangelog {
   }
 
   @ChangeSet(order = "002", id = "addBook02", author = "dyemelianov", runAlways = true)
-  public void addBook02(MongockTemplate template, AuthorServiceProxy authorServiceProxy, GenreServiceProxy genreServiceProxy) {
-    Author author = authorServiceProxy.getAuthorByLastName("Bloch");
-    Genre genre = genreServiceProxy.getGenreByName("Science");
+  public void addBook02(MongockTemplate template, AuthorService authorService, GenreService genreService) {
+
+    var author = authorService.getAuthor("Bloch");
+    var genre = genreService.getGenre("Science");
 
     var book = Book.builder()
         .title("Effective Java")
@@ -48,9 +48,10 @@ public class BookChangelog {
   }
 
   @ChangeSet(order = "003", id = "addBook03", author = "dyemelianov", runAlways = true)
-  public void addBook03(MongockTemplate template, AuthorServiceProxy authorServiceProxy, GenreServiceProxy genreServiceProxy) {
-    Author author = authorServiceProxy.getAuthorByLastName("Horstmann");
-    Genre genre = genreServiceProxy.getGenreByName("Software");
+  public void addBook03(MongockTemplate template, AuthorService authorService, GenreService genreService) {
+
+    var author = authorService.getAuthor("Horstmann");
+    var genre = genreService.getGenre("Software");
 
     var book = Book.builder()
         .title("Pragmatic Unit Testing in Java 8 with JUnit")

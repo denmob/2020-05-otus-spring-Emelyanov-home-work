@@ -16,19 +16,23 @@ import java.util.Date;
 @Document(collection = "books")
 public class Book {
   @Id
-  @BsonProperty("id")
+  @BsonProperty("_id")
   private String id;
 
   @Field(name = "title")
+  @BsonProperty("title")
   private String title;
 
   @Field(name = "date")
+  @BsonProperty("date")
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   private Date date = new Date();
 
   @Field(name = "author")
+  @BsonProperty("author")
   private Author author;
 
   @Field(name = "genre")
+  @BsonProperty("genre")
   private Genre genre;
 }

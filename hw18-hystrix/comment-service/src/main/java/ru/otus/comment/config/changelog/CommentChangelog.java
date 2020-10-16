@@ -3,7 +3,7 @@ package ru.otus.comment.config.changelog;
 import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;
 import com.github.cloudyrock.mongock.driver.mongodb.springdata.v3.decorator.impl.MongockTemplate;
-import ru.otus.comment.feign.BookServiceProxy;
+import ru.otus.comment.service.BookService;
 import ru.otus.library.model.Book;
 import ru.otus.library.model.Comment;
 
@@ -18,8 +18,8 @@ public class CommentChangelog {
   }
 
   @ChangeSet(order = "001", id = "addComments01", author = "dyemelianov", runAlways = true)
-  public void addComments01(MongockTemplate template, BookServiceProxy bookServiceProxy) {
-    Book book = bookServiceProxy.getBookByTitle("Fundamentals");
+  public void addComments01(MongockTemplate template, BookService bookService) {
+    Book book = bookService.getBookByTitle("Java Core Fundamentals");
 
     var comment = Comment.builder()
         .bookId(book.getId())
@@ -30,8 +30,8 @@ public class CommentChangelog {
   }
 
   @ChangeSet(order = "002", id = "addComments02", author = "dyemelianov", runAlways = true)
-  public void addComments02(MongockTemplate template, BookServiceProxy bookServiceProxy) {
-    Book book = bookServiceProxy.getBookByTitle("Effective");
+  public void addComments02(MongockTemplate template, BookService bookService) {
+    Book book = bookService.getBookByTitle("Effective Java");
 
     var comment = Comment.builder()
         .bookId(book.getId())
@@ -42,8 +42,8 @@ public class CommentChangelog {
   }
 
   @ChangeSet(order = "003", id = "addComments03", author = "dyemelianov", runAlways = true)
-  public void addComments03(MongockTemplate template, BookServiceProxy bookServiceProxy) {
-    Book book = bookServiceProxy.getBookByTitle("Pragmatic");
+  public void addComments03(MongockTemplate template, BookService bookService) {
+    Book book = bookService.getBookByTitle("Pragmatic Unit Testing in Java 8 with JUnit");
 
     var comment = Comment.builder()
         .bookId(book.getId())

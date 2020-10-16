@@ -16,13 +16,13 @@ eureka:
       defaultZone: http://localhost:8010/eureka
     register-with-eureka: true
     fetch-registry: true
-    registry-fetch-interval-seconds: 1
+    registry-fetch-interval-seconds: 2
     healthcheck:
       enabled: true
 
   instance:
-    lease-renewal-interval-in-seconds: 1
-    lease-expiration-duration-in-seconds: 1
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 10
     instance-id: ${spring.application.name}:${server.port}
     prefer-ip-address: true
 
@@ -39,7 +39,7 @@ comment-service:
       enabled: true
     MaxConnectionsPerHost: 1000
     MaxTotalConnections: 3000
-    ReadTimeout: 10000
+    ReadTimeout: 2000
     ConnectTimeout: 2000
     MaxAutoRetries: 0
     MaxAutoRetriesNextServer: 0
