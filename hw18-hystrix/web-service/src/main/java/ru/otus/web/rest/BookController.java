@@ -1,82 +1,44 @@
 package ru.otus.web.rest;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-import ru.otus.library.model.Author;
-import ru.otus.library.model.Book;
-import ru.otus.library.model.Genre;
-import ru.otus.library.service.RestService;
-import ru.otus.library.service.RestServiceImpl;
 import ru.otus.library.model.dto.BookDto;
+import ru.otus.web.service.BookService;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class BookController {
 
-  private static final String URL_BOOK_SERVICE = "http://book-service/api/book";
-  private static final String URL_AUTHOR_SERVICE = "http://author-service/api/author";
-  private static final String URL_GENRE_SERVICE = "http://genre-service/api/genre";
-  private final RestService<BookDto> bookDtoRestService;
-  private final RestService<Author> authorRestService;
-  private final RestService<Genre> genreRestService;
-
-  public BookController(RestTemplate restTemplateRibbon) {
-    this.bookDtoRestService = new RestServiceImpl<>(restTemplateRibbon);
-    this.authorRestService = new RestServiceImpl<>(restTemplateRibbon);
-    this.genreRestService = new RestServiceImpl<>(restTemplateRibbon);
-  }
+  private final BookService bookService;
 
   @GetMapping("/api/book")
   public List<BookDto> getBooks() {
-    MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
-    multiValueMap.add("countBook", "10");
-    return bookDtoRestService.getEntities(URL_BOOK_SERVICE, multiValueMap);
+    return bookService.getBooks("5");
   }
 
   @GetMapping("/api/book/{id}")
-  public BookDto edit(@PathVariable("id") String id) {
-    MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
-    multiValueMap.add("id", id);
-    return bookDtoRestService.getEntity(URL_BOOK_SERVICE, multiValueMap, BookDto.class);
+  public BookDto getBook(@PathVariable("id") String id) {
+    return bookService.getBook(id);
   }
 
   @PostMapping(value = "/api/book", consumes = MediaType.APPLICATION_JSON_VALUE)
   @ResponseBody
-  public BookDto post(@RequestBody BookDto bookDto) {
-    return bookDtoRestService.postEntity(URL_BOOK_SERVICE, buildBookFromDto(bookDto), BookDto.class);
+  public BookDto saveBook(@RequestBody BookDto bookDto) {
+    return bookService.saveBook(bookDto);
   }
 
   @PutMapping(value = "/api/book", consumes = MediaType.APPLICATION_JSON_VALUE)
-  public BookDto put(@RequestBody BookDto bookDto) {
-    return bookDtoRestService.putEntity(URL_BOOK_SERVICE, buildBookFromDto(bookDto), BookDto.class);
+  public BookDto editBook(@RequestBody BookDto bookDto) {
+    return bookService.editBook(bookDto);
   }
 
   @DeleteMapping("/api/book/{id}")
-  public ResponseEntity<Void> delete(@PathVariable("id") String id) {
-    MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
-    multiValueMap.add("id", id);
-    if (bookDtoRestService.deleteEntity(URL_BOOK_SERVICE, multiValueMap, BookDto.class)) {
+  public ResponseEntity<Void> deleteBook(@PathVariable("id") String id) {
+    if (bookService.deleteBook(id))
       return ResponseEntity.ok().build();
-    } else return ResponseEntity.notFound().build();
-  }
-
-  private Book buildBookFromDto(BookDto bookDto) {
-    MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
-    multiValueMap.add("id", bookDto.getAuthor().getId());
-    Author author = authorRestService.getEntity(URL_AUTHOR_SERVICE, multiValueMap, Author.class);
-    multiValueMap.set("id", bookDto.getGenre().getId());
-    Genre genre = genreRestService.getEntity(URL_GENRE_SERVICE, multiValueMap, Genre.class);
-
-    return Book.builder()
-        .id(bookDto.getId())
-        .title(bookDto.getTitle())
-        .date(bookDto.getDate())
-        .author(author)
-        .genre(genre)
-        .build();
+    else return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
   }
 }

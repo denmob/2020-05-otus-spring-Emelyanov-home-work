@@ -29,6 +29,7 @@ zuul:
     genre-service: /gs/**
     author-service: /as/**
     book-service: /bs/**
+    comment-service: /cs/**
 
 management:
   endpoints:

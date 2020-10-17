@@ -26,7 +26,7 @@ public class BookServiceImpl implements BookService {
   }
 
   @SuppressWarnings("unused")
-  public Book getBookDefaultBookService(String title) {
+  private Book getBookDefaultBookService(String title) {
     log.error("Invoke getBookDefaultBookService");
     return defaultBookService.getBookByTitle(title);
   }
