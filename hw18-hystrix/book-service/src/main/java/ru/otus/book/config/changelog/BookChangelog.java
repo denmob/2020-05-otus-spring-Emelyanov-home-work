@@ -22,8 +22,8 @@ public class BookChangelog {
   @ChangeSet(order = "001", id = "addBook01", author = "dyemelianov", runAlways = true)
   public void addBook01(MongockTemplate template, AuthorService authorService, GenreService genreService) {
 
-    var author = authorService.getAuthor("Langr");
-    var genre = genreService.getGenre("Programming");
+    var author = authorService.getAuthorByLastName("Langr");
+    var genre = genreService.getGenreByName("Programming");
 
     var book = Book.builder()
         .title("Java Core Fundamentals")
@@ -36,8 +36,8 @@ public class BookChangelog {
   @ChangeSet(order = "002", id = "addBook02", author = "dyemelianov", runAlways = true)
   public void addBook02(MongockTemplate template, AuthorService authorService, GenreService genreService) {
 
-    var author = authorService.getAuthor("Bloch");
-    var genre = genreService.getGenre("Science");
+    var author = authorService.getAuthorByLastName("Bloch");
+    var genre = genreService.getGenreByName("Science");
 
     var book = Book.builder()
         .title("Effective Java")
@@ -50,8 +50,8 @@ public class BookChangelog {
   @ChangeSet(order = "003", id = "addBook03", author = "dyemelianov", runAlways = true)
   public void addBook03(MongockTemplate template, AuthorService authorService, GenreService genreService) {
 
-    var author = authorService.getAuthor("Horstmann");
-    var genre = genreService.getGenre("Software");
+    var author = authorService.getAuthorByLastName("Horstmann");
+    var genre = genreService.getGenreByName("Software");
 
     var book = Book.builder()
         .title("Pragmatic Unit Testing in Java 8 with JUnit")

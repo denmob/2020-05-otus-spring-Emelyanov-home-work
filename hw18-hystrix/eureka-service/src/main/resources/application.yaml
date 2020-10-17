@@ -1,7 +1,14 @@
+server:
+  port: 8010
+
+spring:
+  application:
+    name: eureka-service
+
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8010/eureka
     register-with-eureka: false
     fetch-registry: false
-    registry-fetch-interval-seconds: 1
+    registry-fetch-interval-seconds: 2

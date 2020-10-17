@@ -7,8 +7,8 @@ eureka:
     registry-fetch-interval-seconds: 2
 
   instance:
-    lease-renewal-interval-in-seconds: 5
-    lease-expiration-duration-in-seconds: 10
+    lease-renewal-interval-in-seconds: 2
+    lease-expiration-duration-in-seconds: 5
     instance-id: ${spring.application.name}:${server.port}
     prefer-ip-address: true
 
@@ -22,10 +22,16 @@ zuul-service-gateway:
     ConnectTimeout: 2000
     MaxAutoRetries: 0
     MaxAutoRetriesNextServer: 0
-    ServerListRefreshInterval: 1000
+    ServerListRefreshInterval: 5000
 
 zuul:
   routes:
     genre-service: /gs/**
     author-service: /as/**
     book-service: /bs/**
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

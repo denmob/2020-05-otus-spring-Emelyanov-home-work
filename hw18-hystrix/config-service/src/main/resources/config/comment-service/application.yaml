@@ -21,8 +21,8 @@ eureka:
       enabled: true
 
   instance:
-    lease-renewal-interval-in-seconds: 5
-    lease-expiration-duration-in-seconds: 10
+    lease-renewal-interval-in-seconds: 2
+    lease-expiration-duration-in-seconds: 5
     instance-id: ${spring.application.name}:${server.port}
     prefer-ip-address: true
 
@@ -30,8 +30,9 @@ feign:
   client:
     config:
       default:
-        connectTimeout: 1000
-        readTimeout: 1000
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
 
 comment-service:
   ribbon:
@@ -43,4 +44,29 @@ comment-service:
     ConnectTimeout: 2000
     MaxAutoRetries: 0
     MaxAutoRetriesNextServer: 0
-    ServerListRefreshInterval: 1000
+    ServerListRefreshInterval: 5000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+hystrix:
+  command:
+    getBookByTitle:
+      fallback:
+        enabled: true
+      execution:
+        isolation:
+          strategy: THREAD
+          thread:
+            timeoutInMilliseconds: 3000
+      metrics:
+        rollingStats:
+          timeInMilliseconds: 15000
+      circuitBreaker:
+        enabled: true
+        requestVolumeThreshold: 3
+        errorThresholdPercentage: 50
+        sleepWindowInMilliseconds: 50000

@@ -21,8 +21,8 @@ eureka:
       enabled: true
 
   instance:
-    lease-renewal-interval-in-seconds: 5
-    lease-expiration-duration-in-seconds: 10
+    lease-renewal-interval-in-seconds: 2
+    lease-expiration-duration-in-seconds: 5
     instance-id: ${spring.application.name}:${server.port}
     prefer-ip-address: true
 
@@ -36,4 +36,10 @@ author-service:
     ConnectTimeout: 2000
     MaxAutoRetries: 0
     MaxAutoRetriesNextServer: 0
-    ServerListRefreshInterval: 1000
+    ServerListRefreshInterval: 5000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
