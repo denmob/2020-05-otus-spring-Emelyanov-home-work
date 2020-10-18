@@ -2,8 +2,8 @@ management:
   endpoints:
     web:
       exposure:
-        include: health, info, metrics, logfile, loggers
-    enabled-by-default: false
+        include: health, info, metrics, logfile, loggers, hystrix.stream
+    enabled-by-default: true
 
   endpoint:
     health:
@@ -19,6 +19,8 @@ management:
     loggers:
       enabled: true
     shutdown:
+      enabled: true
+    hystrix:
       enabled: true
 
   health:

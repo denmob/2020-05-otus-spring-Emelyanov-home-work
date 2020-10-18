@@ -4,6 +4,7 @@ import ru.otus.library.model.Comment;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public interface CommentService {
 
   Comment save(Comment entity);

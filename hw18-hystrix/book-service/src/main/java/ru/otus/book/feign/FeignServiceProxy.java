@@ -9,7 +9,7 @@ import ru.otus.library.model.Genre;
 @FeignClient("zuul-service-gateway")
 public interface FeignServiceProxy {
 
-	@GetMapping(value = "/gs/api/genre")
+  @GetMapping(value = "/gs/api/genre")
   Genre getGenreByName(@RequestParam(value = "name") String name);
 
   @GetMapping(value = "/as/api/author")

@@ -1,6 +1,5 @@
 package ru.otus.web.feign;
 
-import org.springframework.boot.convert.Delimiter;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.library.model.Author;
@@ -20,7 +19,7 @@ public interface FeignServiceProxy {
   Author getAuthorId(@RequestParam(value = "id") String id);
 
   @GetMapping(value = "/cs/api/comment/book")
-  List<CommentDto> getComments(@PathVariable("id") String id);
+  List<CommentDto> getComments(@RequestParam("id") String id);
 
   @GetMapping(value = "/bs/api/book")
   List<BookDto> getBooks(@RequestParam(value = "countBook") String id);

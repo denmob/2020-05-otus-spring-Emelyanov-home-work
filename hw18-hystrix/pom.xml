@@ -27,6 +27,7 @@
     <module>config-service</module>
     <module>eureka-service</module>
     <module>zuul-service-gateway</module>
+    <module>hystrix-dashboard</module>
   </modules>
 
   <properties>

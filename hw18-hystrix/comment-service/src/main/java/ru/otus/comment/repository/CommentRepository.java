@@ -6,6 +6,7 @@ import ru.otus.library.model.Comment;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public interface CommentRepository extends MongoRepository<Comment,String>{
 
   List<Comment> findAllByBookId(String bookId);

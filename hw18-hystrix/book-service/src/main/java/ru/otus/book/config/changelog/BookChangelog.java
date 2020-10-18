@@ -11,6 +11,7 @@ import ru.otus.library.model.Book;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@SuppressWarnings("unused")
 @ChangeLog(order = "003")
 public class BookChangelog {
 

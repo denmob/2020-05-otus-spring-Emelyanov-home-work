@@ -5,6 +5,7 @@ import com.github.cloudyrock.mongock.ChangeSet;
 import com.github.cloudyrock.mongock.driver.mongodb.springdata.v3.decorator.impl.MongockTemplate;
 import ru.otus.library.model.Genre;
 
+@SuppressWarnings("unused")
 @ChangeLog(order = "002")
 public class GenreChangelog {
 

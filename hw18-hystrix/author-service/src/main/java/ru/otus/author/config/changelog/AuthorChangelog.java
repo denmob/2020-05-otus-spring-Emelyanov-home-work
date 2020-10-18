@@ -9,6 +9,7 @@ import ru.otus.library.model.Author;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@SuppressWarnings("unused")
 @ChangeLog(order = "001")
 public class AuthorChangelog {
 

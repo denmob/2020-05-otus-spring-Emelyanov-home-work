@@ -9,6 +9,7 @@ import ru.otus.library.model.Comment;
 
 import java.util.Date;
 
+@SuppressWarnings("unused")
 @ChangeLog(order = "004")
 public class CommentChangelog {
 
