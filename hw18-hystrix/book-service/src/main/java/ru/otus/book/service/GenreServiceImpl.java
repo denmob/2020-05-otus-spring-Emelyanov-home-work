@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
-import ru.otus.book.feign.FeignServiceProxy;
+import ru.otus.library.feign.GenreServiceProxy;
 import ru.otus.library.model.Genre;
 
 @Slf4j
@@ -15,7 +15,7 @@ import ru.otus.library.model.Genre;
 @RequiredArgsConstructor
 public class GenreServiceImpl implements GenreService {
 
-  private final FeignServiceProxy feignServiceProxy;
+  private final GenreServiceProxy genreServiceProxy;
   private final DefaultDataService defaultDataService;
 
   @Override
@@ -24,7 +24,7 @@ public class GenreServiceImpl implements GenreService {
       @HystrixProperty(name = "execution.isolation.strategy", value = "SEMAPHORE")})
   public Genre getGenreByName(String name) {
     log.info("Invoke getGenreByName");
-    return feignServiceProxy.getGenreByName(name);
+    return genreServiceProxy.getGenreByName(name);
   }
 
   @SuppressWarnings("unused")

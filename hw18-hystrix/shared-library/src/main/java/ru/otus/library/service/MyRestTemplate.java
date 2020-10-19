@@ -1,11 +1,10 @@
 package ru.otus.library.service;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 
 import java.util.List;
 
-public interface RestService<T> {
+public interface MyRestTemplate<T> {
 
   T getEntity(String url, MultiValueMap<String, String> queryParams, Class<T> clazz);
 

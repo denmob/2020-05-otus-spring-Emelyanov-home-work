@@ -12,13 +12,13 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @EnableMongock
-@EnableFeignClients
 @EnableEurekaClient
 @EnableCircuitBreaker
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableMongoRepositories
 @EnableConfigurationProperties
+@EnableFeignClients(basePackages = {"ru.otus.library.feign"})
 public class CommentServiceApplication {
 
   @SneakyThrows

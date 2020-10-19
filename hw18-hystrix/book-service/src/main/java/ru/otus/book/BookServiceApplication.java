@@ -14,13 +14,13 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 
 @EnableHystrix
 @EnableMongock
-@EnableFeignClients
 @EnableEurekaClient
 @EnableCircuitBreaker
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableMongoRepositories
 @EnableConfigurationProperties
+@EnableFeignClients(basePackages = {"ru.otus.library.feign"})
 public class BookServiceApplication {
 
   @SneakyThrows

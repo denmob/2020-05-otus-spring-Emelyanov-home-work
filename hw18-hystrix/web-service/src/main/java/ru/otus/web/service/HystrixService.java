@@ -1,19 +1,18 @@
 package ru.otus.web.service;
 
-import ru.otus.library.model.Book;
 import ru.otus.library.model.dto.BookDto;
 
 import java.util.List;
 
-public interface BookService {
+public interface HystrixService {
 
   List<BookDto> getBooks(String countBook);
 
   BookDto getBook(String id);
 
-  BookDto saveBook(BookDto book);
+  BookDto saveBook(BookDto bookDto);
 
-  BookDto editBook(BookDto book);
+  BookDto editBook(BookDto bookDto);
 
   boolean deleteBook(String id);
 }

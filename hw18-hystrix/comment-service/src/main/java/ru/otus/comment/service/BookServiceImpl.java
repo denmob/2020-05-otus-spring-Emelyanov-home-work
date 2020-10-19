@@ -5,7 +5,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.otus.comment.feign.BookServiceProxy;
+import ru.otus.library.feign.BookServiceProxy;
 import ru.otus.library.model.Book;
 
 @Slf4j

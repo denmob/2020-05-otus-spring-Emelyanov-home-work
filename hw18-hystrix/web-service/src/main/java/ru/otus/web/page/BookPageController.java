@@ -4,17 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.otus.library.model.Author;
-import ru.otus.library.model.Genre;
-import ru.otus.library.service.RestService;
-import ru.otus.library.service.RestServiceImpl;
+import ru.otus.web.service.AuthorService;
+import ru.otus.web.service.GenreService;
 
 @Controller
 @RequiredArgsConstructor
 public class BookPageController {
 
-  private final RestService<Author> authorRestService = new RestServiceImpl<>();
-  private final RestService<Genre> genreRestService = new RestServiceImpl<>();
+  private final AuthorService authorService;
+  private final GenreService genreService;
 
   @GetMapping("/")
   public String root() {
@@ -28,15 +26,15 @@ public class BookPageController {
 
   @GetMapping("/pageBookCreate")
   public String pageBookCreate(Model model) {
-    model.addAttribute("authors", authorRestService.getEntities("http://localhost:8001/api/author"));
-    model.addAttribute("genres", genreRestService.getEntities("http://localhost:8002/api/genre"));
+    model.addAttribute("authors", authorService.getAuthors());
+    model.addAttribute("genres", genreService.getGenres());
     return "pageBookCreate";
   }
 
   @GetMapping("/pageBookEdit/{bookId}")
   public String pageBookEdit(@PathVariable("bookId") String bookId, Model model) {
-    model.addAttribute("authors", authorRestService.getEntities("http://localhost:8001/api/author"));
-    model.addAttribute("genres", genreRestService.getEntities("http://localhost:8002/api/genre"));
+    model.addAttribute("authors", authorService.getAuthors());
+    model.addAttribute("genres", genreService.getGenres());
     return "pageBookEdit";
   }
 }

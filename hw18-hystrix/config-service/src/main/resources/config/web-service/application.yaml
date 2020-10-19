@@ -59,3 +59,10 @@ web-service:
     MaxAutoRetries: 0
     MaxAutoRetriesNextServer: 0
     ServerListRefreshInterval: 5000
+
+app:
+  url:
+    book-service: http://book-service/api/book
+    author-service: http://author-service/api/author
+    genre-service: http://genre-service/api/genre
+    comment-service: http://comment-service/api/comment/book

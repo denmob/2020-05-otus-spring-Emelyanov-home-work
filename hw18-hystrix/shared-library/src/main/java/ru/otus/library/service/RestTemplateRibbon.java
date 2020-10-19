@@ -1,6 +1,7 @@
 package ru.otus.library.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -13,26 +14,16 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.List;
 
 @Service
-public class RestServiceImpl<T> implements RestService<T> {
+@RequiredArgsConstructor
+public class RestTemplateRibbon<T> implements MyRestTemplate<T> {
 
-  private final HttpHeaders httpHeaders = new HttpHeaders();
-  private HttpEntity<?> httpEntity;
-  private RestTemplate restTemplate;
-
-  public RestServiceImpl() {
-    this.restTemplate = new RestTemplate();
-    configHttpHeaders();
-  }
-
-  public RestServiceImpl(RestTemplate restTemplate) {
-    this.restTemplate = restTemplate;
-    configHttpHeaders();
-  }
+  private final RestTemplate restTemplate;
 
   @Override
   public T getEntity(String url, MultiValueMap<String, String> queryParams, Class<T> clazz) {
     UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url).queryParams(queryParams);
-    httpEntity = new HttpEntity<>(httpHeaders);
+
+    HttpEntity<?> httpEntity = new HttpEntity<>(getHttpHeaders());
     ResponseEntity<T> responseEntity =
         restTemplate.exchange(builder.toUriString(), HttpMethod.GET, httpEntity, clazz);
     return responseEntity.getBody();
@@ -53,7 +44,7 @@ public class RestServiceImpl<T> implements RestService<T> {
   @Override
   public boolean deleteEntity(String url, MultiValueMap<String, String> queryParams, Class<T> clazz) {
     UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url).queryParams(queryParams);
-    httpEntity = new HttpEntity<>(httpHeaders);
+    HttpEntity<?> httpEntity = new HttpEntity<>(getHttpHeaders());
     ResponseEntity<T> responseEntity =
         restTemplate.exchange(builder.toUriString(), HttpMethod.DELETE, httpEntity, clazz);
     return responseEntity.getStatusCode().is2xxSuccessful();
@@ -62,7 +53,7 @@ public class RestServiceImpl<T> implements RestService<T> {
   @Override
   public List<T> getEntities(String url, MultiValueMap<String, String> queryParams) {
     UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url).queryParams(queryParams);
-    httpEntity = new HttpEntity<>(httpHeaders);
+    HttpEntity<?> httpEntity = new HttpEntity<>(getHttpHeaders());
     ResponseEntity<List<T>> listResponseEntity =
         restTemplate.exchange(builder.toUriString(), HttpMethod.GET, httpEntity, new ParameterizedTypeReference<>() {
         });
@@ -77,14 +68,16 @@ public class RestServiceImpl<T> implements RestService<T> {
   @SneakyThrows
   private T exchangeEntity(String url, HttpMethod httpMethod, Object entity, Class<T> clazz) {
     String jsonObject = new ObjectMapper().writeValueAsString(entity);
-    httpEntity = new HttpEntity<>(jsonObject, httpHeaders);
+    HttpEntity<?> httpEntity = new HttpEntity<>(jsonObject, getHttpHeaders());
     ResponseEntity<T> responseEntity =
         restTemplate.exchange(url, httpMethod, httpEntity, clazz);
     return responseEntity.getBody();
   }
 
-  private void configHttpHeaders() {
+  private HttpHeaders getHttpHeaders() {
+    HttpHeaders httpHeaders = new HttpHeaders();
     httpHeaders.set("Accept", MediaType.APPLICATION_JSON_VALUE);
     httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+    return httpHeaders;
   }
 }

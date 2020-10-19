@@ -1,4 +1,4 @@
-package ru.otus.web.config;
+package ru.otus.library.config;
 
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
@@ -10,7 +10,7 @@ public class RestTemplateRibbonConfig {
 
   @LoadBalanced
   @Bean
-  public RestTemplate restTemplateRibbon() {
+  public RestTemplate restTemplate() {
     return new RestTemplate();
   }
 }
