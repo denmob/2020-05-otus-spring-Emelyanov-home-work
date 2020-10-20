@@ -9,7 +9,9 @@ import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import ru.otus.library.SharedLibrary;
 
 @EnableMongock
 @EnableEurekaClient
@@ -18,6 +20,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableDiscoveryClient
 @EnableMongoRepositories
 @EnableConfigurationProperties
+@Import(SharedLibrary.class)
 @EnableFeignClients(basePackages = {"ru.otus.library.feign"})
 public class CommentServiceApplication {
 

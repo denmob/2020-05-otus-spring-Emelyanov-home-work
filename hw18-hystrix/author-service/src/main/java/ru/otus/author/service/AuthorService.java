@@ -5,6 +5,7 @@ import ru.otus.library.model.Author;
 import java.util.List;
 import java.util.Optional;
 
+@SuppressWarnings("unused")
 public interface AuthorService {
 
   Author save(Author entity);

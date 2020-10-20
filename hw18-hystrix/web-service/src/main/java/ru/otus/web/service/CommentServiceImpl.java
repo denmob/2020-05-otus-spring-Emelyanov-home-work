@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import ru.otus.library.model.Comment;
-import ru.otus.library.model.dto.AuthorDto;
 import ru.otus.library.model.dto.CommentDto;
 import ru.otus.library.feign.CommentServiceProxy;
 import ru.otus.library.service.RestTemplateRibbonComment;

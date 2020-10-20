@@ -39,7 +39,10 @@ public class MongoConfig {
   }
 
   private MongoClientSettings createMongoClientSettings() {
-    CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(), fromProviders(PojoCodecProvider.builder().automatic(true).build()));
+    CodecRegistry pojoCodecRegistry = fromRegistries(
+        MongoClientSettings.getDefaultCodecRegistry(),
+        fromProviders(PojoCodecProvider.builder().automatic(true).build())
+    );
     return MongoClientSettings.builder().codecRegistry(pojoCodecRegistry).build();
   }
 }

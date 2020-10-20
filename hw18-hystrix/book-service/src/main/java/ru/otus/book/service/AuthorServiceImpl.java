@@ -14,7 +14,7 @@ import ru.otus.library.model.Author;
 public class AuthorServiceImpl implements AuthorService {
 
   private final AuthorServiceProxy authorServiceProxy;
-  private final DefaultDataService defaultDataService;
+  private final DefaultAuthorService defaultAuthorService;
 
   @Override
   @HystrixCommand(commandKey = "getAuthorByLastName", fallbackMethod = "getAuthorDefaultDataService", commandProperties = {
@@ -28,6 +28,6 @@ public class AuthorServiceImpl implements AuthorService {
   @SuppressWarnings("unused")
   private Author getAuthorDefaultDataService(String lastName) {
     log.error("Invoke getAuthorDefaultDataService");
-    return defaultDataService.getAuthorByLastName(lastName);
+    return defaultAuthorService.getAuthorByLastName(lastName);
   }
 }

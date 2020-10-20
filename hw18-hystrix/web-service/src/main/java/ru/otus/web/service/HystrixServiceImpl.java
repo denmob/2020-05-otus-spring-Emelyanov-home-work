@@ -28,7 +28,9 @@ public class HystrixServiceImpl implements HystrixService {
       @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "5000"),
       @HystrixProperty(name = "execution.isolation.strategy", value = "SEMAPHORE")})
   public List<BookDto> getBooks(String countBook) {
-    return bookServiceProxy.getBooks(countBook);
+    MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
+    queryParams.add("countBook", countBook);
+    return restTemplateRibbonBook.getEntities(urlBookService, queryParams);
   }
 
   @Override
@@ -67,9 +69,7 @@ public class HystrixServiceImpl implements HystrixService {
 
   @SuppressWarnings("unused")
   private List<BookDto> getBooksFallbackMethod(String countBook) {
-    MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
-    queryParams.add("countBook", countBook);
-    return restTemplateRibbonBook.getEntities(urlBookService, queryParams);
+    return bookServiceProxy.getBooks(countBook);
   }
 
   @SuppressWarnings("unused")
