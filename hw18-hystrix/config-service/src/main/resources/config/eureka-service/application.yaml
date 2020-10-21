@@ -1,0 +1,28 @@
+eureka:
+  server:
+    max-threads-for-peer-replication: 0
+    enable-self-preservation: false #default true
+    eviction-interval-timer-in-ms: 5000 #default 60000
+    response-cache-update-interval-ms: 10000 #default 30000
+    use-read-only-response-cache: false
+    wait-time-in-ms-when-sync-empty: 5
+    registry-sync-retries: 3
+
+  client:
+    fetchRegistry: false
+    register-with-eureka: false
+
+  instance:
+    lease-renewal-interval-in-seconds: 2
+    lease-expiration-duration-in-seconds: 5
+    instance-id: ${spring.application.name}:${server.port}
+    prefer-ip-address: true
+
+eureka-service:
+  ServerListRefreshInterval: 5000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

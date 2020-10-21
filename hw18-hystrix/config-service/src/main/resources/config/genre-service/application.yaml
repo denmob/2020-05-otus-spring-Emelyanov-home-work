@@ -1,0 +1,45 @@
+spring:
+  data:
+    mongodb:
+      database: hw18_genre
+      uri: mongodb://localhost
+      port: 27017
+
+mongock:
+  runner-type: InitializingBean
+  change-logs-scan-package:
+    - ru.otus.genre.config.changelog
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8010/eureka
+    register-with-eureka: true
+    fetch-registry: true
+    registry-fetch-interval-seconds: 2
+    healthcheck:
+      enabled: true
+
+  instance:
+    lease-renewal-interval-in-seconds: 2
+    lease-expiration-duration-in-seconds: 5
+    instance-id: ${spring.application.name}:${server.port}
+    prefer-ip-address: true
+
+genre-service:
+  ribbon:
+    eager-load:
+      enabled: true
+    MaxConnectionsPerHost: 1000
+    MaxTotalConnections: 3000
+    ReadTimeout: 2000
+    ConnectTimeout: 2000
+    MaxAutoRetries: 0
+    MaxAutoRetriesNextServer: 0
+    ServerListRefreshInterval: 5000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

@@ -1,0 +1,50 @@
+server:
+  port: 8000
+
+spring:
+  application:
+    name: config-service
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: "[classpath:/config, classpath:/config/{application}, classpath:/config/{application}/{profile}]"
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8010/eureka
+    register-with-eureka: true
+    fetch-registry: true
+    registry-fetch-interval-seconds: 2
+    healthcheck:
+      enabled: true
+
+  instance:
+    lease-renewal-interval-in-seconds: 2
+    lease-expiration-duration-in-seconds: 5
+    instance-id: ${spring.application.name}:${server.port}
+    prefer-ip-address: true
+
+app:
+  message: This is the primary Application Property for ${spring.application.name}
+
+config-service:
+  ribbon:
+    eager-load:
+      enabled: true
+    MaxConnectionsPerHost: 1000
+    MaxTotalConnections: 3000
+    ReadTimeout: 2000
+    ConnectTimeout: 2000
+    MaxAutoRetries: 0
+    MaxAutoRetriesNextServer: 0
+    ServerListRefreshInterval: 1000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

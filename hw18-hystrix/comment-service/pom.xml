@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>ru.otus</groupId>
+    <artifactId>hw18-hystrix</artifactId>
+    <version>2020-05-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>comment-service</artifactId>
+  <version>2020-05-SNAPSHOT</version>
+  <name>comment-service</name>
+
+  <properties>
+    <java.version>14</java.version>
+    <shared-library.version>1.0</shared-library.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>ru.otus</groupId>
+      <artifactId>shared-library</artifactId>
+      <version>${shared-library.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-openfeign</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

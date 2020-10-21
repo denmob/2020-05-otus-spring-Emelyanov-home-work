@@ -41,6 +41,7 @@
     <module>hw15-spring-integration</module>
     <module>hw16-spring-actuator-data-rest</module>
     <module>hw17-docker</module>
+    <module>hw18-hystrix</module>
   </modules>
 
   <properties>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+  <head th:replace="fragments/head :: head(title='Home page')"><title></title></head>
+
+  <body>
+  <div class="layer3">
+    <h2><a th:href="@{/pageBookCreate}" href="pageBookCreate.html">Create book</a></h2>
+  </div>
+  <h1>Books:</h1>
+  <table class="books">
+    <thead>
+    <tr>
+      <th>Title</th>
+      <th>Date</th>
+      <th>Author</th>
+      <th>Genre</th>
+    </tr>
+    </thead>
+    <tbody id="tbodyBookList">
+    </tbody>
+  </table>
+
+  <script type="text/javascript">
+    getBookList();
+
+    function renderBookList(bookList) {
+      $('#tbodyBookList').empty();
+      bookList.forEach(function (book) {
+        $('#tbodyBookList').append(`
+                 <tr>
+                     <td>${book.title}</td>
+                     <td>${new Date(book.date).toDateString()}</td>
+                     <td>${book.author.firstName} ${book.author.lastName}</td>
+                     <td>${book.genre.name}</td>
+                     <td><a href="/pageBookEdit/id=${book.id}">Edit book</a></td>
+                     <td><a href="/pageCommentList/${book.id},${book.title}">View comments</a></td>
+                     <td><button onclick="deleteBook('${book.id}')">Delete book</button></td>
+                 </tr>
+              `)
+      })
+    }
+  </script>
+  </body>
+
+</html>

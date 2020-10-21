@@ -1,0 +1,68 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics, logfile, loggers, hystrix.stream
+    enabled-by-default: true
+
+  endpoint:
+    health:
+      show-details: always
+      enabled: true
+    logfile:
+      enabled: true
+      external-file: logs/logfile.log
+    metrics:
+      enabled: true
+    info:
+      enabled: true
+    loggers:
+      enabled: true
+    shutdown:
+      enabled: true
+    hystrix:
+      enabled: true
+
+  health:
+    defaults:
+      enabled: true
+
+logging:
+  file:
+    path: logs
+    name: logs/logfile.log
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8010/eureka
+    register-with-eureka: true
+    fetch-registry: true
+    registry-fetch-interval-seconds: 2
+    healthcheck:
+      enabled: true
+
+  instance:
+    lease-renewal-interval-in-seconds: 2
+    lease-expiration-duration-in-seconds: 5
+    instance-id: ${spring.application.name}:${server.port}
+    prefer-ip-address: true
+
+web-service:
+  ribbon:
+    eager-load:
+      enabled: true
+    MaxConnectionsPerHost: 1000
+    MaxTotalConnections: 3000
+    ReadTimeout: 2000
+    ConnectTimeout: 2000
+    MaxAutoRetries: 0
+    MaxAutoRetriesNextServer: 0
+    ServerListRefreshInterval: 5000
+
+app:
+  url:
+    book-service: http://book-service/api/book
+    author-service: http://author-service/api/author
+    genre-service: http://genre-service/api/genre
+    comment-service: http://comment-service/api/comment/book

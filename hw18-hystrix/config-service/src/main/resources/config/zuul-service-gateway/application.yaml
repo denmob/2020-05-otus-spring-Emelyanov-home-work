@@ -1,0 +1,38 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8010/eureka
+    register-with-eureka: true
+    fetch-registry: true
+    registry-fetch-interval-seconds: 2
+
+  instance:
+    lease-renewal-interval-in-seconds: 2
+    lease-expiration-duration-in-seconds: 5
+    instance-id: ${spring.application.name}:${server.port}
+    prefer-ip-address: true
+
+zuul-service-gateway:
+  ribbon:
+    eager-load:
+      enabled: true
+    MaxConnectionsPerHost: 1000
+    MaxTotalConnections: 3000
+    ReadTimeout: 2000
+    ConnectTimeout: 2000
+    MaxAutoRetries: 0
+    MaxAutoRetriesNextServer: 0
+    ServerListRefreshInterval: 5000
+
+zuul:
+  routes:
+    genre-service: /gs/**
+    author-service: /as/**
+    book-service: /bs/**
+    comment-service: /cs/**
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
