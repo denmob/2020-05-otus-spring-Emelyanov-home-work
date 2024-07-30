@@ -18,7 +18,7 @@
   <properties>
     <java.version>14</java.version>
     <mongock-spring.version>3.2.8</mongock-spring.version>
-    <bootstrap.version>3.3.7</bootstrap.version>
+    <bootstrap.version>3.4.0</bootstrap.version>
   </properties>
 
   <dependencies>
