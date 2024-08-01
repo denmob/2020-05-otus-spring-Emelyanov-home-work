@@ -16,7 +16,7 @@
 
   <properties>
     <java.version>14</java.version>
-    <bootstrap.version>3.3.7</bootstrap.version>
+    <bootstrap.version>5.0.0</bootstrap.version>
     <mongock.version>4.1.14</mongock.version>
     <swagger.version>3.0.0</swagger.version>
   </properties>
